@@ -39,12 +39,10 @@ function createMainWindow(){
     // mainWindow.setAlwaysOnTop(true, 'floating', 1);
   });
 
-
   mainWindow.on('closed', () => {
     mainWindow = null;
   })
 }
-
 
 function createPopupWindow() {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
