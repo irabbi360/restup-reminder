@@ -1,5 +1,5 @@
 const { ipcRenderer } = require('electron');
-const buttonSound = new Audio('button-sound.mp3');
+const buttonSound = new Audio('assets/sound/button-sound.mp3');
 const mainButton = document.getElementById('js-btn');
 mainButton.addEventListener('click', () => {
   const { action } = mainButton.dataset;
@@ -93,6 +93,7 @@ function startTimer() {
         const text =
             timer.mode === 'pomodoro' ? 'Get back to work!' : 'Take a break!';
         new Notification(text);
+        ipcStopNotify()
       }
 
       document.querySelector(`[data-sound="${timer.mode}"]`).play();
@@ -107,7 +108,6 @@ function stopTimer() {
   mainButton.dataset.action = 'start';
   mainButton.textContent = 'start';
   mainButton.classList.remove('active');
-  ipcStopNotify()
 }
 
 function switchMode(mode) {
