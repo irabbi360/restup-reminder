@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <title>Break Timer</title>
+    <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+    <main class="app">
+        <progress id="js-progress" value="0"></progress>
+        <div class="progress-bar"></div>
+        <div class="timer">
+            <div class="timer">
+                <div class="button-group mode-buttons" id="js-mode-buttons">
+                  <button
+                    data-mode="pomodoro"
+                    class="button active mode-button"
+                    id="js-pomodoro"
+                  >
+                    Pomodoro
+                  </button>
+                  <button
+                    data-mode="shortBreak"
+                    class="button mode-button"
+                    id="js-short-break"
+                  >
+                    Short break
+                  </button>
+                  <button
+                    data-mode="longBreak"
+                    class="button mode-button"
+                    id="js-long-break"
+                  >
+                    Long break
+                  </button>
+                </div>
+                <div class="clock" id="js-clock">
+                  <span id="js-minutes">25</span>
+                  <span class="separator">:</span>
+                  <span id="js-seconds">00</span>
+                </div>
+                <button class="main-button" data-action="start" id="js-btn">
+                  Start
+                </button>
+
+                <div id="response"></div>
+        </div>
+        </div>
+  </main>
+  <!-- <div class="hidden">
+    <audio src="sound/backtowork.mp3" data-sound="pomodoro"></audio>
+    <audio src="sound/break.mp3" data-sound="shortBreak"></audio>
+    <audio src="sound/break.mp3" data-sound="longBreak"></audio>
+  </div> -->
+   <script src="./renderer.js"></script>
+<!--  <script src="./promodo.js"></script>-->
+</body>
+</html>
