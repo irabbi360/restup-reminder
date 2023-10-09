@@ -36,7 +36,7 @@ function createMainWindow(){
     createPopupWindow();
     mainWindow.restore();
     console.log('From renderer process:', message);
-    // mainWindow.setAlwaysOnTop(true, 'floating', 1);
+    mainWindow.setAlwaysOnTop(true, 'floating', 1);
   });
 
   mainWindow.on('closed', () => {
