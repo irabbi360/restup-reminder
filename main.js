@@ -4,6 +4,7 @@ const path = require('node:path');
 let mainWindow;
 let popupWindow;
 let modalWindow;
+let settingWindow;
 let tray;
 
 function createMainWindow(){
@@ -97,6 +98,30 @@ function createModalWindow() {
     modalWindow = null;
   });
 }
+function createSettingWindow() {
+  settingWindow = new BrowserWindow({
+    parent: mainWindow, // Make the main window the parent of the modal
+    modal: true,
+    width: 800,
+    height: 600,
+    // frame: false,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+    },
+  });
+
+  settingWindow.loadFile('settings-tab.html'); // Create a separate HTML file for the modal content
+
+  // Listen for a close request from the modal
+  ipcMain.on('close-modal', () => {
+    settingWindow.close();
+  });
+
+  settingWindow.on('closed', () => {
+    settingWindow = null;
+  });
+}
 
 app.on('ready', () => {
   createMainWindow();
@@ -117,6 +142,12 @@ app.on('ready', () => {
     {
       label: 'Reset Timer',
       click: () => mainWindow.webContents.send('reset-timer'),
+    },
+    {
+      label: 'Settings',
+      click: () => {
+        createSettingWindow(); // Open the modal when the menu item is clicked
+      },
     },
     {
       label: 'About',
