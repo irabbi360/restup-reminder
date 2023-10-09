@@ -15,10 +15,11 @@ mainButton.addEventListener('click', () => {
 
 const modeButtons = document.querySelector('#js-mode-buttons');
 modeButtons.addEventListener('click', handleMode);
-
+const settings = JSON.parse(localStorage.getItem('settings'));
+console.log(settings.breakFrequency)
 const timer = {
-  pomodoro: 25,
-  shortBreak: 1,
+  pomodoro: parseInt(settings.breakFrequency),
+  shortBreak: parseInt(settings.breakLength),
   longBreak: 15,
   longBreakInterval: 4,
   sessions: 0,

@@ -36,7 +36,7 @@ function createMainWindow(){
   // Listen for a message from the renderer process
   ipcMain.on('timer-stop', (event, message) => {
     createPopupWindow();
-    mainWindow.restore();
+    // mainWindow.restore();
     console.log('From renderer process:', message);
     mainWindow.setAlwaysOnTop(true, 'floating', 1);
   });
@@ -170,7 +170,7 @@ app.setAppUserModelId("Timer");
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
-    app.quit();
+    // app.quit();
   }
 });
 
