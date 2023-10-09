@@ -3,6 +3,7 @@ const path = require('node:path');
 
 let mainWindow;
 let popupWindow;
+let modalWindow;
 let tray;
 
 function createMainWindow(){
@@ -72,6 +73,31 @@ function createPopupWindow() {
   });
 }
 
+function createModalWindow() {
+  modalWindow = new BrowserWindow({
+    parent: mainWindow, // Make the main window the parent of the modal
+    modal: true,
+    width: 400,
+    height: 300,
+    frame: false,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+    },
+  });
+
+  modalWindow.loadFile('about-us.html'); // Create a separate HTML file for the modal content
+
+  // Listen for a close request from the modal
+  ipcMain.on('close-modal', () => {
+    modalWindow.close();
+  });
+
+  modalWindow.on('closed', () => {
+    modalWindow = null;
+  });
+}
+
 app.on('ready', () => {
   createMainWindow();
    // Create the popup window
@@ -92,12 +118,19 @@ app.on('ready', () => {
       label: 'Reset Timer',
       click: () => mainWindow.webContents.send('reset-timer'),
     },
+    {
+      label: 'About',
+      click: () => {
+        createModalWindow(); // Open the modal when the menu item is clicked
+      },
+    },
     { type: 'separator' },
     {
       label: 'Quit',
       role: 'quit',
     },
   ]);
+
   tray.setToolTip('Break Timer');
   tray.setContextMenu(contextMenu);
 
@@ -115,3 +148,10 @@ app.on('activate', () => {
     createMainWindow();
   }
 });
+
+// Listen for a request to open the modal
+/*
+ipcMain.on('open-modal', () => {
+  createModalWindow();
+});
+*/

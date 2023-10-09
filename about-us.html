@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Break Timer</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        /* The Modal (background) */
+        .modal {
+            display: block; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            /*padding-top: 100px;*/
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 300px; /* Full height */
+            /*overflow: auto;*/
+            background-color: rgb(0, 0, 0); /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            position: relative;
+            background-color: #fefefe;
+            margin: auto;
+            padding: 0;
+            border: 1px solid #888;
+            width: auto;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            -webkit-animation-duration: 0.4s;
+            animation-duration: 0.4s;
+            height: auto;
+        }
+
+        /* The Close Button */
+        .close {
+            color: white;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-header {
+            padding: 2px 16px;
+            background-color: #5cb85c;
+            color: white;
+        }
+
+        .modal-body {
+            padding: 2px 16px;
+        }
+
+        .modal-footer {
+            padding: 2px 16px;
+            background-color: #5cb85c;
+            color: white;
+            position: relative;
+            height: 40px;
+        }
+        .btn {
+            position: absolute;
+            float: right;
+            margin: auto;
+            right: 10px;
+            padding: 5px 15px;
+            top: 6px;
+        }
+    </style>
+</head>
+<body>
+<div id="myModal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close" id="closeBtn">&times;</span>
+            <h4>About</h4>
+        </div>
+        <div class="modal-body">
+            <h2 id="app-name">About This App</h2>
+            <p>The app to remind you it's time to take a break from the screen and go out!</p>
+            <p>Version: <span id="app-version"></span></p>
+            <p>Website: <span id="app-url"></span></p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" id="closeModalButton">Ok</button>
+        </div>
+    </div>
+
+</div>
+<script src="./about-us.js"></script>
+</body>
+</html>

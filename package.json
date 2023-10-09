@@ -14,7 +14,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.3.1",
     "electron": "^26.2.4",
-    "electron-packager": "^17.1.2"
+    "electron-packager": "^17.1.2",
+    "js-cookie": "^3.0.5"
   }
 }
