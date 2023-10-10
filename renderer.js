@@ -1,9 +1,10 @@
 const { ipcRenderer } = require('electron');
 const buttonSound = new Audio('assets/sound/button-sound.mp3');
 const mainButton = document.getElementById('js-btn');
+
 mainButton.addEventListener('click', () => {
   const { action } = mainButton.dataset;
-  buttonSound.play();
+  // buttonSound.play();
   if (action === 'start') {
     ipcRenderer.send('timer-start', 'Your Timer Started!');
     sendNotification("Pomodoro Timer Started", "Let's go start the work.")
@@ -18,7 +19,7 @@ modeButtons.addEventListener('click', handleMode);
 const settings = JSON.parse(localStorage.getItem('settings'));
 console.log(settings.breakFrequency)
 const timer = {
-  pomodoro: parseInt(settings.breakFrequency),
+  pomodoro: 1, //parseInt(settings.breakFrequency),
   shortBreak: parseInt(settings.breakLength),
   longBreak: 15,
   longBreakInterval: 4,
@@ -157,7 +158,17 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   switchMode('pomodoro');
+  initPomodoroTimer();
 });
+
+function initPomodoroTimer(){
+  const { action } = mainButton.dataset;
+  console.log(action, 'fffs')
+    ipcRenderer.send('timer-start', 'Your Timer Started!');
+    sendNotification("Pomodoro Timer Started", "Let's go start the work.")
+    startTimer();
+}
+
   function sendNotification(title, body) {
     new window.Notification(title, { body: body })
 }
@@ -175,3 +186,6 @@ ipcRenderer.on('message-from-main', (event, message) => {
 function ipcStopNotify() {
   ipcRenderer.send('timer-stop', 'Your Timer Ended!');
 }
+
+
+//init call
