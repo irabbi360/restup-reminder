@@ -55,10 +55,11 @@ function createPopupWindow() {
     parent: mainWindow, // Set the main window as the parent
     modal: true, // Make the popup modal (blocks main window interaction)
     show: false, // Initially, don't show the window
-    frame: false,
+    // frame: false,
     transparent: true,
     webPreferences: {
       nodeIntegration: true,
+      contextIsolation: false,
     },
   });
 
@@ -68,6 +69,10 @@ function createPopupWindow() {
   popupWindow.once('ready-to-show', () => {
     popupWindow.show(); // Show the popup window once it's ready
   });
+
+  ipcMain.on('break-end', (event, message) => {
+    event.reply('break-ending', 'Hello from the main process!');
+  })
 
   popupWindow.on('closed', () => {
     popupWindow = null;

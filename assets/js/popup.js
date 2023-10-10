@@ -1,3 +1,4 @@
+const { ipcRenderer } = require('electron');
 // popup.js
 const closeButton = document.getElementById('closeButton');
 const settings = JSON.parse(localStorage.getItem('settings'));
@@ -8,7 +9,7 @@ closeButton.addEventListener('click', () => {
 });
 
 let timerInterval;
-let secondsRemaining = settings.breakLength * 60;
+let secondsRemaining = 30//settings.breakLength * 60;
 let isTimerRunning = false;
 
 function updateTimer() {
@@ -33,6 +34,8 @@ function startTimer() {
 }
 
 function stopTimer() {
+    ipcRenderer.send('break-end', 'Your Break is End. Popup Closed.')
+
     if (isTimerRunning) {
         isTimerRunning = false;
         clearInterval(timerInterval);

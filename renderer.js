@@ -1,4 +1,4 @@
-const { ipcRenderer } = require('electron');
+const { ipcRenderer, ipcMain } = require('electron');
 const buttonSound = new Audio('assets/sound/button-sound.mp3');
 const mainButton = document.getElementById('js-btn');
 
@@ -163,7 +163,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function initPomodoroTimer(){
   const { action } = mainButton.dataset;
-  console.log(action, 'fffs')
     ipcRenderer.send('timer-start', 'Your Timer Started!');
     sendNotification("Pomodoro Timer Started", "Let's go start the work.")
     startTimer();
@@ -187,5 +186,8 @@ function ipcStopNotify() {
   ipcRenderer.send('timer-stop', 'Your Timer Ended!');
 }
 
+ipcRenderer.on('break-ending', (event, message) => {
+  initPomodoroTimer();
+});
 
 //init call
