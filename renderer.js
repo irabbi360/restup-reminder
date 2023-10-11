@@ -95,7 +95,7 @@ function startTimer() {
 
       // document.querySelector(`[data-sound="${timer.mode}"]`).play();
       console.log(timer.shortBreak)
-      if (timer.mode === 'shortBreak' && timer.sessions === 1) {
+      if (timer.mode === 'pomodoro' && total === 0) {
           timer.mode = 'pomodoro'
         startTimer();
       }
