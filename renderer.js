@@ -16,12 +16,12 @@ mainButton.addEventListener('click', () => {
 
 const modeButtons = document.querySelector('#js-mode-buttons');
 modeButtons.addEventListener('click', handleMode);
+
 const settings = JSON.parse(localStorage.getItem('settings'));
-console.log(settings.breakFrequency)
+
 const timer = {
   pomodoro: 1, //parseInt(settings.breakFrequency),
   shortBreak: parseInt(settings.breakLength),
-  longBreak: 15,
   longBreakInterval: 4,
   sessions: 0,
 };
@@ -80,11 +80,7 @@ function startTimer() {
 
       switch (timer.mode) {
         case 'pomodoro':
-          if (timer.sessions % timer.longBreakInterval === 0) {
-            switchMode('longBreak');
-          } else {
             switchMode('shortBreak');
-          }
           break;
         default:
           switchMode('pomodoro');
@@ -97,8 +93,8 @@ function startTimer() {
         ipcStopNotify()
       }
 
-      document.querySelector(`[data-sound="${timer.mode}"]`).play();
-      startTimer();
+      // document.querySelector(`[data-sound="${timer.mode}"]`).play();
+      // startTimer();
     }
   }, 1000);
 }
@@ -173,21 +169,27 @@ function initPomodoroTimer(){
 }
 
 // Send a message to the main process when the button is clicked
-document.getElementById('send-button').addEventListener('click', () => {
+/*document.getElementById('send-button').addEventListener('click', () => {
   ipcRenderer.send('message-from-renderer', 'Hello from the renderer process!');
-});
-
-// Listen for a response from the main process
-ipcRenderer.on('message-from-main', (event, message) => {
-  document.getElementById('response').textContent = 'Response from main process: ' + message;
-});
+});*/
 
 function ipcStopNotify() {
   ipcRenderer.send('timer-stop', 'Your Timer Ended!');
 }
 
 ipcRenderer.on('break-ending', (event, message) => {
-  initPomodoroTimer();
+  // initPomodoroTimer();
 });
 
 //init call
+
+// Listen for a response from the main process
+ipcRenderer.on('message-from-main', (event, message) => {
+  // alert(message)
+  // initPomodoroTimer();
+  // document.getElementById('response').textContent = 'Response from main process: ' + message;
+});
+
+function restartPomodoroTimer(){
+
+}

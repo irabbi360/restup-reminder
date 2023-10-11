@@ -38,6 +38,7 @@ function createMainWindow(){
     createPopupWindow();
     // mainWindow.restore();
     console.log('From renderer process:', message);
+    event.reply('message-from-main', 'Hello from the main process!');
     mainWindow.setAlwaysOnTop(true, 'floating', 1);
   });
 
