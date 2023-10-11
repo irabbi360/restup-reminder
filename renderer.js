@@ -6,7 +6,7 @@ mainButton.addEventListener('click', () => {
   const { action } = mainButton.dataset;
   // buttonSound.play();
   if (action === 'start') {
-    ipcRenderer.send('timer-start', 'Your Timer Started!');
+    ipcRenderer.send('timer-start', 'Your Timer Started! '+ timer.sessions);
     sendNotification("Pomodoro Timer Started", "Let's go start the work.")
     startTimer();
   } else {
@@ -90,11 +90,15 @@ function startTimer() {
         const text =
             timer.mode === 'pomodoro' ? 'Get back to work!' : 'Take a break!';
         new Notification(text);
-        ipcStopNotify()
+        ipcStopNotify(timer.mode)
       }
 
       // document.querySelector(`[data-sound="${timer.mode}"]`).play();
-      // startTimer();
+      console.log(timer.shortBreak)
+      if (timer.mode === 'shortBreak' && timer.sessions === 1) {
+          timer.mode = 'pomodoro'
+        startTimer();
+      }
     }
   }, 1000);
 }
@@ -173,8 +177,8 @@ function initPomodoroTimer(){
   ipcRenderer.send('message-from-renderer', 'Hello from the renderer process!');
 });*/
 
-function ipcStopNotify() {
-  ipcRenderer.send('timer-stop', 'Your Timer Ended!');
+function ipcStopNotify(mode) {
+  ipcRenderer.send('timer-stop', 'Your Timer Ended! ' + mode +' '+ timer.sessions);
 }
 
 ipcRenderer.on('break-ending', (event, message) => {

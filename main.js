@@ -56,7 +56,7 @@ function createPopupWindow() {
     parent: mainWindow, // Set the main window as the parent
     modal: true, // Make the popup modal (blocks main window interaction)
     show: false, // Initially, don't show the window
-    // frame: false,
+    frame: false,
     transparent: true,
     webPreferences: {
       nodeIntegration: true,
