@@ -34,11 +34,16 @@ function startTimer() {
 }
 
 function stopTimer() {
-    ipcRenderer.send('break-end', 'Your Break is End. Popup Closed.')
-
     if (isTimerRunning) {
         isTimerRunning = false;
         clearInterval(timerInterval);
+        ipcRenderer.send('break-end', 'Your Break is End. Popup Closed.')
+        // ipcRenderer.send('call-from-main', 'Hello from the renderer process');
+
+        ipcRenderer.on('message-from-main', (event, message) => {
+            console.log(message, 'message-from-main')
+            // document.getElementById('response').textContent = 'Response from main process: ' + message;
+        });
     }
     document.getElementById("closeButton").click();
 }

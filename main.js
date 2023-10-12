@@ -7,6 +7,8 @@ let modalWindow;
 let settingWindow;
 let tray;
 
+let rendererWindows = [];
+
 function createMainWindow(){
   mainWindow = new BrowserWindow({
     width: 800,
@@ -21,25 +23,31 @@ function createMainWindow(){
   });
 
   mainWindow.loadFile('index.html');
+  rendererWindows.push(mainWindow);
+
   // Open the DevTools in development mode
   // if (process.env.NODE_ENV === 'development') {
   mainWindow.webContents.openDevTools();
   // }
 
   // Listen for a message from the renderer process
-  ipcMain.on('timer-start', (event, message) => {
+  /*ipcMain.on('timer-start', (event, message) => {
     console.log('Message from renderer process:', message);
     // mainWindow.minimize();
     // Send a response back to the renderer process
     event.reply('message-from-main', 'Hello from the main process!');
-  });
+  });*/
   // Listen for a message from the renderer process
   ipcMain.on('timer-stop', (event, message) => {
     createPopupWindow();
     // mainWindow.restore();
     console.log('From renderer process:', message);
-    event.reply('message-from-main', 'Hello from the main process!');
-    mainWindow.setAlwaysOnTop(true, 'floating', 1);
+    // event.reply('message-from-main', 'Hello from the main process!');
+    // mainWindow.setAlwaysOnTop(true, 'floating', 1);
+  });
+
+  ipcMain.on('call-from-main', (event, arg) => {
+    // console.log(arg, 'call-from-main'); // Do something with the data received
   });
 
   mainWindow.on('closed', () => {
@@ -51,19 +59,21 @@ function createPopupWindow() {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
 
   popupWindow = new BrowserWindow({
-    width,
-    height,
+    // width,
+    // height,
+    width: 800,
+    height: 600,
     parent: mainWindow, // Set the main window as the parent
     modal: true, // Make the popup modal (blocks main window interaction)
     show: false, // Initially, don't show the window
-    frame: false,
-    transparent: true,
+    // frame: false,
+    // transparent: true,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
     },
   });
-
+  popupWindow.webContents.openDevTools();
   // Load the popup HTML file
   popupWindow.loadFile('popup.html');
 
@@ -72,7 +82,13 @@ function createPopupWindow() {
   });
 
   ipcMain.on('break-end', (event, message) => {
-    event.reply('break-ending', 'Hello from the main process!');
+    event.sender.send('message-from-main', 'Reply from main process');
+    console.log('Break End', message)
+    rendererWindows.forEach((win) => {
+      if (win !== event.sender) {
+        win.webContents.send('broadcast-message', message);
+      }
+    });
   })
 
   popupWindow.on('closed', () => {

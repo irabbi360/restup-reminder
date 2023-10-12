@@ -7,7 +7,7 @@ mainButton.addEventListener('click', () => {
   // buttonSound.play();
   if (action === 'start') {
     ipcRenderer.send('timer-start', 'Your Timer Started! '+ timer.sessions);
-    sendNotification("Pomodoro Timer Started", "Let's go start the work.")
+    // sendNotification("Pomodoro Timer Started", "Let's go start the work.")
     startTimer();
   } else {
     stopTimer();
@@ -79,9 +79,9 @@ function startTimer() {
       clearInterval(interval);
 
       switch (timer.mode) {
-        case 'pomodoro':
-            switchMode('shortBreak');
-          break;
+        // case 'pomodoro':
+        //     switchMode('shortBreak');
+        //   break;
         default:
           switchMode('pomodoro');
       }
@@ -89,15 +89,8 @@ function startTimer() {
       if (Notification.permission === 'granted') {
         const text =
             timer.mode === 'pomodoro' ? 'Get back to work!' : 'Take a break!';
-        new Notification(text);
+        // new Notification(text);
         ipcStopNotify(timer.mode)
-      }
-
-      // document.querySelector(`[data-sound="${timer.mode}"]`).play();
-      console.log(timer.shortBreak)
-      if (timer.mode === 'pomodoro' && total === 0) {
-          timer.mode = 'pomodoro'
-        startTimer();
       }
     }
   }, 1000);
@@ -105,7 +98,6 @@ function startTimer() {
 
 function stopTimer() {
   clearInterval(interval);
-
   mainButton.dataset.action = 'start';
   mainButton.textContent = 'start';
   mainButton.classList.remove('active');
@@ -137,7 +129,7 @@ function handleMode(event) {
   if (!mode) return;
 
   timer.sessions = 0;
-  switchMode(mode);
+  switchMode('pomodoro');
   stopTimer();
 }
 
@@ -164,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function initPomodoroTimer(){
   const { action } = mainButton.dataset;
     ipcRenderer.send('timer-start', 'Your Timer Started!');
-    sendNotification("Pomodoro Timer Started", "Let's go start the work.")
+    // sendNotification("Pomodoro Timer Started", "Let's go start the work.")
     startTimer();
 }
 
@@ -181,19 +173,22 @@ function ipcStopNotify(mode) {
   ipcRenderer.send('timer-stop', 'Your Timer Ended! ' + mode +' '+ timer.sessions);
 }
 
-ipcRenderer.on('break-ending', (event, message) => {
-  // initPomodoroTimer();
-});
-
 //init call
 
 // Listen for a response from the main process
 ipcRenderer.on('message-from-main', (event, message) => {
-  // alert(message)
-  // initPomodoroTimer();
+  console.log(message, 'message-from-main')
+
   // document.getElementById('response').textContent = 'Response from main process: ' + message;
 });
 
 function restartPomodoroTimer(){
 
 }
+
+ipcRenderer.on('broadcast-message', (event, message) => {
+  console.log('Broadcasted message:', message);
+  stopTimer();
+
+  initPomodoroTimer();
+});
