@@ -20,7 +20,7 @@ modeButtons.addEventListener('click', handleMode);
 const settings = JSON.parse(localStorage.getItem('settings'));
 
 const timer = {
-  pomodoro: 1, //parseInt(settings.breakFrequency),
+  pomodoro: 0.5, //parseInt(settings.breakFrequency),
   shortBreak: parseInt(settings.breakLength),
   longBreakInterval: 4,
   sessions: 0,
@@ -62,6 +62,8 @@ function updateClock() {
 }
 
 function startTimer() {
+  clearInterval(interval);
+
   let { total } = timer.remainingTime;
   const endTime = Date.parse(new Date()) + total * 1000;
 
@@ -164,31 +166,13 @@ function initPomodoroTimer(){
     new window.Notification(title, { body: body })
 }
 
-// Send a message to the main process when the button is clicked
-/*document.getElementById('send-button').addEventListener('click', () => {
-  ipcRenderer.send('message-from-renderer', 'Hello from the renderer process!');
-});*/
-
 function ipcStopNotify(mode) {
   ipcRenderer.send('timer-stop', 'Your Timer Ended! ' + mode +' '+ timer.sessions);
 }
 
-//init call
-
-// Listen for a response from the main process
-ipcRenderer.on('message-from-main', (event, message) => {
-  console.log(message, 'message-from-main')
-
-  // document.getElementById('response').textContent = 'Response from main process: ' + message;
-});
-
-function restartPomodoroTimer(){
-
-}
-
 ipcRenderer.on('broadcast-message', (event, message) => {
   console.log('Broadcasted message:', message);
-  stopTimer();
+  clearInterval(interval)
 
   initPomodoroTimer();
 });
