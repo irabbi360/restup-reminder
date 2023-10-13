@@ -20,6 +20,7 @@ function updateTimer() {
 }
 
 function startTimer() {
+    clearInterval(timerInterval)
     if (!isTimerRunning) {
         isTimerRunning = true;
         timerInterval = setInterval(() => {
@@ -37,6 +38,7 @@ function stopTimer() {
     if (isTimerRunning) {
         isTimerRunning = false;
         clearInterval(timerInterval);
+        ipcRenderer.removeAllListeners('break-end');
         ipcRenderer.send('break-end', 'Your Break is End. Popup Closed.')
         // ipcRenderer.send('call-from-main', 'Hello from the renderer process');
 

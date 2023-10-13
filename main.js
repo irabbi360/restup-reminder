@@ -57,7 +57,8 @@ function createMainWindow(){
 
 function createPopupWindow() {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
-
+  // const display = screen.getPrimaryDisplay();
+  // const { width, height } = display.bounds;
   popupWindow = new BrowserWindow({
     // width,
     // height,
@@ -89,6 +90,7 @@ function createPopupWindow() {
         win.webContents.send('broadcast-message', message);
       }
     });
+    ipcMain.removeAllListeners('break-end');
   })
 
   popupWindow.on('closed', () => {
