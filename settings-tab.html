@@ -191,9 +191,8 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
-
+<script src="./assets/js/settings.js"></script>
 <script>
-
     function openCity(evt, cityName) {
         let i, tabcontent, tablinks;
         tabcontent = document.getElementsByClassName("tabcontent");
@@ -208,28 +207,9 @@
         evt.currentTarget.className += " active";
     }
 
-    notifyMe = document.getElementById("notifyMe");
-    breakFrequency = document.getElementById("breakFrequency");
-    breakLength = document.getElementById("breakLength");
-    skipBreak = document.getElementById("skipBreak");
-    snoozeBreak = document.getElementById("snoozeBreak");
-    snoozeLength = document.getElementById("snoozeLength");
 
-    document.getElementById("settingSave").addEventListener("click", () => {
-        console.log(notifyMe.value, 'notifyMe.value')
-        // localStorage.setItem('settings', 'notifyMe.value')
-        let setting = {
-            notifyMe: notifyMe.value,
-            breakFrequency: breakFrequency.value,
-            breakLength: breakLength.value,
-            skipBreak: skipBreak.value,
-            snoozeBreak: snoozeBreak.value,
-            snoozeLength: snoozeLength.value,
-        }
-        localStorage.setItem('settings', JSON.stringify(setting))
 
-        console.log(localStorage.getItem('settings'), 'dshfgjsfh ')
-    });
+    console.log('Value from the store in the renderer process:', store.get('text'));
 </script>
 
 </body>

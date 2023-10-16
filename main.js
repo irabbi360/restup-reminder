@@ -1,11 +1,20 @@
 const { app, BrowserWindow,ipcMain, Menu, Tray, screen  } = require('electron');
 const path = require('node:path');
+const moment = require('moment');
+const settings = require('electron-settings');
 
 let mainWindow;
 let popupWindow;
 let modalWindow;
 let settingWindow;
+let lastMinsLeft = 0;
 let tray;
+let setting;
+
+const Store = require('electron-store');
+
+const store = new Store();
+
 
 let rendererWindows = [];
 
@@ -136,7 +145,7 @@ function createSettingWindow() {
   });
 
   settingWindow.loadFile('settings-tab.html'); // Create a separate HTML file for the modal content
-
+  settingWindow.webContents.openDevTools();
   // Listen for a close request from the modal
   ipcMain.on('close-modal', () => {
     settingWindow.close();
@@ -148,47 +157,118 @@ function createSettingWindow() {
 }
 
 app.on('ready', () => {
-  createMainWindow();
-   // Create the popup window
+  setting = store.get('setting');
+  console.log(setting, 'ssdfkguhsdjkfgh')
 
+  createMainWindow();
+
+   // Create the popup window
   // Create a system tray icon
   const iconPath = path.join(__dirname, './assets/icon/icon.ico');
   tray = new Tray(iconPath);
-  const contextMenu = Menu.buildFromTemplate([
-    {
-      label: 'Start Break',
-      click: () => mainWindow.webContents.send('start-break'),
-    },
-    {
-      label: 'Pause Break',
-      click: () => mainWindow.webContents.send('pause-break'),
-    },
-    {
-      label: 'Reset Timer',
-      click: () => mainWindow.webContents.send('reset-timer'),
-    },
-    {
-      label: 'Settings',
-      click: () => {
-        createSettingWindow(); // Open the modal when the menu item is clicked
+
+  // Set the countdown time to 30 minutes from now
+  let countDownDate = new Date().getTime() + setting.breakFrequency * 60 * 1000;
+
+// Update the countdown every 1 second
+  let minutes, seconds = 0;
+  const breakTime = '00:15:00' //settings.breakLength;
+  const breakTimeMoment = moment(breakTime, 'HH:mm:ss');
+  const inWorkingHours = '00:05:00' //settings.breakFrequency;
+
+  let nextBreak = "";
+
+  let countdownInterval = setInterval(function() {
+
+    // Get the current time
+    let now = new Date().getTime();
+
+    // Find the distance between now and the countdown time
+    let distance = countDownDate - now;
+
+    // Time calculations for minutes and seconds
+    minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    // Output the result
+    console.log(minutes + "m " + seconds + "s ");
+
+    store.set('minutes', minutes);
+
+    // If the countdown is finished, write some text and clear the interval
+    if (distance < 0) {
+      clearInterval(countdownInterval);
+    }
+  }, 1000);
+
+  let contextMenu = null
+  let minInterval = setInterval(function() {
+    let minsLeft = store.get('minutes');
+    if (minsLeft !== undefined) {
+      if (minutes > 1) {
+        nextBreak = `Next break in ${minutes + "m " + seconds + "s "} minutes`;
+      } else if (minutes === 1) {
+        nextBreak = `Next break in 1 minute`;
+      } else if (seconds === 0) {
+        nextBreak = `It's break time!`;
+      } else {
+        nextBreak = `Next break in less than a minute`;
+      }
+    }
+    contextMenu = Menu.buildFromTemplate([
+      {
+        label: nextBreak,
+        visible: inWorkingHours,
+        enabled: false,
       },
-    },
-    {
-      label: 'About',
-      click: () => {
-        createModalWindow(); // Open the modal when the menu item is clicked
+      {
+        label: `Outside of working hours`,
+        visible: !inWorkingHours,
+        enabled: false,
       },
-    },
-    { type: 'separator' },
-    {
-      label: 'Quit',
-      role: 'quit',
-    },
-  ]);
+      {
+        label: 'Start Break',
+        click: () => mainWindow.webContents.send('start-break'),
+      },
+      {
+        label: 'Pause Break',
+        click: () => mainWindow.webContents.send('pause-break'),
+      },
+      {
+        label: 'Reset Timer',
+        click: () => mainWindow.webContents.send('reset-timer'),
+      },
+      {
+        label: 'Settings',
+        click: () => {
+          createSettingWindow(); // Open the modal when the menu item is clicked
+        },
+      },
+      {
+        label: 'About',
+        click: () => {
+          createModalWindow(); // Open the modal when the menu item is clicked
+        },
+      },
+      { type: 'separator' },
+      {
+        label: 'Quit',
+        role: 'quit',
+      },
+    ]);
+
+    if (seconds === 0) {
+      clearInterval(minInterval);
+    }
+
+    tray.setContextMenu(contextMenu);
+  }, 1000)
 
   tray.setToolTip('Break Timer');
-  tray.setContextMenu(contextMenu);
 
+  tray.on('click', () => {
+    tray.popUpContextMenu();
+  });
 });
 app.setAppUserModelId("Timer");
 
