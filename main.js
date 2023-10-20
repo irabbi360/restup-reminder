@@ -1,7 +1,6 @@
 const { app, BrowserWindow,ipcMain, Menu, Tray, screen  } = require('electron');
 const path = require('node:path');
 const moment = require('moment');
-const settings = require('electron-settings');
 
 let mainWindow;
 let popupWindow;
@@ -10,6 +9,8 @@ let settingWindow;
 let lastMinsLeft = 0;
 let tray;
 let setting;
+let countdownInterval;
+let minInterval;
 
 const Store = require('electron-store');
 
@@ -158,11 +159,14 @@ function createSettingWindow() {
 
 app.on('ready', () => {
   setting = store.get('setting');
-  console.log(setting, 'ssdfkguhsdjkfgh')
 
   createMainWindow();
 
-   // Create the popup window
+  ipcMain.on('interval-clear', (event, remainingTime) => {
+    console.log('interval-clear',remainingTime)
+    clearInterval(countdownInterval);
+    clearInterval(minInterval);
+  })
   // Create a system tray icon
   const iconPath = path.join(__dirname, './assets/icon/icon.ico');
   tray = new Tray(iconPath);
@@ -170,15 +174,15 @@ app.on('ready', () => {
   // Set the countdown time to 30 minutes from now
   let countDownDate = new Date().getTime() + setting.breakFrequency * 60 * 1000;
 
-// Update the countdown every 1 second
+  // Update the countdown every 1 second
   let minutes, seconds = 0;
-  const breakTime = '00:15:00' //settings.breakLength;
+  const breakTime = setting.breakLength;
   const breakTimeMoment = moment(breakTime, 'HH:mm:ss');
-  const inWorkingHours = '00:05:00' //settings.breakFrequency;
+  const inWorkingHours = setting.breakFrequency;
 
   let nextBreak = "";
 
-  let countdownInterval = setInterval(function() {
+  countdownInterval = setInterval(function() {
 
     // Get the current time
     let now = new Date().getTime();
@@ -202,7 +206,8 @@ app.on('ready', () => {
   }, 1000);
 
   let contextMenu = null
-  let minInterval = setInterval(function() {
+  minInterval = setInterval(function() {
+    console.log('mmmm')
     let minsLeft = store.get('minutes');
     if (minsLeft !== undefined) {
       if (minutes > 1) {
@@ -290,3 +295,7 @@ ipcMain.on('open-modal', () => {
   createModalWindow();
 });
 */
+
+function menuWithTimerInfo(){
+
+}

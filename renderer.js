@@ -1,4 +1,9 @@
 const { ipcRenderer, ipcMain } = require('electron');
+const Store = require('electron-store');
+
+const store = new Store();
+setting = store.get('setting');
+
 const buttonSound = new Audio('assets/sound/button-sound.mp3');
 const mainButton = document.getElementById('js-btn');
 
@@ -20,7 +25,7 @@ modeButtons.addEventListener('click', handleMode);
 const settings = JSON.parse(localStorage.getItem('settings'));
 
 const timer = {
-  pomodoro: 0.5, //parseInt(settings.breakFrequency),
+  pomodoro: setting.breakFrequency, ////parseInt(settings.breakFrequency),
   shortBreak: parseInt(settings.breakLength),
   longBreakInterval: 4,
   sessions: 0,
@@ -103,6 +108,7 @@ function stopTimer() {
   mainButton.dataset.action = 'start';
   mainButton.textContent = 'start';
   mainButton.classList.remove('active');
+  ipcIntervalClear();
 }
 
 function switchMode(mode) {
@@ -176,3 +182,9 @@ ipcRenderer.on('broadcast-message', (event, message) => {
 
   initPomodoroTimer();
 });
+
+
+function ipcIntervalClear() {
+  const { remainingTime } = timer;
+  ipcRenderer.send('interval-clear', remainingTime);
+}
