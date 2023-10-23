@@ -11,6 +11,8 @@ let tray;
 let setting;
 let countdownInterval;
 let minInterval;
+let contextMenu = null
+let nextBreak = "";
 
 const Store = require('electron-store');
 
@@ -162,6 +164,11 @@ app.on('ready', () => {
 
   createMainWindow();
 
+  ipcMain.on('timer-start', (event, message) => {
+    console.log('start')
+    menuWithTimerInfo()
+  });
+
   ipcMain.on('interval-clear', (event, remainingTime) => {
     console.log('interval-clear',remainingTime)
     clearInterval(countdownInterval);
@@ -171,18 +178,42 @@ app.on('ready', () => {
   const iconPath = path.join(__dirname, './assets/icon/icon.ico');
   tray = new Tray(iconPath);
 
-  // Set the countdown time to 30 minutes from now
-  let countDownDate = new Date().getTime() + setting.breakFrequency * 60 * 1000;
+  // menuWithTimerInfo()
 
-  // Update the countdown every 1 second
+  tray.setToolTip('Break Timer');
+
+  tray.on('click', () => {
+    tray.popUpContextMenu();
+  });
+});
+app.setAppUserModelId("Timer");
+
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
+    // app.quit();
+  }
+});
+
+app.on('activate', () => {
+  if (mainWindow === null) {
+    createMainWindow();
+  }
+});
+
+// Listen for a request to open the modal
+/*
+ipcMain.on('open-modal', () => {
+  createModalWindow();
+});
+*/
+
+function menuWithTimerInfo(){
+// Update the countdown every 1 second
   let minutes, seconds = 0;
   const breakTime = setting.breakLength;
   const breakTimeMoment = moment(breakTime, 'HH:mm:ss');
   const inWorkingHours = setting.breakFrequency;
 
-  let nextBreak = "";
-
-  let contextMenu = null
   minInterval = setInterval(function() {
 
     ipcMain.on('remaining-time', (event, remainingTime) => {
@@ -253,34 +284,4 @@ app.on('ready', () => {
 
     tray.setContextMenu(contextMenu);
   }, 1000)
-
-  tray.setToolTip('Break Timer');
-
-  tray.on('click', () => {
-    tray.popUpContextMenu();
-  });
-});
-app.setAppUserModelId("Timer");
-
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    // app.quit();
-  }
-});
-
-app.on('activate', () => {
-  if (mainWindow === null) {
-    createMainWindow();
-  }
-});
-
-// Listen for a request to open the modal
-/*
-ipcMain.on('open-modal', () => {
-  createModalWindow();
-});
-*/
-
-function menuWithTimerInfo(){
-
 }
