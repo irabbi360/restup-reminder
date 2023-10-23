@@ -191,8 +191,20 @@ function ipcIntervalClear() {
   ipcRenderer.send('interval-clear', remainingTime);
 }
 
-function ipcIntervalTimePass() {
-  const { remainingTime } = timer;
-  ipcRenderer.send('remaining-time', remainingTime);
-}
+ipcRenderer.on('start-break', (event, context) => {
+  console.log('hello start-break')
+  stopTimer();
+  ipcStopNotify(timer.mode)
+  // initPomodoroTimer();
+})
 
+ipcRenderer.on('pause-break', (event, context) => {
+  console.log('hello pause-break')
+})
+
+ipcRenderer.on('reset-timer', (event, context) => {
+  stopTimer();
+  switchMode('pomodoro');
+  initPomodoroTimer();
+  console.log('hello reset-timer')
+})
