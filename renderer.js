@@ -64,6 +64,9 @@ function updateClock() {
 
   const progress = document.getElementById('js-progress');
   progress.value = timer[timer.mode] * 60 - timer.remainingTime.total;
+
+  store.set('remainingTime', remainingTime)
+  ipcRenderer.send('remaining-time', remainingTime);
 }
 
 function startTimer() {
@@ -183,8 +186,13 @@ ipcRenderer.on('broadcast-message', (event, message) => {
   initPomodoroTimer();
 });
 
-
 function ipcIntervalClear() {
   const { remainingTime } = timer;
   ipcRenderer.send('interval-clear', remainingTime);
 }
+
+function ipcIntervalTimePass() {
+  const { remainingTime } = timer;
+  ipcRenderer.send('remaining-time', remainingTime);
+}
+

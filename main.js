@@ -182,34 +182,19 @@ app.on('ready', () => {
 
   let nextBreak = "";
 
-  countdownInterval = setInterval(function() {
-
-    // Get the current time
-    let now = new Date().getTime();
-
-    // Find the distance between now and the countdown time
-    let distance = countDownDate - now;
-
-    // Time calculations for minutes and seconds
-    minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    // Output the result
-    console.log(minutes + "m " + seconds + "s ");
-
-    store.set('minutes', minutes);
-
-    // If the countdown is finished, write some text and clear the interval
-    if (distance < 0) {
-      clearInterval(countdownInterval);
-    }
-  }, 1000);
-
   let contextMenu = null
   minInterval = setInterval(function() {
-    console.log('mmmm')
-    let minsLeft = store.get('minutes');
-    if (minsLeft !== undefined) {
+
+    ipcMain.on('remaining-time', (event, remainingTime) => {
+      minutes = remainingTime.minutes
+      seconds = remainingTime.seconds
+      ipcMain.removeAllListeners('remaining-time');
+    });
+
+    console.log(minutes, seconds, 'mm')
+
+    // let minsLeft = store.get('remainingTime');
+    if (minutes !== undefined) {
       if (minutes > 1) {
         nextBreak = `Next break in ${minutes + "m " + seconds + "s "} minutes`;
       } else if (minutes === 1) {
@@ -262,7 +247,7 @@ app.on('ready', () => {
       },
     ]);
 
-    if (seconds === 0) {
+    if (minutes === 0 && seconds === 0) {
       clearInterval(minInterval);
     }
 
