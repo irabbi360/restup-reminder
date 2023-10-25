@@ -38,12 +38,15 @@ function createMainWindow(){
   });
 
   mainWindow.loadFile('index.html');
-  rendererWindows.push(mainWindow);
+  // mainWindow.push(mainWindow);
 
   // Open the DevTools in development mode
   // if (process.env.NODE_ENV === 'development') {
   if (env.NODE_ENV === 'dev') {
     mainWindow.webContents.openDevTools();
+  }
+  if (env.NODE_ENV !== 'dev') {
+    mainWindow.setMenu(null);
   }
   // }
 
@@ -74,18 +77,17 @@ function createMainWindow(){
 
 function createPopupWindow() {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
-  // const display = screen.getPrimaryDisplay();
+  const display = screen.getPrimaryDisplay();
   // const { width, height } = display.bounds;
   popupWindow = new BrowserWindow({
-    // width,
-    // height,
-    width: 800,
-    height: 600,
+    width,
+    height,
+    icon: path.join(__dirname, './assets/icon/icon.ico'),
     parent: mainWindow, // Set the main window as the parent
     modal: true, // Make the popup modal (blocks main window interaction)
     show: false, // Initially, don't show the window
     frame: env.NODE_ENV !== 'dev',
-    transparent: env.NODE_ENV !== 'dev',
+    transparent: env.NODE_ENV === 'dev',
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
@@ -94,6 +96,7 @@ function createPopupWindow() {
   if (env.NODE_ENV === 'dev') {
     popupWindow.webContents.openDevTools();
   }
+
   // Load the popup HTML file
   popupWindow.loadFile('popup.html');
 
@@ -123,6 +126,7 @@ function createAboutModalWindow() {
     modal: true,
     width: 400,
     height: 300,
+    icon: path.join(__dirname, './assets/icon/icon.ico'),
     frame: env.NODE_ENV === 'dev',
     webPreferences: {
       nodeIntegration: true,
@@ -133,6 +137,9 @@ function createAboutModalWindow() {
   modalWindow.loadFile('about-us.html'); // Create a separate HTML file for the modal content
   if (env.NODE_ENV === 'dev') {
     modalWindow.webContents.openDevTools();
+  }
+  if (env.NODE_ENV !== 'dev') {
+    modalWindow.setMenu(null);
   }
   // Listen for a close request from the modal
   ipcMain.on('close-modal', () => {
@@ -149,7 +156,8 @@ function createSettingWindow() {
     modal: true,
     width: 800,
     height: 600,
-    frame: env.NODE_ENV !== 'dev',
+    icon: path.join(__dirname, './assets/icon/icon.ico'),
+    frame: env.NODE_ENV === 'dev',
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
@@ -159,6 +167,9 @@ function createSettingWindow() {
   settingWindow.loadFile('settings-tab.html'); // Create a separate HTML file for the modal content
   if (env.NODE_ENV === 'dev') {
     settingWindow.webContents.openDevTools();
+  }
+  if (env.NODE_ENV !== 'dev') {
+    settingWindow.setMenu(null);
   }
   // Listen for a close request from the modal
   ipcMain.on('close-modal', () => {
