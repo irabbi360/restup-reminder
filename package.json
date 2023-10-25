@@ -1,25 +1,36 @@
 {
-  "name": "break-timer-app",
-  "productName": "Pomodoro Timer",
+  "name": "break-timer",
+  "productName": "Break Timer",
   "version": "1.0.0",
-  "description": "",
+  "description": "Work Break Timer",
   "main": "main.js",
   "scripts": {
     "dev": "electron .",
     "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=icons/mac/icon.icns --prune=true --out=release-builds",
     "package-win": "electron-packager . PomodoroTimer --overwrite --asar=true --platform=win32 --arch=ia32 --icon=icon/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Break Timer\"",
-    "package-linux": "electron-packager . PomodoroTimer --overwrite --asar=true --platform=linux --arch=x64 --icon=assets/icons/png/1024x1024.png --prune=true --out=release-builds"
+    "package-linux": "electron-packager . PomodoroTimer --overwrite --asar=true --platform=linux --arch=x64 --icon=assets/icons/png/1024x1024.png --prune=true --out=release-builds",
+    "app:dir": "electron-builder --dir",
+    "app:dist": "electron-builder"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.3.1",
-    "electron": "^26.2.4",
     "electron-packager": "^17.1.2",
     "electron-settings": "^4.0.2",
     "electron-store": "^8.1.0",
     "js-cookie": "^3.0.5",
     "moment": "^2.29.4"
+  },
+  "devDependencies": {
+    "electron": "^26.2.4",
+    "electron-builder": "^24.6.4"
+  },
+  "build": {
+    "appId": "com.devstarit.timerbreak",
+    "mac": {
+      "category": "productivity"
+    }
   }
 }

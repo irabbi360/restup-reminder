@@ -2,6 +2,9 @@ const { ipcRenderer, ipcMain } = require('electron');
 const Store = require('electron-store');
 
 const store = new Store();
+
+// initialSettingSet();
+
 setting = store.get('setting');
 
 const buttonSound = new Audio('assets/sound/button-sound.mp3');
@@ -26,7 +29,7 @@ const settings = JSON.parse(localStorage.getItem('settings'));
 
 const timer = {
   pomodoro: setting.breakFrequency, ////parseInt(settings.breakFrequency),
-  shortBreak: parseInt(settings.breakLength),
+  shortBreak: parseInt(settings?.breakLength),
   longBreakInterval: 4,
   sessions: 0,
 };
@@ -145,6 +148,7 @@ function handleMode(event) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  initialSettingSet();
   if ('Notification' in window) {
     if (
         Notification.permission !== 'granted' &&
@@ -208,3 +212,17 @@ ipcRenderer.on('reset-timer', (event, context) => {
   initPomodoroTimer();
   console.log('hello reset-timer')
 })
+
+function initialSettingSet(){
+  let setting = {
+    notifyMe: 'Popup',
+    breakFrequency: 30,
+    breakLength: 2,
+    skipBreak: 'on',
+    snoozeBreak: 'on',
+    snoozeLength: 5,
+  }
+  // Cookies.set('test_xx', 'setting.notifyMe')
+  // Cookies.set('name', 'value', { expires: 365, path: '/' })
+  store.set('setting', setting)
+}

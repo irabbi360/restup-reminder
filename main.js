@@ -1,6 +1,10 @@
 const { app, BrowserWindow,ipcMain, Menu, Tray, screen  } = require('electron');
 const path = require('node:path');
 const moment = require('moment');
+const dotenv = require('dotenv');
+dotenv.config();
+
+const env  = process.env
 
 let mainWindow;
 let popupWindow;
@@ -18,7 +22,6 @@ const Store = require('electron-store');
 
 const store = new Store();
 
-
 let rendererWindows = [];
 
 function createMainWindow(){
@@ -26,8 +29,8 @@ function createMainWindow(){
     width: 800,
     height: 600,
     icon: path.join(__dirname, './assets/icon/icon.ico'),
-    title: 'Pomodoro Timer',
-    // frame: false,
+    title: 'Break Timer',
+    frame: env.NODE_ENV === 'dev',
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
@@ -39,7 +42,9 @@ function createMainWindow(){
 
   // Open the DevTools in development mode
   // if (process.env.NODE_ENV === 'development') {
-  mainWindow.webContents.openDevTools();
+  if (env.NODE_ENV === 'dev') {
+    mainWindow.webContents.openDevTools();
+  }
   // }
 
   // Listen for a message from the renderer process
@@ -79,14 +84,16 @@ function createPopupWindow() {
     parent: mainWindow, // Set the main window as the parent
     modal: true, // Make the popup modal (blocks main window interaction)
     show: false, // Initially, don't show the window
-    // frame: false,
-    // transparent: true,
+    frame: env.NODE_ENV !== 'dev',
+    transparent: env.NODE_ENV !== 'dev',
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
     },
   });
-  popupWindow.webContents.openDevTools();
+  if (env.NODE_ENV === 'dev') {
+    popupWindow.webContents.openDevTools();
+  }
   // Load the popup HTML file
   popupWindow.loadFile('popup.html');
 
@@ -110,13 +117,13 @@ function createPopupWindow() {
   });
 }
 
-function createModalWindow() {
+function createAboutModalWindow() {
   modalWindow = new BrowserWindow({
     parent: mainWindow, // Make the main window the parent of the modal
     modal: true,
     width: 400,
     height: 300,
-    frame: false,
+    frame: env.NODE_ENV === 'dev',
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
@@ -124,7 +131,9 @@ function createModalWindow() {
   });
 
   modalWindow.loadFile('about-us.html'); // Create a separate HTML file for the modal content
-
+  if (env.NODE_ENV === 'dev') {
+    modalWindow.webContents.openDevTools();
+  }
   // Listen for a close request from the modal
   ipcMain.on('close-modal', () => {
     modalWindow.close();
@@ -140,7 +149,7 @@ function createSettingWindow() {
     modal: true,
     width: 800,
     height: 600,
-    // frame: false,
+    frame: env.NODE_ENV !== 'dev',
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
@@ -148,7 +157,9 @@ function createSettingWindow() {
   });
 
   settingWindow.loadFile('settings-tab.html'); // Create a separate HTML file for the modal content
-  settingWindow.webContents.openDevTools();
+  if (env.NODE_ENV === 'dev') {
+    settingWindow.webContents.openDevTools();
+  }
   // Listen for a close request from the modal
   ipcMain.on('close-modal', () => {
     settingWindow.close();
@@ -161,11 +172,10 @@ function createSettingWindow() {
 
 app.on('ready', () => {
   setting = store.get('setting');
-
   createMainWindow();
-
+  // console.log(env.NODE_ENV, 'sss')
   ipcMain.on('timer-start', (event, message) => {
-    console.log('start')
+    // console.log('start')
     menuWithTimerInfo()
   });
 
@@ -203,7 +213,7 @@ app.on('activate', () => {
 // Listen for a request to open the modal
 /*
 ipcMain.on('open-modal', () => {
-  createModalWindow();
+  createAboutModalWindow();
 });
 */
 
@@ -268,7 +278,7 @@ function menuWithTimerInfo(){
       {
         label: 'About',
         click: () => {
-          createModalWindow(); // Open the modal when the menu item is clicked
+          createAboutModalWindow(); // Open the modal when the menu item is clicked
         },
       },
       { type: 'separator' },
