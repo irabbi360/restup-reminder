@@ -1,7 +1,10 @@
-const { ipcRenderer } = require('electron');
 // popup.js
+const { ipcRenderer } = require('electron');
 const closeButton = document.getElementById('closeButton');
-const settings = JSON.parse(localStorage.getItem('settings'));
+const Store = require('electron-store');
+
+const store = new Store();
+let setting = store.get('setting');
 
 closeButton.addEventListener('click', () => {
     stopTimer();
@@ -9,7 +12,7 @@ closeButton.addEventListener('click', () => {
 });
 
 let timerInterval;
-let secondsRemaining = 30//settings.breakLength * 60;
+let secondsRemaining = 30 //setting.breakLength * 60;
 let isTimerRunning = false;
 
 function updateTimer() {

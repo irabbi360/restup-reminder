@@ -30,7 +30,7 @@ function createMainWindow(){
     height: 600,
     icon: path.join(__dirname, './assets/icon/icon.ico'),
     title: 'Break Timer',
-    frame: env.NODE_ENV === 'dev',
+    // frame: env.NODE_ENV === 'dev',
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
@@ -38,7 +38,8 @@ function createMainWindow(){
   });
 
   mainWindow.loadFile('index.html');
-  // mainWindow.push(mainWindow);
+  
+  rendererWindows.push(mainWindow);
 
   // Open the DevTools in development mode
   // if (process.env.NODE_ENV === 'development') {
@@ -63,7 +64,9 @@ function createMainWindow(){
     // mainWindow.restore();
     console.log('From renderer process:', message);
     // event.reply('message-from-main', 'Hello from the main process!');
-    // mainWindow.setAlwaysOnTop(true, 'floating', 1);
+    if (env.NODE_ENV !== 'dev') {
+      mainWindow.setAlwaysOnTop(true, 'floating', 1);
+    }
   });
 
   ipcMain.on('call-from-main', (event, arg) => {
@@ -86,8 +89,8 @@ function createPopupWindow() {
     parent: mainWindow, // Set the main window as the parent
     modal: true, // Make the popup modal (blocks main window interaction)
     show: false, // Initially, don't show the window
-    frame: env.NODE_ENV !== 'dev',
-    transparent: env.NODE_ENV === 'dev',
+    frame: env.NODE_ENV === 'dev',
+    transparent: env.NODE_ENV !== 'dev',
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
@@ -127,7 +130,7 @@ function createAboutModalWindow() {
     width: 400,
     height: 300,
     icon: path.join(__dirname, './assets/icon/icon.ico'),
-    frame: env.NODE_ENV === 'dev',
+    // frame: env.NODE_ENV === 'dev',
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
@@ -157,7 +160,7 @@ function createSettingWindow() {
     width: 800,
     height: 600,
     icon: path.join(__dirname, './assets/icon/icon.ico'),
-    frame: env.NODE_ENV === 'dev',
+    // frame: env.NODE_ENV === 'dev',
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
