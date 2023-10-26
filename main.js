@@ -245,12 +245,15 @@ function menuWithTimerInfo(){
 
   minInterval = setInterval(function() {
 
-    ipcMain.on('remaining-time', (event, remainingTime) => {
+    /*ipcMain.on('remaining-time', (event, remainingTime) => {
       minutes = remainingTime.minutes
       seconds = remainingTime.seconds
       ipcMain.removeAllListeners('remaining-time');
-    });
+    });*/
 
+    let remainingTime = store.get('remainingTime')
+    minutes = remainingTime.minutes
+    seconds = remainingTime.seconds
     console.log(minutes, seconds, 'mm')
 
     // let minsLeft = store.get('remainingTime');

@@ -69,7 +69,7 @@ function updateClock() {
   progress.value = timer[timer.mode] * 60 - timer.remainingTime.total;
 
   store.set('remainingTime', remainingTime)
-  ipcRenderer.send('remaining-time', remainingTime);
+  // ipcRenderer.send('remaining-time', remainingTime);
 }
 
 function startTimer() {
