@@ -30,6 +30,7 @@ function createMainWindow(){
     height: 600,
     icon: path.join(__dirname, './assets/icon/icon.ico'),
     title: 'Break Timer',
+    show:false,
     // frame: env.NODE_ENV === 'dev',
     webPreferences: {
       nodeIntegration: true,
