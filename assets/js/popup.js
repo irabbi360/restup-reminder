@@ -12,7 +12,7 @@ closeButton.addEventListener('click', () => {
 });
 
 let timerInterval;
-let secondsRemaining = 30 //setting.breakLength * 60;
+let secondsRemaining = setting.breakLength * 60;
 let isTimerRunning = false;
 
 function updateTimer() {

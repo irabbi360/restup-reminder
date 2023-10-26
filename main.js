@@ -38,7 +38,7 @@ function createMainWindow(){
   });
 
   mainWindow.loadFile('index.html');
-  
+
   rendererWindows.push(mainWindow);
 
   // Open the DevTools in development mode
@@ -79,12 +79,17 @@ function createMainWindow(){
 }
 
 function createPopupWindow() {
-  const { width, height } = screen.getPrimaryDisplay().workAreaSize;
-  const display = screen.getPrimaryDisplay();
-  // const { width, height } = display.bounds;
+  const { width, height } = screen.getPrimaryDisplay().bounds;
+  const primaryDisplay = screen.getPrimaryDisplay();
+  const taskbarHeight = primaryDisplay.size.height - primaryDisplay.workAreaSize.height;
+
   popupWindow = new BrowserWindow({
-    width,
-    height,
+    width: primaryDisplay.workAreaSize.width,
+    height: primaryDisplay.workAreaSize.height,
+    x: primaryDisplay.bounds.x,
+    y: primaryDisplay.bounds.y + taskbarHeight, // Adjust for the taskbar
+    fullscreen: true,  // Enable full-screen mode
+    fullscreenable: true,  // Allow exiting full-screen with F11 (optional)
     icon: path.join(__dirname, './assets/icon/icon.ico'),
     parent: mainWindow, // Set the main window as the parent
     modal: true, // Make the popup modal (blocks main window interaction)
