@@ -107,7 +107,7 @@ function createPopupWindow() {
   }
 
   // Load the popup HTML file
-  popupWindow.loadFile('popup.html');
+  popupWindow.loadFile('src/views/popup.html');
 
   popupWindow.once('ready-to-show', () => {
     popupWindow.show(); // Show the popup window once it's ready
@@ -143,7 +143,7 @@ function createAboutModalWindow() {
     },
   });
 
-  modalWindow.loadFile('about-us.html'); // Create a separate HTML file for the modal content
+  modalWindow.loadFile('src/views/about-us.html'); // Create a separate HTML file for the modal content
   if (env.NODE_ENV === 'dev') {
     modalWindow.webContents.openDevTools();
   }
@@ -173,7 +173,7 @@ function createSettingWindow() {
     },
   });
 
-  settingWindow.loadFile('settings-tab.html'); // Create a separate HTML file for the modal content
+  settingWindow.loadFile('src/views/settings-tab.html'); // Create a separate HTML file for the modal content
   if (env.NODE_ENV === 'dev') {
     settingWindow.webContents.openDevTools();
   }

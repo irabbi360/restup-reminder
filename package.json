@@ -18,9 +18,7 @@
   "dependencies": {
     "dotenv": "^16.3.1",
     "electron-packager": "^17.1.2",
-    "electron-settings": "^4.0.2",
     "electron-store": "^8.1.0",
-    "js-cookie": "^3.0.5",
     "moment": "^2.29.4"
   },
   "devDependencies": {
