@@ -16,6 +16,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "auto-launch": "^5.0.6",
     "dotenv": "^16.3.1",
     "electron-packager": "^17.1.2",
     "electron-store": "^8.1.0",
@@ -27,8 +28,39 @@
   },
   "build": {
     "appId": "com.devstarit.timerbreak",
+    "asar": true,
+    "asarUnpack": [
+      "node_modules/some-large-package"
+    ],
+    "extraResources": [
+      ".env"
+    ],
+    "compression": "maximum",
+    "target": "nsis",
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true
+    },
     "mac": {
-      "category": "productivity"
+      "category": "productivity",
+      "target": "dmg",
+      "icon": "build/icon.icns"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.ico"
+    },
+    "linux": {
+      "target": ["AppImage", "deb", "rpm"],
+      "category": "Development",
+      "icon": "build/icon.png",
+      "desktop": {
+        "Name": "Break Timer",
+        "Comment": "Break Timer",
+        "Exec": "./BreakTimer",
+        "Type": "Application",
+        "StartupWMClass": "BreakTimer"
+      }
     }
   }
 }
