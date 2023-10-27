@@ -2,6 +2,8 @@ const { app, BrowserWindow,ipcMain, Menu, Tray, screen  } = require('electron');
 const path = require('node:path');
 const moment = require('moment');
 const dotenv = require('dotenv');
+const AutoLaunch = require('auto-launch');
+
 dotenv.config();
 
 const env  = process.env
@@ -23,6 +25,26 @@ const Store = require('electron-store');
 const store = new Store();
 
 let rendererWindows = [];
+
+// Initialize the auto-launch instance
+const autoLaunch = new AutoLaunch({
+  name: 'BreakTimer',
+});
+
+app.whenReady().then(() => {
+    autoLaunch.enable();
+});
+
+autoLaunch.isEnabled()
+    .then(function(isEnabled){
+      if(isEnabled){
+        return;
+      }
+      autoLaunch.enable();
+    })
+    .catch(function(err){
+      // handle error
+    });
 
 function createMainWindow(){
   mainWindow = new BrowserWindow({

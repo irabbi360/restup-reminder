@@ -32,9 +32,6 @@
     "asarUnpack": [
       "node_modules/some-large-package"
     ],
-    "extraResources": [
-      ".env"
-    ],
     "compression": "maximum",
     "target": "nsis",
     "nsis": {
