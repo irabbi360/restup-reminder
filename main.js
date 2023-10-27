@@ -1,4 +1,4 @@
-const { app, BrowserWindow,ipcMain, Menu, Tray, screen  } = require('electron');
+const { app, BrowserWindow,ipcMain, Menu, Tray, screen, ipcRenderer} = require('electron');
 const path = require('node:path');
 const moment = require('moment');
 const dotenv = require('dotenv');
@@ -19,6 +19,8 @@ let countdownInterval;
 let minInterval;
 let contextMenu = null
 let nextBreak = "";
+//
+let updateSetting = null;
 
 const Store = require('electron-store');
 
@@ -52,7 +54,7 @@ function createMainWindow(){
     height: 600,
     icon: path.join(__dirname, './assets/icon/icon.ico'),
     title: 'Break Timer',
-    show:false,
+    // show:false,
     // frame: env.NODE_ENV === 'dev',
     webPreferences: {
       nodeIntegration: true,
@@ -208,12 +210,17 @@ function createSettingWindow() {
   });
 
   settingWindow.on('closed', () => {
-    settingWindow = null;
+    let upSetting = store.get('setting');
+    // console.log(upSetting,'ghg')
+    if (upSetting.breakFrequency !== setting.breakFrequency) {
+      restartApp();
+    }
   });
 }
 
 app.on('ready', () => {
   setting = store.get('setting');
+
   createMainWindow();
   // console.log(env.NODE_ENV, 'sss')
   ipcMain.on('timer-start', (event, message) => {
@@ -279,7 +286,6 @@ function menuWithTimerInfo(){
     seconds = remainingTime.seconds
     console.log(minutes, seconds, 'mm')
 
-    // let minsLeft = store.get('remainingTime');
     if (minutes !== undefined) {
       if (minutes > 1) {
         nextBreak = `Next break in ${minutes + "m " + seconds + "s "} minutes`;
@@ -339,4 +345,9 @@ function menuWithTimerInfo(){
 
     tray.setContextMenu(contextMenu);
   }, 1000)
+}
+
+function restartApp() {
+  app.relaunch(); // Relaunch the app
+  app.quit(); // Quit the current instance
 }

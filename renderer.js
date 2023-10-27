@@ -148,7 +148,7 @@ function handleMode(event) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  initialSettingSet();
+  // initialSettingSet();
   if ('Notification' in window) {
     if (
         Notification.permission !== 'granted' &&

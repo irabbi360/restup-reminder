@@ -1,9 +1,8 @@
+const { ipcRenderer } = require('electron');
 const Store = require('electron-store');
 
 const store = new Store();
 
-store.set('text', 'Hello world');
-console.log(store.get('settings'), 'settings')
 notifyMe = document.getElementById("notifyMe");
 breakFrequency = document.getElementById("breakFrequency");
 breakLength = document.getElementById("breakLength");
@@ -21,9 +20,12 @@ document.getElementById("settingSave").addEventListener("click", () => {
         snoozeBreak: snoozeBreak.value,
         snoozeLength: snoozeLength.value,
     }
-    // Cookies.set('test_xx', 'setting.notifyMe')
-    // Cookies.set('name', 'value', { expires: 365, path: '/' })
+
     store.set('setting', setting)
-    console.log(store.get('setting'), 'ssdfkguhsdjkfgh')
-    localStorage.setItem('settings', JSON.stringify(setting))
+});
+
+store.onDidChange('setting', (newValue, oldValue) => {
+    console.log(`'setting' changed ${oldValue} to ${newValue}`);
+    // Perform actions in response to the change, e.g., update the UI.
+    ipcRenderer.send('update-setting', newValue);
 });
