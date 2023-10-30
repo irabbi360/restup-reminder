@@ -5,7 +5,7 @@ const store = new Store();
 
 // initialSettingSet();
 
-setting = store.get('setting');
+let setting = store.get('setting');
 
 const buttonSound = new Audio('assets/sound/button-sound.mp3');
 const mainButton = document.getElementById('js-btn');
@@ -25,11 +25,10 @@ mainButton.addEventListener('click', () => {
 const modeButtons = document.querySelector('#js-mode-buttons');
 modeButtons.addEventListener('click', handleMode);
 
-const settings = JSON.parse(localStorage.getItem('settings'));
 
 const timer = {
-  pomodoro: setting.breakFrequency, ////parseInt(settings.breakFrequency),
-  shortBreak: parseInt(settings?.breakLength),
+  pomodoro: setting.breakFrequency,
+  shortBreak: setting.breakLength,
   longBreakInterval: 4,
   sessions: 0,
 };
@@ -224,5 +223,5 @@ function initialSettingSet(){
   }
   // Cookies.set('test_xx', 'setting.notifyMe')
   // Cookies.set('name', 'value', { expires: 365, path: '/' })
-  store.set('setting', setting)
+  // store.set('setting', setting)
 }
