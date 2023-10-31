@@ -14,7 +14,7 @@ let modalWindow;
 let settingWindow;
 let lastMinsLeft = 0;
 let tray;
-let setting;
+let setting = {};
 let countdownInterval;
 let minInterval;
 let contextMenu = null
@@ -67,7 +67,6 @@ function createMainWindow(){
   rendererWindows.push(mainWindow);
 
   // Open the DevTools in development mode
-  // if (process.env.NODE_ENV === 'development') {
   if (env.NODE_ENV === 'dev') {
     mainWindow.webContents.openDevTools();
   }
@@ -219,6 +218,20 @@ function createSettingWindow() {
 }
 
 app.on('ready', () => {
+  setting = store.get('setting');
+  console.log(setting, 'on ready')
+  if (setting) {
+  } else {
+    let setting = {
+      notifyMe: 'Popup',
+      breakFrequency: 30,
+      breakLength: 2,
+      skipBreak: 'on',
+      snoozeBreak: 'on',
+      snoozeLength: 5,
+    }
+    store.set('setting', setting)
+  }
   setting = store.get('setting');
 
   createMainWindow();
