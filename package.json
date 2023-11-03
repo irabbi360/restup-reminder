@@ -2,6 +2,15 @@
   "name": "restup-reminder",
   "productName": "RestUp Reminder",
   "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/irabbi360/break-timer-app"
+  },
+  "bugs": {
+    "url": "https://github.com/irabbi360/break-timer-app/issues"
+  },
+  "author": "Fazle Rabbi <fazrabbi010@gmail.com>",
+  "homepage": "https://github.com/irabbi360/break-timer-app",
   "description": "RestUp Reminder - The app to remind you it's time to take a break from the screen and go out!",
   "main": "main.js",
   "scripts": {
@@ -13,7 +22,6 @@
     "app:dist": "electron-builder"
   },
   "keywords": [],
-  "author": "",
   "license": "ISC",
   "dependencies": {
     "auto-launch": "^5.0.6",
@@ -60,6 +68,12 @@
         "Type": "Application",
         "StartupWMClass": "RestUpReminder"
       }
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "irabbi360",
+      "repo": "break-timer-app",
+      "private": true
     }
   }
 }
