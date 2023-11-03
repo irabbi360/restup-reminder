@@ -1,2 +1,1 @@
-# break-timer-app
-Break Timer App
+# RestUp Reminder
