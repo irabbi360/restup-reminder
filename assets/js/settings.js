@@ -29,3 +29,23 @@ store.onDidChange('setting', (newValue, oldValue) => {
     // Perform actions in response to the change, e.g., update the UI.
     ipcRenderer.send('update-setting', newValue);
 });
+
+const setting = store.get('setting');
+if (setting && setting.breakFrequency) {
+    breakFrequency.value = setting.breakFrequency
+}
+if (setting && setting.notifyMe) {
+    notifyMe.value = setting.notifyMe
+}
+if (setting && setting.breakLength) {
+    breakLength.value = setting.breakLength
+}
+if (setting && setting.skipBreak) {
+    skipBreak.value = setting.skipBreak
+}
+if (setting && setting.snoozeBreak) {
+    snoozeBreak.value = setting.snoozeBreak
+}
+if (setting && setting.snoozeLength) {
+    snoozeLength.value = setting.snoozeLength
+}
