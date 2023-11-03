@@ -1,14 +1,14 @@
 {
-  "name": "break-timer",
-  "productName": "Break Timer",
+  "name": "restup-reminder",
+  "productName": "RestUp Reminder",
   "version": "1.0.0",
-  "description": "Work Break Timer",
+  "description": "RestUp Reminder - The app to remind you it's time to take a break from the screen and go out!",
   "main": "main.js",
   "scripts": {
     "dev": "electron .",
     "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=icons/mac/icon.icns --prune=true --out=release-builds",
-    "package-win": "electron-packager . PomodoroTimer --overwrite --asar=true --platform=win32 --arch=ia32 --icon=icon/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Break Timer\"",
-    "package-linux": "electron-packager . PomodoroTimer --overwrite --asar=true --platform=linux --arch=x64 --icon=assets/icons/png/1024x1024.png --prune=true --out=release-builds",
+    "package-win": "electron-packager . RestUpReminder --overwrite --asar=true --platform=win32 --arch=ia32 --icon=icon/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"RestUp Reminder\"",
+    "package-linux": "electron-packager . RestUpReminder --overwrite --asar=true --platform=linux --arch=x64 --icon=assets/icons/png/1024x1024.png --prune=true --out=release-builds",
     "app:dir": "electron-builder --dir",
     "app:dist": "electron-builder"
   },
@@ -27,7 +27,7 @@
     "electron-builder": "^24.6.4"
   },
   "build": {
-    "appId": "com.devstarit.timerbreak",
+    "appId": "com.devstarit.restupreminder",
     "asar": true,
     "asarUnpack": [
       "node_modules/some-large-package"
@@ -52,11 +52,11 @@
       "category": "Development",
       "icon": "build/icon.png",
       "desktop": {
-        "Name": "Break Timer",
-        "Comment": "Break Timer",
-        "Exec": "./BreakTimer",
+        "Name": "RestUp Reminder",
+        "Comment": "RestUp Reminder",
+        "Exec": "./RestUpReminder",
         "Type": "Application",
-        "StartupWMClass": "BreakTimer"
+        "StartupWMClass": "RestUpReminder"
       }
     }
   }

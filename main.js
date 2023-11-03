@@ -30,7 +30,7 @@ let rendererWindows = [];
 
 // Initialize the auto-launch instance
 const autoLaunch = new AutoLaunch({
-  name: 'BreakTimer',
+  name: 'RestUpReminder',
 });
 
 app.whenReady().then(() => {
@@ -53,7 +53,7 @@ function createMainWindow(){
     width: 800,
     height: 600,
     icon: path.join(__dirname, './assets/icon/icon.ico'),
-    title: 'Break Timer',
+    title: 'RestUp Reminder',
     show: env.NODE_ENV === 'dev',
     // frame: env.NODE_ENV === 'dev',
     webPreferences: {
@@ -252,13 +252,13 @@ app.on('ready', () => {
 
   // menuWithTimerInfo()
 
-  tray.setToolTip('Break Timer');
+  tray.setToolTip('RestUp Reminder');
 
   tray.on('click', () => {
     tray.popUpContextMenu();
   });
 });
-app.setAppUserModelId("Timer");
+app.setAppUserModelId("RestUpReminder");
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
