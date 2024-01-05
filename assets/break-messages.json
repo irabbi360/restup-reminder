@@ -1,0 +1,31 @@
+{
+"short_breaks": [{
+            "name": "Tightly close your eyes"
+        },
+        {
+            "name": "Roll your eyes a few times to each side"
+        },
+        {
+            "name": "Rotate your eyes in clockwise direction"
+        },
+        {
+            "name": "Rotate your eyes in counterclockwise direction"
+        },
+        {
+            "name": "Blink your eyes"
+        },
+        {
+            "name": "Focus on a point in the far distance"
+        },
+        {
+            "name": "Have some water"
+        }
+    ],
+    "long_breaks": [{
+            "name": "Walk for a while"
+        },
+        {
+            "name": "Lean back at your seat and relax"
+        }
+    ],
+}
