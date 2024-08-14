@@ -52,7 +52,7 @@ function createMainWindow(){
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
-    icon: path.join(__dirname, './assets/icon/icon.ico'),
+    icon: path.join(__dirname, '../assets/icon/icon.ico'),
     title: 'RestUp Reminder',
     show: env.NODE_ENV === 'dev',
     // frame: env.NODE_ENV === 'dev',
@@ -62,7 +62,7 @@ function createMainWindow(){
     },
   });
 
-  mainWindow.loadFile('index.html');
+  mainWindow.loadFile('src/views/index.html');
 
   rendererWindows.push(mainWindow);
 
@@ -114,7 +114,7 @@ function createPopupWindow() {
     y: primaryDisplay.bounds.y + taskbarHeight, // Adjust for the taskbar
     fullscreen: true,  // Enable full-screen mode
     fullscreenable: true,  // Allow exiting full-screen with F11 (optional)
-    icon: path.join(__dirname, './assets/icon/icon.ico'),
+    icon: path.join(__dirname, '../assets/icon/icon.ico'),
     parent: mainWindow, // Set the main window as the parent
     modal: true, // Make the popup modal (blocks main window interaction)
     show: false, // Initially, don't show the window
@@ -158,7 +158,7 @@ function createAboutModalWindow() {
     modal: true,
     width: 400,
     height: 300,
-    icon: path.join(__dirname, './assets/icon/icon.ico'),
+    icon: path.join(__dirname, '../assets/icon/icon.ico'),
     // frame: env.NODE_ENV === 'dev',
     webPreferences: {
       nodeIntegration: true,
@@ -188,7 +188,7 @@ function createSettingWindow() {
     modal: true,
     width: 800,
     height: 600,
-    icon: path.join(__dirname, './assets/icon/icon.ico'),
+    icon: path.join(__dirname, '../assets/icon/icon.ico'),
     // frame: env.NODE_ENV === 'dev',
     webPreferences: {
       nodeIntegration: true,
@@ -247,7 +247,7 @@ app.on('ready', () => {
     clearInterval(minInterval);
   })
   // Create a system tray icon
-  const iconPath = path.join(__dirname, './assets/icon/icon.ico');
+  const iconPath = path.join(__dirname, '../assets/icon/icon.ico');
   tray = new Tray(iconPath);
 
   // menuWithTimerInfo()
