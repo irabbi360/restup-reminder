@@ -1,1 +1,1 @@
-# RestUp Reminder
+# RestUp Reminder - Break Timer App
