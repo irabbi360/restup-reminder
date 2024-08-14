@@ -4,13 +4,13 @@
   "version": "1.0.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/irabbi360/break-timer-app"
+    "url": "https://github.com/irabbi360/restup-reminder"
   },
   "bugs": {
-    "url": "https://github.com/irabbi360/break-timer-app/issues"
+    "url": "https://github.com/irabbi360/restup-reminder/issues"
   },
   "author": "Fazle Rabbi <fazrabbi010@gmail.com>",
-  "homepage": "https://github.com/irabbi360/break-timer-app",
+  "homepage": "https://github.com/irabbi360/restup-reminder",
   "description": "RestUp Reminder - The app to remind you it's time to take a break from the screen and go out!",
   "main": "main.js",
   "scripts": {
@@ -26,11 +26,11 @@
   "dependencies": {
     "auto-launch": "^5.0.6",
     "dotenv": "^16.3.1",
-    "electron-packager": "^17.1.2",
     "electron-store": "^8.1.0",
     "moment": "^2.29.4"
   },
   "devDependencies": {
+    "@electron/packager": "^18.3.3",
     "electron": "^26.2.4",
     "electron-builder": "^24.6.4"
   },
@@ -58,7 +58,11 @@
       "publisherName": "DevstarIt.com"
     },
     "linux": {
-      "target": ["AppImage", "deb", "rpm"],
+      "target": [
+        "AppImage",
+        "deb",
+        "rpm"
+      ],
       "category": "Development",
       "icon": "build/icon.png",
       "desktop": {
@@ -72,7 +76,7 @@
     "publish": {
       "provider": "github",
       "owner": "irabbi360",
-      "repo": "break-timer-app",
+      "repo": "restup-reminder",
       "private": true
     }
   }
