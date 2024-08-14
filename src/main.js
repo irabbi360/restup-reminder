@@ -1,5 +1,5 @@
 const { app, BrowserWindow,ipcMain, Menu, Tray, screen, ipcRenderer} = require('electron');
-const path = require('node:path');
+const { join} = require('path');
 const moment = require('moment');
 const dotenv = require('dotenv');
 const AutoLaunch = require('auto-launch');
@@ -52,7 +52,7 @@ function createMainWindow(){
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
-    icon: path.join(__dirname, '../assets/icon/icon.ico'),
+    icon: join(__dirname, '../assets/icon/icon.ico'),
     title: 'RestUp Reminder',
     show: env.NODE_ENV === 'dev',
     // frame: env.NODE_ENV === 'dev',
@@ -62,7 +62,7 @@ function createMainWindow(){
     },
   });
 
-  mainWindow.loadFile(path.join(__dirname, './views/index.html'));
+  mainWindow.loadFile(join(__dirname, './views/index.html'));
 
   rendererWindows.push(mainWindow);
 
@@ -114,7 +114,7 @@ function createPopupWindow() {
     y: primaryDisplay.bounds.y + taskbarHeight, // Adjust for the taskbar
     fullscreen: true,  // Enable full-screen mode
     fullscreenable: true,  // Allow exiting full-screen with F11 (optional)
-    icon: path.join(__dirname, '../assets/icon/icon.ico'),
+    icon: join(__dirname, '../assets/icon/icon.ico'),
     parent: mainWindow, // Set the main window as the parent
     modal: true, // Make the popup modal (blocks main window interaction)
     show: false, // Initially, don't show the window
@@ -130,7 +130,7 @@ function createPopupWindow() {
   }
 
   // Load the popup HTML file
-  popupWindow.loadFile(path.join(__dirname,'./views/popup.html'));
+  popupWindow.loadFile(join(__dirname,'./views/popup.html'));
 
   popupWindow.once('ready-to-show', () => {
     popupWindow.show(); // Show the popup window once it's ready
@@ -158,7 +158,7 @@ function createAboutModalWindow() {
     modal: true,
     width: 400,
     height: 300,
-    icon: path.join(__dirname, '../assets/icon/icon.ico'),
+    icon: join(__dirname, '../assets/icon/icon.ico'),
     // frame: env.NODE_ENV === 'dev',
     webPreferences: {
       nodeIntegration: true,
@@ -166,7 +166,7 @@ function createAboutModalWindow() {
     },
   });
 
-  modalWindow.loadFile(path.join(__dirname,'./views/about-us.html')); // Create a separate HTML file for the modal content
+  modalWindow.loadFile(join(__dirname,'./views/about-us.html')); // Create a separate HTML file for the modal content
   if (env.NODE_ENV === 'dev') {
     modalWindow.webContents.openDevTools();
   }
@@ -188,7 +188,7 @@ function createSettingWindow() {
     modal: true,
     width: 800,
     height: 600,
-    icon: path.join(__dirname, '../assets/icon/icon.ico'),
+    icon: join(__dirname, '../assets/icon/icon.ico'),
     // frame: env.NODE_ENV === 'dev',
     webPreferences: {
       nodeIntegration: true,
@@ -196,7 +196,7 @@ function createSettingWindow() {
     },
   });
 
-  settingWindow.loadFile(path.join(__dirname,'./views/settings-tab.html')); // Create a separate HTML file for the modal content
+  settingWindow.loadFile(join(__dirname,'./views/settings-tab.html')); // Create a separate HTML file for the modal content
   if (env.NODE_ENV === 'dev') {
     settingWindow.webContents.openDevTools();
   }
@@ -247,7 +247,7 @@ app.on('ready', () => {
     clearInterval(minInterval);
   })
   // Create a system tray icon
-  const iconPath = path.join(__dirname, '../assets/icon/icon.ico');
+  const iconPath = join(__dirname, '../assets/icon/icon.ico');
   tray = new Tray(iconPath);
 
   // menuWithTimerInfo()
