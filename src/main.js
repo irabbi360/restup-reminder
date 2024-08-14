@@ -62,7 +62,7 @@ function createMainWindow(){
     },
   });
 
-  mainWindow.loadFile('src/views/index.html');
+  mainWindow.loadFile(path.join(__dirname, './views/index.html'));
 
   rendererWindows.push(mainWindow);
 
@@ -130,7 +130,7 @@ function createPopupWindow() {
   }
 
   // Load the popup HTML file
-  popupWindow.loadFile('src/views/popup.html');
+  popupWindow.loadFile(path.join(__dirname,'./views/popup.html'));
 
   popupWindow.once('ready-to-show', () => {
     popupWindow.show(); // Show the popup window once it's ready
@@ -166,7 +166,7 @@ function createAboutModalWindow() {
     },
   });
 
-  modalWindow.loadFile('src/views/about-us.html'); // Create a separate HTML file for the modal content
+  modalWindow.loadFile(path.join(__dirname,'./views/about-us.html')); // Create a separate HTML file for the modal content
   if (env.NODE_ENV === 'dev') {
     modalWindow.webContents.openDevTools();
   }
@@ -196,7 +196,7 @@ function createSettingWindow() {
     },
   });
 
-  settingWindow.loadFile('src/views/settings-tab.html'); // Create a separate HTML file for the modal content
+  settingWindow.loadFile(path.join(__dirname,'./views/settings-tab.html')); // Create a separate HTML file for the modal content
   if (env.NODE_ENV === 'dev') {
     settingWindow.webContents.openDevTools();
   }
