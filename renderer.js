@@ -79,6 +79,8 @@ function startTimer() {
 
   if (timer.mode === 'pomodoro') timer.sessions++;
 
+  store.set('break_sessions', timer.sessions)
+
   mainButton.dataset.action = 'stop';
   mainButton.textContent = 'stop';
   mainButton.classList.add('active');

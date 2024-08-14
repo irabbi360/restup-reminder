@@ -24,7 +24,7 @@ body {
     height : 300px;
     margin: auto;
     background: #FF0099;
-    background-image: linear-gradient(45deg,#3023AE 0%,#FF0099 100%);
+    background-image: linear-gradient(45deg,#3023AE 10%,#FF0099 100%);
     border-radius: 30% 70% 70% 30%/30% 30% 70% 70%;
     box-shadow: -10vmin 10vmin #ffffff12;
 }
@@ -48,7 +48,7 @@ body {
     border: solid 1px #ffffff;
 }
 .btn:hover{
-    color: rgba(0, 0, 0, 0.86);
+    color: #c2b4b4db;
 }
 h1 {
     font-size: 24px;
