@@ -40,7 +40,7 @@
   },
   "build": {
     "appId": "com.devstarit.restupreminder",
-    "asar": false,
+    "asar": true,
     "asarUnpack": [
       "node_modules/some-large-package"
     ],
