@@ -63,6 +63,8 @@
       "publisherName": "DevstarIt.com"
     },
     "linux": {
+      "executableName": "restup-reminder",
+      "category": "Utility",
       "target": [
         "AppImage",
         "snap",
@@ -70,15 +72,14 @@
         "rpm",
         "tar.gz"
       ],
-      "executableName": "RestUp Reminder",
-      "category": "Utility",
+      "maintainer": "Fazle Rabbi <fazrabbi@gmail.com>",
       "icon": "build/icon.png",
       "desktop": {
         "Name": "RestUp Reminder",
         "Comment": "RestUp Reminder",
-        "Exec": "./RestUpReminder",
         "Type": "Application",
-        "StartupWMClass": "RestUpReminder"
+        "StartupWMClass": "RestUpReminder",
+        "Icon": "icon/icon.png"
       }
     },
     "publish": {
