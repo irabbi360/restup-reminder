@@ -1,85 +1,38 @@
-name: Build and Release
+name: Build/release
 
 on:
   push:
     tags:
       - 'v*.*.*'
 
+permissions:
+  contents: write
+
 jobs:
-  build:
+  release:
     runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
-        os: [ macos-latest, ubuntu-latest, windows-latest ]
+        os: [macos-latest, ubuntu-latest, windows-latest]
 
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v4
 
       - name: Install Node.js, NPM and Yarn
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
-          node-version: 20
-
-      - name: Install dependencies
-        run: yarn install  # or npm install
-
-      - name: Compile Electron App
-        uses: Yan-Jobs/action-electron-builder@v1.7.0
+          node-version: '18'
+      - name: Npm Install
+        run: |
+          npm i pnpm -g &&
+          pnpm install
+      - name: Build
+        run: npm run build
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
         with:
-          # If the commit is tagged with a version (e.g. "v1.0.0"),
-          # (Optional)
-          release: ${{ startsWith(github.ref, 'refs/tags/v') }}
-
-          # Skip buiding the application
-          # (Optional)
-          skip_build: false
-
-      - name: Upload artifacts (optional)
-        uses: actions/upload-artifact@v3
-        with:
-          path: dist  # Replace with your build output directory
-          name: build-artifacts
-          if: always()  # Always upload artifacts, even if build fails
-          
-#jobs:
-#  build:
-#    runs-on: ${{ matrix.os }}
-#    strategy:
-#      matrix:
-#        os: [macos-latest, windows-latest, ubuntu-latest]
-#
-#    steps:
-#      - name: Check out Git repository
-#        uses: actions/checkout@v2
-#
-#      - name: Set up Node.js
-#        uses: actions/setup-node@v2
-#        with:
-#          node-version: '20'
-#
-#      - name: Install dependencies
-#        run: npm install
-#
-#      - name: Build Electron app
-#        run: npm run build
-#
-#      - name: Create Release
-#        id: create_release
-#        uses: actions/create-release@v1
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-#        with:
-#          tag_name: ${{ github.ref }}
-#          release_name: Release ${{ github.ref }}
-#          draft: false
-#          prerelease: false
-#
-#      - name: Upload Release Assets
-#        uses: actions/upload-release-asset@v1
-#        with:
-#          upload_url: ${{ steps.create_release.outputs.upload_url }}
-#          asset_path: ./dist/*.*
-#          asset_name: ${{ matrix.os }}-${{ github.ref }}.zip
-#          asset_content_type: application/zip
+          body_path: './CHANGELOG_CURRENT.md'
+          files: './packages/app/dist/**.exe,./packages/app/dist/**.dmg,./packages/app/dist/**.AppImage,./packages/app/dist/**.zip,./packages/app/dist/**.deb,./packages/app/dist/**.rpm'
