@@ -15,19 +15,20 @@ jobs:
 
     steps:
       - name: Check out Git repository
-        uses: actions/checkout@v1
+        uses: actions/checkout@v4
 
       - name: Install Node.js, NPM and Yarn
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: actions/create-release@v1
 
       - name: Compile Electron App
-        uses: actions/create-release@v1
+        uses: Yan-Jobs/action-electron-builder@v1.7.0
         with:
           # GitHub token, automatically provided to the action
           # (Optional)
-          #github_token: ${{ secrets.GH_TOKEN }}
+          env:
+            GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
           # If the commit is tagged with a version (e.g. "v1.0.0"),
           # (Optional)
