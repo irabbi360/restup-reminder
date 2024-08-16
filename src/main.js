@@ -56,7 +56,6 @@ app.on('ready', () => {
 
   createMainWindow(rendererWindows);
   ipcMain.on('timer-start', (event, message) => {
-    // console.log('start')
     menuWithTimerInfo(setting, tray, restartApp)
   });
 
@@ -88,13 +87,6 @@ app.on('activate', () => {
     createMainWindow(rendererWindows);
   }
 });
-
-// Listen for a request to open the modal
-/*
-ipcMain.on('open-modal', () => {
-  createAboutModalWindow();
-});
-*/
 
 function restartApp() {
   app.relaunch(); // Relaunch the app

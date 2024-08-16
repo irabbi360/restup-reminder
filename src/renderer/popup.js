@@ -1,4 +1,3 @@
-// popup.js
 const { ipcRenderer } = require('electron');
 const closeButton = document.getElementById('closeButton');
 const Store = require('electron-store');
