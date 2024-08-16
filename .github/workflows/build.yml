@@ -23,31 +23,38 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        run: npm install
+        run: yarn install  # or npm install
 
       - name: Compile Electron App
         uses: Yan-Jobs/action-electron-builder@v1.7.0
         with:
-          # Release if the tag matches the pattern
-          release: ${{ github.ref =~ /^refs\/tags\/v/ }}
+          # If the commit is tagged with a version (e.g. "v1.0.0"),
+          # (Optional)
+          release: ${{ startsWith(github.ref, 'refs/tags/v') }}
 
-          # Specify build artifacts to upload
-          artifacts: './dist/**/*'
+          # Skip buiding the application
+          # (Optional)
+          skip_build: false
 
-      - name: Upload Artifacts (Optional)
+      - name: Upload artifacts (optional)
         uses: actions/upload-artifact@v3
         with:
-          path: './dist'
-          name: electron-app
-          if: ${{ always() }}  # Upload artifacts even if build fails
+          path: dist  # Replace with your build output directory
+          name: build-artifacts
+          if: always()  # Always upload artifacts, even if build fails
 
-      - name: Handle Build Failures
-        run: |
-          if [ $? -ne 0 ]; then
-            echo "Build failed!"
-            exit 1
-          fi
-
+      - name: Notify on failure (optional)
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'Build failed: ${JSON.stringify(steps.filter(s => s.name == 'Compile Electron App')[0].outputs)}'
+            })
+        if: failure()
+        
 #jobs:
 #  build:
 #    runs-on: ${{ matrix.os }}
