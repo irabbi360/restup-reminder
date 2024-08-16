@@ -1,4 +1,4 @@
-const messages = [
+const alertMessages = [
     "Rest your eyes.<br>Stretch your legs.<br>Breathe. Relax.",
     "Tightly close your eyes",
     "Roll your eyes a few times to each side",
@@ -12,4 +12,4 @@ const messages = [
     "Meditate for a minute."
 ];
 
-module.exports = messages;
+module.exports = {alertMessages};
