@@ -55,8 +55,8 @@ app.on('ready', () => {
   setting = store.get('setting');
 
   createMainWindow(rendererWindows);
-  ipcMain.on('timer-start', (event, message) => {
-    menuWithTimerInfo(setting, tray, restartApp)
+  ipcMain.on('timer-start', async (event, message) => {
+    await menuWithTimerInfo(setting, tray, restartApp)
   });
 
   ipcMain.on('interval-clear', (event, remainingTime) => {
@@ -65,7 +65,7 @@ app.on('ready', () => {
     clearInterval(minInterval);
   })
   // Create a system tray icon
-  const iconPath = join(__dirname, '../assets/icon/icon.ico');
+  const iconPath = join(__dirname, './assets/icon/icon.ico');
   tray = new Tray(iconPath);
 
   tray.setToolTip('RestUp Reminder');

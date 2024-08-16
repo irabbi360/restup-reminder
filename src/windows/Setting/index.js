@@ -14,7 +14,7 @@ const createSettingWindow = ((restartApp, mainWindow) => {
         modal: true,
         width: 800,
         height: 600,
-        icon: join(__dirname, '../assets/icon/icon.ico'),
+        icon: join(__dirname, '../../assets/icon/icon.ico'),
         // frame: env.NODE_ENV === 'dev',
         webPreferences: {
             nodeIntegration: true,

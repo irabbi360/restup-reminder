@@ -20,7 +20,7 @@ const createMainWindow = (rendererWindows) => {
     mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
-        icon: join(__dirname, '../assets/icon/icon.ico'),
+        icon: join(__dirname, '../../assets/icon/icon.ico'),
         title: 'RestUp Reminder',
         show: env.NODE_ENV === 'dev',
         // frame: env.NODE_ENV === 'dev',
@@ -70,14 +70,14 @@ const createMainWindow = (rendererWindows) => {
     })
 }
 
-const menuWithTimerInfo = ((setting, tray, restartApp) => {
+const menuWithTimerInfo = (async (setting, tray, restartApp) => {
 // Update the countdown every 1 second
     let minutes, seconds = 0;
     const breakTime = setting.breakLength;
     const breakTimeMoment = moment(breakTime, 'HH:mm:ss');
     const inWorkingHours = setting.breakFrequency;
 
-    minInterval = setInterval(function() {
+    minInterval = setInterval(async function () {
 
         /*ipcMain.on('remaining-time', (event, remainingTime) => {
           minutes = remainingTime.minutes
@@ -136,7 +136,7 @@ const menuWithTimerInfo = ((setting, tray, restartApp) => {
                     createAboutModalWindow(mainWindow); // Open the modal when the menu item is clicked
                 },
             },
-            { type: 'separator' },
+            {type: 'separator'},
             {
                 label: 'Quit',
                 role: 'quit',
@@ -147,7 +147,7 @@ const menuWithTimerInfo = ((setting, tray, restartApp) => {
             clearInterval(minInterval);
         }
 
-        tray.setContextMenu(contextMenu);
+        await tray.setContextMenu(contextMenu);
     }, 1000)
 })
 

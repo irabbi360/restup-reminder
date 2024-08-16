@@ -11,7 +11,7 @@ const createAboutModalWindow =  (mainWindow) => {
         modal: true,
         width: 400,
         height: 300,
-        icon: join(__dirname, '../assets/icon/icon.ico'),
+        icon: join(__dirname, '../../assets/icon/icon.ico'),
         // frame: env.NODE_ENV === 'dev',
         webPreferences: {
             nodeIntegration: true,
