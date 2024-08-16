@@ -65,7 +65,7 @@ app.on('ready', () => {
     clearInterval(minInterval);
   })
   // Create a system tray icon
-  const iconPath = join(__dirname, './assets/icon/icon.ico');
+  const iconPath = join(__dirname, './assets/icon/tryicon.png');
   tray = new Tray(iconPath);
 
   tray.setToolTip('RestUp Reminder');
