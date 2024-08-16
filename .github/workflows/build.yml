@@ -42,19 +42,7 @@ jobs:
           path: dist  # Replace with your build output directory
           name: build-artifacts
           if: always()  # Always upload artifacts, even if build fails
-
-      - name: Notify on failure (optional)
-        uses: actions/github-script@v6
-        with:
-          script: |
-            github.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: 'Build failed: ${JSON.stringify(steps.filter(s => s.name == 'Compile Electron App')[0].outputs)}'
-            })
-        if: failure()
-        
+          
 #jobs:
 #  build:
 #    runs-on: ${{ matrix.os }}
