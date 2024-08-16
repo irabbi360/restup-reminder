@@ -67,6 +67,7 @@
         "deb",
         "rpm"
       ],
+      "executableName": "RestUp Reminder",
       "category": "Development",
       "icon": "build/icon.png",
       "desktop": {
