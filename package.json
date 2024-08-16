@@ -40,7 +40,7 @@
   },
   "build": {
     "appId": "com.devstarit.restupreminder",
-    "asar": true,
+    "asar": false,
     "asarUnpack": [
       "node_modules/some-large-package"
     ],
@@ -64,11 +64,13 @@
     "linux": {
       "target": [
         "AppImage",
+        "snap",
         "deb",
-        "rpm"
+        "rpm",
+        "tar.gz"
       ],
       "executableName": "RestUp Reminder",
-      "category": "Development",
+      "category": "Utility",
       "icon": "build/icon.png",
       "desktop": {
         "Name": "RestUp Reminder",
