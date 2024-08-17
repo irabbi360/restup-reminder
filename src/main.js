@@ -4,7 +4,7 @@ const moment = require('moment');
 const dotenv = require('dotenv');
 const AutoLaunch = require('auto-launch');
 const Store = require('electron-store');
-const {mainWindow, createMainWindow, createAboutModalWindow, createSettingWindow, menuWithTimerInfo} = require("./windows");
+const {mainWindow, createMainWindow, menuWithTimerInfo} = require("./windows");
 
 dotenv.config();
 
