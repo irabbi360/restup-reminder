@@ -57,8 +57,9 @@ jobs:
           path: dist/
 
       - name: Create Release
-        uses: softprops/action-gh-release@v1
+        uses: paneron/action-electron-builder@v1.8.1
         with:
           files: dist/**
-        env:
-          GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
+          github_token: ${{ secrets.github_token }}
+        #env:
+          #GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
