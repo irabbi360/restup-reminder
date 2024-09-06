@@ -30,7 +30,7 @@ const createMainWindow = (rendererWindows) => {
         },
     });
 
-    // mainWindow.loadFile(join(__dirname, '../../views/index.html'));
+    mainWindow.loadFile(join(__dirname, '../../views/index.html'));
 
     rendererWindows.push(mainWindow);
 
@@ -139,12 +139,14 @@ const menuWithTimerInfo = (async (setting, tray, restartApp) => {
                 label: 'Settings',
                 click: () => {
                     createSettingWindow(restartApp, mainWindow); // Open the modal when the menu item is clicked
+                    mainWindow.hide();
                 },
             },
             {
                 label: 'About',
                 click: () => {
                     createAboutModalWindow(mainWindow); // Open the modal when the menu item is clicked
+                    mainWindow.hide();
                 },
             },
             {type: 'separator'},
