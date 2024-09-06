@@ -74,6 +74,12 @@ function updateClock() {
 function startTimer() {
   clearInterval(interval);
 
+  if (store.get('setting.app_status') === 'disable') {
+    console.log('Timer is disabled');
+    return;
+  }
+  clearInterval(interval);
+
   let { total } = timer.remainingTime;
   const endTime = Date.parse(new Date()) + total * 1000;
 
@@ -185,7 +191,7 @@ function ipcStopNotify(mode) {
 }
 
 ipcRenderer.on('broadcast-message', (event, message) => {
-  console.log('Broadcasted message:', message);
+  console.log('Broadcast message:', message);
   clearInterval(interval)
 
   initPomodoroTimer();
@@ -227,3 +233,15 @@ function initialSettingSet(){
   // Cookies.set('name', 'value', { expires: 365, path: '/' })
   // store.set('setting', setting)
 }
+
+ipcRenderer.on('app-status-changed', (event, newStatus) => {
+  if (newStatus === 'disable') {
+    stopTimer();
+    mainButton.disabled = true;
+  } else {
+    mainButton.disabled = false;
+    initPomodoroTimer();
+  }
+
+  console.log(`Timer ${newStatus}d`);
+});

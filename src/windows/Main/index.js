@@ -22,7 +22,7 @@ const createMainWindow = (rendererWindows) => {
         height: 600,
         icon: join(__dirname, '../../assets/icon/icon.ico'),
         title: 'RestUp Reminder',
-        show: env.NODE_ENV === 'dev',
+        show: false, // env.NODE_ENV === 'dev',
         // frame: env.NODE_ENV === 'dev',
         webPreferences: {
             nodeIntegration: true,
@@ -30,7 +30,7 @@ const createMainWindow = (rendererWindows) => {
         },
     });
 
-    mainWindow.loadFile(join(__dirname, '../../views/index.html'));
+    // mainWindow.loadFile(join(__dirname, '../../views/index.html'));
 
     rendererWindows.push(mainWindow);
 
@@ -71,36 +71,36 @@ const createMainWindow = (rendererWindows) => {
 }
 
 const menuWithTimerInfo = (async (setting, tray, restartApp) => {
-// Update the countdown every 1 second
+    // Update the countdown every 1 second
     let minutes, seconds = 0;
     const breakTime = setting.breakLength;
     const breakTimeMoment = moment(breakTime, 'HH:mm:ss');
     const inWorkingHours = setting.breakFrequency;
 
     minInterval = setInterval(async function () {
+        const currentAppStatus = store.get('setting.app_status', 'enable');
+        if (currentAppStatus === 'disable') {
+            clearInterval(minInterval);
+            nextBreak = 'RestUp Reminder is disabled';
+        } else {
+            let remainingTime = store.get('remainingTime')
+            minutes = remainingTime.minutes
+            seconds = remainingTime.seconds
+            console.log(minutes, seconds, 'mm')
 
-        /*ipcMain.on('remaining-time', (event, remainingTime) => {
-          minutes = remainingTime.minutes
-          seconds = remainingTime.seconds
-          ipcMain.removeAllListeners('remaining-time');
-        });*/
-
-        let remainingTime = store.get('remainingTime')
-        minutes = remainingTime.minutes
-        seconds = remainingTime.seconds
-        console.log(minutes, seconds, 'mm')
-
-        if (minutes !== undefined) {
-            if (minutes > 1) {
-                nextBreak = `Next break in ${minutes + "m " + seconds + "s "} minutes`;
-            } else if (minutes === 1) {
-                nextBreak = `Next break in 1 minute`;
-            } else if (seconds === 0) {
-                nextBreak = `It's break time!`;
-            } else {
-                nextBreak = `Next break in less than a minute`;
+            if (minutes !== undefined) {
+                if (minutes > 1) {
+                    nextBreak = `Next break in ${minutes + "m " + seconds + "s "} minutes`;
+                } else if (minutes === 1) {
+                    nextBreak = `Next break in 1 minute`;
+                } else if (seconds === 0) {
+                    nextBreak = `It's break time!`;
+                } else {
+                    nextBreak = `Next break in less than a minute`;
+                }
             }
         }
+
         contextMenu = Menu.buildFromTemplate([
             {
                 label: nextBreak,
@@ -115,14 +115,25 @@ const menuWithTimerInfo = (async (setting, tray, restartApp) => {
             {
                 label: 'Start Break',
                 click: () => mainWindow.webContents.send('start-break'),
+                visible: currentAppStatus === 'enable',
             },
             {
                 label: 'Pause Break',
                 click: () => mainWindow.webContents.send('pause-break'),
+                visible: currentAppStatus === 'enable',
             },
             {
                 label: 'Reset Timer',
                 click: () => mainWindow.webContents.send('reset-timer'),
+                visible: currentAppStatus === 'enable',
+            },
+            {
+                label: currentAppStatus === 'enable' ? 'Disable' : 'Enable',
+                click: () => {
+                    const newStatus = currentAppStatus === 'enable' ? 'disable' : 'enable';
+                    store.set('setting.app_status', newStatus);
+                    mainWindow.webContents.send('app-status-changed', newStatus);
+                }
             },
             {
                 label: 'Settings',
@@ -143,7 +154,7 @@ const menuWithTimerInfo = (async (setting, tray, restartApp) => {
             },
         ]);
 
-        if (minutes === 0 && seconds === 0) {
+        if (minutes === 0 && seconds === 0 || currentAppStatus === 'disable') {
             clearInterval(minInterval);
         }
 
