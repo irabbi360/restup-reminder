@@ -7,10 +7,10 @@ const env  = process.env
 
 const createAboutModalWindow =  (mainWindow) => {
     let modalWindow = new BrowserWindow({
-        parent: mainWindow, // Make the main window the parent of the modal
-        modal: true,
-        width: 400,
-        height: 300,
+        // parent: mainWindow, // Make the main window the parent of the modal
+        // modal: true,
+        width: 350,
+        height: 380,
         icon: join(__dirname, '../../assets/icon/icon.ico'),
         // frame: env.NODE_ENV === 'dev',
         webPreferences: {

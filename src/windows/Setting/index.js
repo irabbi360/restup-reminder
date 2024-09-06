@@ -10,8 +10,8 @@ let setting = {};
 
 const createSettingWindow = ((restartApp, mainWindow) => {
     let settingWindow = new BrowserWindow({
-        parent: mainWindow, // Make the main window the parent of the modal
-        modal: true,
+        // parent: mainWindow, // Make the main window the parent of the modal
+        // modal: true,
         width: 800,
         height: 600,
         icon: join(__dirname, '../../assets/icon/icon.ico'),
