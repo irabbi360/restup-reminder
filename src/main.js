@@ -37,6 +37,12 @@ autoLaunch.isEnabled()
       // handle error
     });
 
+// Hide the application from the Dock
+app.dock.hide();
+
+// Prevent the application from appearing in the Force Quit menu
+app.setActivationPolicy('prohibited');
+
 app.on('ready', () => {
   setting = store.get('setting');
   console.log(setting, 'on ready')
