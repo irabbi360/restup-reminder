@@ -18,6 +18,8 @@ const createAboutModalWindow =  (mainWindow) => {
             contextIsolation: false,
         },
     });
+    
+    modalWindow.setResizable(false);
 
     modalWindow.loadFile(join(__dirname,'../../views/about-us.html')); // Create a separate HTML file for the modal content
     if (env.NODE_ENV === 'dev') {

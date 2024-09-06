@@ -22,6 +22,8 @@ const createSettingWindow = ((restartApp, mainWindow) => {
         },
     });
 
+    settingWindow.setResizable(false);
+
     settingWindow.loadFile(join(__dirname,'../../views/settings-tab.html')); // Create a separate HTML file for the modal content
     if (env.NODE_ENV === 'dev') {
         settingWindow.webContents.openDevTools();
