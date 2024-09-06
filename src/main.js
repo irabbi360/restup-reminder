@@ -80,6 +80,7 @@ app.on('ready', () => {
     tray.popUpContextMenu();
   });
 });
+
 app.setAppUserModelId("RestUpReminder");
 
 app.on('window-all-closed', () => {
