@@ -114,17 +114,23 @@ const menuWithTimerInfo = (async (setting, tray, restartApp) => {
             },
             {
                 label: 'Start Break',
-                click: () => mainWindow.webContents.send('start-break'),
+                click: () => {
+                    mainWindow.webContents.send('start-break')
+                    clearInterval(minInterval);
+                },
                 visible: currentAppStatus === 'enable',
             },
-            {
+            /*{
                 label: 'Pause Break',
                 click: () => mainWindow.webContents.send('pause-break'),
                 visible: currentAppStatus === 'enable',
-            },
+            },*/
             {
                 label: 'Reset Timer',
-                click: () => mainWindow.webContents.send('reset-timer'),
+                click: () => {
+                    mainWindow.webContents.send('reset-timer')
+                    clearInterval(minInterval);
+                },
                 visible: currentAppStatus === 'enable',
             },
             {
