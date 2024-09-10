@@ -31,8 +31,7 @@
     "auto-launch": "^5.0.6",
     "dotenv": "^16.3.1",
     "electron-store": "^8.1.0",
-    "moment": "^2.29.4",
-    "update": "^0.7.4"
+    "moment": "^2.29.4"
   },
   "devDependencies": {
     "@electron/packager": "^18.3.3",

@@ -34,7 +34,7 @@ jobs:
         run: npm run build
 
       - name: Package Electron app
-        run: npm run package
+        run: npm run build
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
