@@ -2,9 +2,11 @@ name: Build RestUp Reminder
 
 on:
   push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+    tags:
+      - 'v*.*.*'
+  #   branches: [main]
+  # pull_request:
+  #   branches: [main]
 
 permissions:
   contents: write
@@ -62,40 +64,41 @@ jobs:
       with:
         path: artifacts
       
-    - name: RestUp Reminder Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: v${{ github.run_number }}
-        release_name: Release v${{ github.run_number }}
-        body: Automated release for commit ${{ github.sha }}
-        draft: false
-        prerelease: false
-        
-    - name: Upload RestUp Reminder Release Assets
+    - name: Create Release and Upload Assets
       uses: actions/github-script@v6
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
           const fs = require('fs').promises;
-          const glob = require('@actions/glob');
+          const path = require('path');
+          const { globby } = require('globby');
           const { repo, owner } = context.repo;
-          const release_id = '${{ steps.create_release.outputs.id }}';
-          const globber = await glob.create('artifacts/**/*');
-          const files = await globber.glob();
+          
+          // Create release
+          const release = await github.rest.repos.createRelease({
+            owner,
+            repo,
+            tag_name: `v${process.env.GITHUB_RUN_NUMBER}`,
+            name: `Release v${process.env.GITHUB_RUN_NUMBER}`,
+            body: `Automated release for commit ${context.sha}`,
+            draft: false,
+            prerelease: false
+          });
+          
+          // Upload assets
+          const files = await globby('artifacts/**/*');
           
           for (const file of files) {
             const stats = await fs.stat(file);
             if (stats.isFile()) {
               console.log(`Uploading ${file}`);
+              const data = await fs.readFile(file);
               await github.rest.repos.uploadReleaseAsset({
                 owner,
                 repo,
-                release_id,
-                name: file.replace('artifacts/', ''),
-                data: await fs.readFile(file)
+                release_id: release.data.id,
+                name: path.basename(file),
+                data: data
               });
             }
           }
