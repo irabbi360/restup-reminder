@@ -43,6 +43,7 @@ if (process.platform === 'darwin') {
 
     // Prevent the application from appearing in the Force Quit menu
     app.setActivationPolicy('prohibited');
+    app.dock.hide();
 }
 
 app.on('ready', () => {

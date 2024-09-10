@@ -1,4 +1,4 @@
-name: Build Electron App
+name: Build RestUp Reminder
 
 on:
   push:
@@ -34,19 +34,33 @@ jobs:
         run: npm run build
 
       - name: Package Electron app
-        run: npm run build
+        run: |
+          if npm run | grep -q "package"; then
+            npm run package
+          elif npm run | grep -q "make"; then
+            npm run make
+          else
+            echo "No package or make script found. Please check your package.json"
+            exit 1
+          fi
+        shell: bash
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
           name: electron-app-${{ matrix.os }}
           path: |
-            out/make/**/*.deb
-            out/make/**/*.rpm
-            out/make/**/*.dmg
-            out/make/**/*.exe
-            out/make/**/*.zip
-          if-no-files-found: error
+            out/**/*.deb
+            out/**/*.rpm
+            out/**/*.dmg
+            out/**/*.exe
+            out/**/*.zip
+            dist/**/*.deb
+            dist/**/*.rpm
+            dist/**/*.dmg
+            dist/**/*.exe
+            dist/**/*.zip
+          if-no-files-found: warn
 
   release:
     needs: build
@@ -58,12 +72,43 @@ jobs:
 
       - name: Download artifacts
         uses: actions/download-artifact@v3
+        with:
+          path: artifacts
 
       - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh release create v${{ github.run_number }} \
-            --title "Release v${{ github.run_number }}" \
-            --notes "Automated release for commit ${{ github.sha }}" \
-            electron-app-*/**/*
+        with:
+          tag_name: v${{ github.run_number }}
+          release_name: Release v${{ github.run_number }}
+          body: Automated release for commit ${{ github.sha }}
+          draft: false,
+          prerelease: false
+
+      - name: Upload Release Assets
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs').promises;
+            const glob = require('@actions/glob');
+            const { repo, owner } = context.repo;
+            const release_id = '${{ steps.create_release.outputs.id }}';
+            const globber = await glob.create('artifacts/**/*');
+            const files = await globber.glob();
+            
+            for (const file of files) {
+              const stats = await fs.stat(file);
+              if (stats.isFile()) {
+                console.log(`Uploading ${file}`);
+                await github.rest.repos.uploadReleaseAsset({
+                  owner,
+                  repo,
+                  release_id,
+                  name: file.replace('artifacts/', ''),
+                  data: await fs.readFile(file)
+                });
+              }
+            }
