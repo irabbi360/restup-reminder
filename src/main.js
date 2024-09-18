@@ -1,4 +1,4 @@
-const {app, BrowserWindow, ipcMain, Menu, Tray, screen, ipcRenderer} = require('electron');
+const {app, BrowserWindow, ipcMain, Menu, Tray, screen, ipcRenderer, powerMonitor} = require('electron');
 const {join} = require('path');
 const moment = require('moment');
 const dotenv = require('dotenv');
@@ -81,6 +81,42 @@ app.on('ready', () => {
 
     tray.on('click', () => {
         tray.popUpContextMenu();
+    });
+
+    // Listen for system sleep event
+    powerMonitor.on('suspend', () => {
+        console.log('System is going to sleep');
+        // Pause or stop any intensive work like network requests, timers, etc.
+        if (mainWindow) {
+            mainWindow.webContents.send('app-suspend'); // Notify renderer to pause activity
+        }
+    });
+
+    // Listen for system resume (wake) event
+    powerMonitor.on('resume', () => {
+        console.log('System is waking up');
+        // Resume any suspended work, such as timers or network requests
+        if (mainWindow) {
+            mainWindow.webContents.send('app-resume'); // Notify renderer to resume activity
+        }
+    });
+
+    // Listen for screen lock event
+    powerMonitor.on('lock-screen', () => {
+        console.log('Screen is locked');
+        // Pause or reduce resource-heavy tasks, save data, etc.
+        if (mainWindow) {
+            mainWindow.webContents.send('app-lock'); // Notify renderer to pause activity
+        }
+    });
+
+    // Listen for screen unlock event
+    powerMonitor.on('unlock-screen', () => {
+        console.log('Screen is unlocked');
+        // Resume tasks or reset timers
+        if (mainWindow) {
+            mainWindow.webContents.send('app-unlock'); // Notify renderer to resume activity
+        }
     });
 });
 
