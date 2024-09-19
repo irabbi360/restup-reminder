@@ -179,7 +179,7 @@ ipcRenderer.on('app-status-changed', (event, newStatus) => {
 
 ipcRenderer.on('app-lock', () => {
   console.log('Screen locked. Pausing activity...');
-  // stopTimer();
+  stopTimer();
 });
 
 ipcRenderer.on('app-unlock', () => {
