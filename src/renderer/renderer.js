@@ -176,3 +176,25 @@ ipcRenderer.on('app-status-changed', (event, newStatus) => {
 
   console.log(`Timer ${newStatus}d`);
 });
+
+ipcRenderer.on('app-lock', () => {
+  console.log('Screen locked. Pausing activity...');
+  stopTimer();
+});
+
+ipcRenderer.on('app-unlock', () => {
+  console.log('Screen unlocked. Resuming activity...');
+  startTimer();
+});
+
+ipcRenderer.on('app-suspend', () => {
+  console.log('App is suspended. Pausing activity...');
+  // Pause any activity in the renderer
+  stopTimer();
+});
+
+ipcRenderer.on('app-resume', () => {
+  console.log('App is resuming. Resuming activity...');
+  // Resume any paused activity in the renderer
+  startTimer();
+});

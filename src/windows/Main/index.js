@@ -1,4 +1,4 @@
-const {BrowserWindow, ipcMain, Menu} = require("electron");
+const {BrowserWindow, ipcMain, Menu, powerMonitor} = require("electron");
 const { join} = require('path');
 const dotenv = require('dotenv');
 const moment = require("moment/moment");
@@ -38,6 +38,7 @@ const createMainWindow = (rendererWindows) => {
     if (env.NODE_ENV === 'dev') {
         mainWindow.webContents.openDevTools();
     }
+
     if (env.NODE_ENV !== 'dev') {
         mainWindow.setMenu(null);
     }
@@ -63,6 +64,43 @@ const createMainWindow = (rendererWindows) => {
 
     ipcMain.on('call-from-main', (event, arg) => {
         // console.log(arg, 'call-from-main'); // Do something with the data received
+    });
+
+    // Listen for system sleep event
+    powerMonitor.on('suspend', () => {
+        console.log('System is going to sleep');
+        // Pause or stop any intensive work like network requests, timers, etc.
+        if (createMainWindow) {
+            createMainWindow.webContents.send('app-suspend'); // Notify renderer to pause activity
+        }
+    });
+
+    // Listen for system resume (wake) event
+    powerMonitor.on('resume', () => {
+        console.log('System is waking up');
+        // Resume any suspended work, such as timers or network requests
+        if (createMainWindow) {
+            createMainWindow.webContents.send('app-resume'); // Notify renderer to resume activity
+        }
+    });
+
+    // Listen for screen lock event
+    powerMonitor.on('lock-screen', () => {
+        console.log('Screen is locked');
+        // Pause or reduce resource-heavy tasks, save data, etc.
+        if (mainWindow) {
+            mainWindow.webContents.send('app-lock'); // Notify renderer to pause activity
+        }
+    });
+
+    // Listen for screen unlock event
+    powerMonitor.on('unlock-screen', () => {
+        console.log('Screen is unlocked');
+        // Resume tasks or reset timers
+        if (mainWindow) {
+            mainWindow.webContents.send('app-unlock'); // Notify renderer to resume activity
+        }
+
     });
 
     mainWindow.on('closed', () => {

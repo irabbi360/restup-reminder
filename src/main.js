@@ -1,4 +1,4 @@
-const {app, BrowserWindow, ipcMain, Menu, Tray, screen, ipcRenderer} = require('electron');
+const {app, BrowserWindow, ipcMain, Menu, Tray, screen, ipcRenderer, powerMonitor} = require('electron');
 const {join} = require('path');
 const moment = require('moment');
 const dotenv = require('dotenv');
@@ -64,6 +64,7 @@ app.on('ready', () => {
     setting = store.get('setting');
 
     createMainWindow(rendererWindows);
+
     ipcMain.on('timer-start', async (event, message) => {
         await menuWithTimerInfo(setting, tray, restartApp)
     });
