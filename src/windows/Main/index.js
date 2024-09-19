@@ -70,8 +70,8 @@ const createMainWindow = (rendererWindows) => {
     powerMonitor.on('suspend', () => {
         console.log('System is going to sleep');
         // Pause or stop any intensive work like network requests, timers, etc.
-        if (createMainWindow) {
-            createMainWindow.webContents.send('app-suspend'); // Notify renderer to pause activity
+        if (mainWindow) {
+            mainWindow.webContents.send('app-suspend'); // Notify renderer to pause activity
         }
     });
 
@@ -79,8 +79,8 @@ const createMainWindow = (rendererWindows) => {
     powerMonitor.on('resume', () => {
         console.log('System is waking up');
         // Resume any suspended work, such as timers or network requests
-        if (createMainWindow) {
-            createMainWindow.webContents.send('app-resume'); // Notify renderer to resume activity
+        if (mainWindow) {
+            mainWindow.webContents.send('app-resume'); // Notify renderer to resume activity
         }
     });
 
