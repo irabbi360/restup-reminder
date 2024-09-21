@@ -2,7 +2,7 @@ const {BrowserWindow, ipcMain, Menu, powerMonitor} = require("electron");
 const { join} = require('path');
 const dotenv = require('dotenv');
 const moment = require("moment/moment");
-const {createSettingWindow} = require("../Setting");
+const {createSettingWindow, getSettingWindow} = require("../Setting");
 const {createAboutModalWindow} = require("../About");
 const {createPopupWindow} = require("../Popup");
 const Store = require('electron-store');
@@ -13,6 +13,12 @@ let mainWindow
 let contextMenu = null
 let nextBreak = "";
 let minInterval;
+
+// statistics count
+let lockCount = 0;
+let unlockCount = 0;
+let suspendCount = 0;
+let resumeCount = 0;
 
 const store = new Store();
 
@@ -68,37 +74,57 @@ const createMainWindow = (rendererWindows) => {
 
     // Listen for system sleep event
     powerMonitor.on('suspend', () => {
+        suspendCount++;
         console.log('System is going to sleep');
         // Pause or stop any intensive work like network requests, timers, etc.
         if (mainWindow) {
+            const settingWindow = getSettingWindow(); // Get the reference to windowB
+            if (settingWindow) {
+                settingWindow.webContents.send('update-event-counts', { suspendCount, resumeCount, lockCount, unlockCount });
+            }
             mainWindow.webContents.send('app-suspend'); // Notify renderer to pause activity
         }
     });
 
     // Listen for system resume (wake) event
     powerMonitor.on('resume', () => {
+        resumeCount++;
         console.log('System is waking up');
         // Resume any suspended work, such as timers or network requests
         if (mainWindow) {
             mainWindow.webContents.send('app-resume'); // Notify renderer to resume activity
+            const settingWindow = getSettingWindow(); // Get the reference to windowB
+            if (settingWindow) {
+                settingWindow.webContents.send('update-event-counts', { suspendCount, resumeCount, lockCount, unlockCount });
+            }
         }
     });
 
     // Listen for screen lock event
     powerMonitor.on('lock-screen', () => {
+        lockCount++;
         console.log('Screen is locked');
         // Pause or reduce resource-heavy tasks, save data, etc.
         if (mainWindow) {
             mainWindow.webContents.send('app-lock'); // Notify renderer to pause activity
+            const settingWindow = getSettingWindow(); // Get the reference to windowB
+            if (settingWindow) {
+                settingWindow.webContents.send('update-event-counts', { suspendCount, resumeCount, lockCount, unlockCount });
+            }
         }
     });
 
     // Listen for screen unlock event
     powerMonitor.on('unlock-screen', () => {
+        unlockCount++;
         console.log('Screen is unlocked');
         // Resume tasks or reset timers
         if (mainWindow) {
             mainWindow.webContents.send('app-unlock'); // Notify renderer to resume activity
+            const settingWindow = getSettingWindow(); // Get the reference to windowB
+            if (settingWindow) {
+                settingWindow.webContents.send('update-event-counts', { suspendCount, resumeCount, lockCount, unlockCount });
+            }
         }
 
     });
@@ -182,7 +208,7 @@ const menuWithTimerInfo = (async (setting, tray, restartApp) => {
             {
                 label: 'Settings',
                 click: () => {
-                    createSettingWindow(restartApp, mainWindow); // Open the modal when the menu item is clicked
+                    createSettingWindow(restartApp, mainWindow, inWorkingHours); // Open the modal when the menu item is clicked
                 },
             },
             {

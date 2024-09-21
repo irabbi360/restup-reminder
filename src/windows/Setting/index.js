@@ -7,9 +7,10 @@ dotenv.config();
 const env  = process.env
 const store = new Store();
 let setting = {};
+let settingWindow
 
-const createSettingWindow = ((restartApp, mainWindow) => {
-    let settingWindow = new BrowserWindow({
+const createSettingWindow = ((restartApp, mainWindow, breakFrequency) => {
+    settingWindow = new BrowserWindow({
         // parent: mainWindow, // Make the main window the parent of the modal
         // modal: true,
         width: 800,
@@ -24,10 +25,11 @@ const createSettingWindow = ((restartApp, mainWindow) => {
 
     settingWindow.setResizable(false);
 
-    settingWindow.loadFile(join(__dirname,'../../views/settings-tab.html')); // Create a separate HTML file for the modal content
+    settingWindow.loadFile(join(__dirname,'../../views/settings-tab.html'));
     if (env.NODE_ENV === 'dev') {
         settingWindow.webContents.openDevTools();
     }
+
     if (env.NODE_ENV !== 'dev') {
         settingWindow.setMenu(null);
     }
@@ -38,10 +40,11 @@ const createSettingWindow = ((restartApp, mainWindow) => {
 
     settingWindow.on('closed', () => {
         let upSetting = store.get('setting');
-        if (upSetting.breakFrequency !== setting.breakFrequency) {
+        if (upSetting.breakFrequency !== breakFrequency) {
             restartApp();
         }
     });
+    return settingWindow;
 });
 
-module.exports = {createSettingWindow};
+module.exports = { createSettingWindow, getSettingWindow: () => settingWindow };

@@ -49,3 +49,12 @@ if (setting && setting.snoozeBreak) {
 if (setting && setting.snoozeLength) {
     snoozeLength.value = setting.snoozeLength
 }
+
+// Listen for event counts from the main process
+ipcRenderer.on('update-event-counts', (event, counts) => {
+    console.log(counts, 'ssss counts')
+    document.getElementById('suspend-count').innerText = counts.suspendCount;
+    document.getElementById('resume-count').innerText = counts.resumeCount;
+    document.getElementById('lock-count').innerText = counts.lockCount;
+    document.getElementById('unlock-count').innerText = counts.unlockCount;
+});

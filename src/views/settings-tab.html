@@ -217,6 +217,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
@@ -341,7 +342,7 @@
         }
 
         .active{
-            background: #ddd;
+            background: #ececf2;
         }
     </style>
 </head>
@@ -355,12 +356,24 @@
         </div>
         <div class="navigation">
             <ul style="padding: 0;">
-                <li class="tablinks active" onclick="openCity(Event, 'Statistics')"><i class="material-icons">store</i><span>Statistics</span></li>
-                <li class="tablinks" onclick="openCity(Event, 'BreakSettings')"> <i class="material-icons">alarm_on</i><span>Break Settings</span></li>
-                <li class="tablinks" onclick="openCity(Event, 'Customization')"> <i class="material-icons">tune</i><span>Customization</span></li>
-                <li class="tablinks"> <i class="material-icons">library_books</i><span>Contact Us</span></li>
-                <li class="tablinks" onclick="openCity(Event, 'WorkingHours')"><i class="material-icons">account_box</i><span>About Us</span></li>
-                <li class="tablinks"><i class="material-icons">cancel</i><span>Close</span></li>
+                <li class="tablinks active" onclick="openTabMenu(event, 'Statistics')">
+                    <i class="material-icons">store</i><span>Statistics</span>
+                </li>
+                <li class="tablinks" onclick="openTabMenu(event, 'BreakSettings')">
+                    <i class="material-icons">alarm_on</i><span>Break Settings</span>
+                </li>
+                <li class="tablinks" onclick="openTabMenu(event, 'Customization')">
+                    <i class="material-icons">tune</i><span>Customization</span>
+                </li>
+                <li class="tablinks">
+                    <i class="material-icons">library_books</i><span>Contact Us</span>
+                </li>
+                <li class="tablinks" onclick="openTabMenu(event, 'WorkingHours')">
+                    <i class="material-icons">account_box</i><span>About Us</span>
+                </li>
+                <li class="tablinks">
+                    <i class="material-icons">cancel</i><span>Close</span>
+                </li>
             </ul>
         </div>
     </div>
@@ -563,6 +576,13 @@
         <div id="Customization" class="tabcontent">
             <h3>Customization</h3>
             <p>Customization is the capital of France.</p>
+
+            <div>
+                <p><strong>Suspend Count:</strong> <span id="suspend-count">0</span></p>
+                <p><strong>Resume Count:</strong> <span id="resume-count">0</span></p>
+                <p><strong>Lock Screen Count:</strong> <span id="lock-count">0</span></p>
+                <p><strong>Unlock Screen Count:</strong> <span id="unlock-count">0</span></p>
+            </div>
         </div>
 
         <div id="WorkingHours" class="tabcontent">
@@ -574,7 +594,7 @@
 
 <script src="../renderer/settings.js"></script>
 <script>
-    function openCity(evt, cityName) {
+    function openTabMenu(event, targetName) {
         let i, tabcontent, tablinks;
         tabcontent = document.getElementsByClassName("tabcontent");
         for (i = 0; i < tabcontent.length; i++) {
@@ -584,11 +604,20 @@
         for (i = 0; i < tablinks.length; i++) {
             tablinks[i].className = tablinks[i].className.replace(" active", "");
         }
-        document.getElementById(cityName).style.display = "block";
-        evt.currentTarget.className += " active";
+        document.getElementById(targetName).style.display = "block";
+
+        if (event) {
+            event.currentTarget.classList.add('active');
+        }else {
+            const defaultTab = document.querySelector(`li[onclick*="${'Statistics'}"]`);
+            if (defaultTab) {
+                defaultTab.classList.add('active');
+            }
+        }
     }
 
-    openCity(Event, 'Statistics');
+    openTabMenu(event, 'Statistics');
+
 </script>
 </body>
 </html>
