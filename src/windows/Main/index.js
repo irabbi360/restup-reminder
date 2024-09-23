@@ -1,5 +1,5 @@
 const {BrowserWindow, ipcMain, Menu, powerMonitor} = require("electron");
-const { join} = require('path');
+const {join} = require('path');
 const dotenv = require('dotenv');
 const moment = require("moment/moment");
 const {createSettingWindow, getSettingWindow} = require("../Setting");
@@ -8,7 +8,7 @@ const {createPopupWindow} = require("../Popup");
 const Store = require('electron-store');
 
 dotenv.config();
-const env  = process.env
+const env = process.env
 let mainWindow
 let contextMenu = null
 let nextBreak = "";
@@ -78,11 +78,16 @@ const createMainWindow = (rendererWindows) => {
         console.log('System is going to sleep');
         // Pause or stop any intensive work like network requests, timers, etc.
         if (mainWindow) {
-            const settingWindow = getSettingWindow(); // Get the reference to windowB
-            if (settingWindow) {
-                settingWindow.webContents.send('update-event-counts', { suspendCount, resumeCount, lockCount, unlockCount });
-            }
             mainWindow.webContents.send('app-suspend'); // Notify renderer to pause activity
+            const settingWindow = getSettingWindow();
+            if (settingWindow) {
+                settingWindow.webContents.send('update-event-counts', {
+                    suspendCount,
+                    resumeCount,
+                    lockCount,
+                    unlockCount
+                });
+            }
         }
     });
 
@@ -93,9 +98,14 @@ const createMainWindow = (rendererWindows) => {
         // Resume any suspended work, such as timers or network requests
         if (mainWindow) {
             mainWindow.webContents.send('app-resume'); // Notify renderer to resume activity
-            const settingWindow = getSettingWindow(); // Get the reference to windowB
+            const settingWindow = getSettingWindow();
             if (settingWindow) {
-                settingWindow.webContents.send('update-event-counts', { suspendCount, resumeCount, lockCount, unlockCount });
+                settingWindow.webContents.send('update-event-counts', {
+                    suspendCount,
+                    resumeCount,
+                    lockCount,
+                    unlockCount
+                });
             }
         }
     });
@@ -107,9 +117,14 @@ const createMainWindow = (rendererWindows) => {
         // Pause or reduce resource-heavy tasks, save data, etc.
         if (mainWindow) {
             mainWindow.webContents.send('app-lock'); // Notify renderer to pause activity
-            const settingWindow = getSettingWindow(); // Get the reference to windowB
+            const settingWindow = getSettingWindow();
             if (settingWindow) {
-                settingWindow.webContents.send('update-event-counts', { suspendCount, resumeCount, lockCount, unlockCount });
+                settingWindow.webContents.send('update-event-counts', {
+                    suspendCount,
+                    resumeCount,
+                    lockCount,
+                    unlockCount
+                });
             }
         }
     });
@@ -121,9 +136,14 @@ const createMainWindow = (rendererWindows) => {
         // Resume tasks or reset timers
         if (mainWindow) {
             mainWindow.webContents.send('app-unlock'); // Notify renderer to resume activity
-            const settingWindow = getSettingWindow(); // Get the reference to windowB
+            const settingWindow = getSettingWindow();
             if (settingWindow) {
-                settingWindow.webContents.send('update-event-counts', { suspendCount, resumeCount, lockCount, unlockCount });
+                settingWindow.webContents.send('update-event-counts', {
+                    suspendCount,
+                    resumeCount,
+                    lockCount,
+                    unlockCount
+                });
             }
         }
 
