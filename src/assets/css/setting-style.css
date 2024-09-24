@@ -185,7 +185,7 @@
     transform: rotate(45deg);
     border-radius: 7px;
   }
-  .right .stock-logo i {
+  .right .stock-logo i, svg {
     position: absolute;
     top: 50%;
     left: 50%;
