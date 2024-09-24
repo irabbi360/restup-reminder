@@ -77,17 +77,21 @@ const createMainWindow = (rendererWindows) => {
         suspendCount++;
         console.log('System is going to sleep');
         // Pause or stop any intensive work like network requests, timers, etc.
-        if (mainWindow) {
-            mainWindow.webContents.send('app-suspend'); // Notify renderer to pause activity
-            const settingWindow = getSettingWindow();
-            if (settingWindow) {
-                settingWindow.webContents.send('update-event-counts', {
-                    suspendCount,
-                    resumeCount,
-                    lockCount,
-                    unlockCount
-                });
+        try {
+            if (mainWindow && !mainWindow.isDestroyed()) {
+                mainWindow.webContents.send('app-suspend'); // Notify renderer to pause activity
+                const settingWindow = getSettingWindow();
+                if (settingWindow && !settingWindow.isDestroyed()) {
+                    settingWindow.webContents.send('update-event-counts', {
+                        suspendCount,
+                        resumeCount,
+                        lockCount,
+                        unlockCount
+                    });
+                }
             }
+        } catch (error) {
+            console.error('Error sending event:', error)
         }
     });
 
@@ -96,17 +100,21 @@ const createMainWindow = (rendererWindows) => {
         resumeCount++;
         console.log('System is waking up');
         // Resume any suspended work, such as timers or network requests
-        if (mainWindow) {
-            mainWindow.webContents.send('app-resume'); // Notify renderer to resume activity
-            const settingWindow = getSettingWindow();
-            if (settingWindow) {
-                settingWindow.webContents.send('update-event-counts', {
-                    suspendCount,
-                    resumeCount,
-                    lockCount,
-                    unlockCount
-                });
+        try {
+            if (mainWindow && !mainWindow.isDestroyed()) {
+                mainWindow.webContents.send('app-resume'); // Notify renderer to resume activity
+                const settingWindow = getSettingWindow();
+                if (settingWindow && !settingWindow.isDestroyed()) {
+                    settingWindow.webContents.send('update-event-counts', {
+                        suspendCount,
+                        resumeCount,
+                        lockCount,
+                        unlockCount
+                    });
+                }
             }
+        } catch (error) {
+            console.error('Error sending event:', error)
         }
     });
 
@@ -115,17 +123,21 @@ const createMainWindow = (rendererWindows) => {
         lockCount++;
         console.log('Screen is locked');
         // Pause or reduce resource-heavy tasks, save data, etc.
-        if (mainWindow) {
-            mainWindow.webContents.send('app-lock'); // Notify renderer to pause activity
-            const settingWindow = getSettingWindow();
-            if (settingWindow) {
-                settingWindow.webContents.send('update-event-counts', {
-                    suspendCount,
-                    resumeCount,
-                    lockCount,
-                    unlockCount
-                });
+        try {
+            if (mainWindow && !mainWindow.isDestroyed()) {
+                mainWindow.webContents.send('app-lock'); // Notify renderer to pause activity
+                const settingWindow = getSettingWindow();
+                if (settingWindow && !settingWindow.isDestroyed()) {
+                    settingWindow.webContents.send('update-event-counts', {
+                        suspendCount,
+                        resumeCount,
+                        lockCount,
+                        unlockCount
+                    });
+                }
             }
+        } catch (error) {
+            console.error('Error sending event:', error)
         }
     });
 
@@ -134,19 +146,22 @@ const createMainWindow = (rendererWindows) => {
         unlockCount++;
         console.log('Screen is unlocked');
         // Resume tasks or reset timers
-        if (mainWindow) {
-            mainWindow.webContents.send('app-unlock'); // Notify renderer to resume activity
-            const settingWindow = getSettingWindow();
-            if (settingWindow) {
-                settingWindow.webContents.send('update-event-counts', {
-                    suspendCount,
-                    resumeCount,
-                    lockCount,
-                    unlockCount
-                });
+        try {
+            if (mainWindow && !mainWindow.isDestroyed()) {
+                mainWindow.webContents.send('app-unlock'); // Notify renderer to resume activity
+                const settingWindow = getSettingWindow();
+                if (settingWindow && !settingWindow.isDestroyed()) {
+                    settingWindow.webContents.send('update-event-counts', {
+                        suspendCount,
+                        resumeCount,
+                        lockCount,
+                        unlockCount
+                    });
+                }
             }
+        } catch (error) {
+            console.error('Error sending event:', error)
         }
-
     });
 
     mainWindow.on('closed', () => {
