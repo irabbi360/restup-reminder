@@ -76,18 +76,14 @@ const createMainWindow = (rendererWindows) => {
     powerMonitor.on('suspend', () => {
         suspendCount++;
         console.log('System is going to sleep');
+        updateStatisticsCounts(suspendCount, resumeCount, lockCount, unlockCount);
         // Pause or stop any intensive work like network requests, timers, etc.
         try {
             if (mainWindow && !mainWindow.isDestroyed()) {
                 mainWindow.webContents.send('app-suspend'); // Notify renderer to pause activity
                 const settingWindow = getSettingWindow();
                 if (settingWindow && !settingWindow.isDestroyed()) {
-                    settingWindow.webContents.send('update-event-counts', {
-                        suspendCount,
-                        resumeCount,
-                        lockCount,
-                        unlockCount
-                    });
+
                 }
             }
         } catch (error) {
@@ -99,18 +95,14 @@ const createMainWindow = (rendererWindows) => {
     powerMonitor.on('resume', () => {
         resumeCount++;
         console.log('System is waking up');
+        updateStatisticsCounts(suspendCount, resumeCount, lockCount, unlockCount);
         // Resume any suspended work, such as timers or network requests
         try {
             if (mainWindow && !mainWindow.isDestroyed()) {
                 mainWindow.webContents.send('app-resume'); // Notify renderer to resume activity
                 const settingWindow = getSettingWindow();
                 if (settingWindow && !settingWindow.isDestroyed()) {
-                    settingWindow.webContents.send('update-event-counts', {
-                        suspendCount,
-                        resumeCount,
-                        lockCount,
-                        unlockCount
-                    });
+
                 }
             }
         } catch (error) {
@@ -121,19 +113,17 @@ const createMainWindow = (rendererWindows) => {
     // Listen for screen lock event
     powerMonitor.on('lock-screen', () => {
         lockCount++;
-        console.log('Screen is locked');
+        console.log(lockCount, 'Screen is locked');
+
+        updateStatisticsCounts(suspendCount, resumeCount, lockCount, unlockCount);
+
         // Pause or reduce resource-heavy tasks, save data, etc.
         try {
             if (mainWindow && !mainWindow.isDestroyed()) {
                 mainWindow.webContents.send('app-lock'); // Notify renderer to pause activity
                 const settingWindow = getSettingWindow();
                 if (settingWindow && !settingWindow.isDestroyed()) {
-                    settingWindow.webContents.send('update-event-counts', {
-                        suspendCount,
-                        resumeCount,
-                        lockCount,
-                        unlockCount
-                    });
+
                 }
             }
         } catch (error) {
@@ -144,19 +134,20 @@ const createMainWindow = (rendererWindows) => {
     // Listen for screen unlock event
     powerMonitor.on('unlock-screen', () => {
         unlockCount++;
-        console.log('Screen is unlocked');
+        console.log(unlockCount, 'Screen is unlocked');
+        updateStatisticsCounts(suspendCount, resumeCount, lockCount, unlockCount);
         // Resume tasks or reset timers
         try {
             if (mainWindow && !mainWindow.isDestroyed()) {
                 mainWindow.webContents.send('app-unlock'); // Notify renderer to resume activity
                 const settingWindow = getSettingWindow();
                 if (settingWindow && !settingWindow.isDestroyed()) {
-                    settingWindow.webContents.send('update-event-counts', {
-                        suspendCount,
-                        resumeCount,
-                        lockCount,
-                        unlockCount
-                    });
+                    // settingWindow.webContents.send('update-event-counts', {
+                    //     suspendCount,
+                    //     resumeCount,
+                    //     lockCount,
+                    //     unlockCount
+                    // });
                 }
             }
         } catch (error) {
@@ -266,5 +257,18 @@ const menuWithTimerInfo = (async (setting, tray, restartApp) => {
         await tray.setContextMenu(contextMenu);
     }, 1000)
 })
+
+function updateStatisticsCounts(suspendCount, resumeCount, lockCount, unlockCount) {
+    try {
+        store.set({
+            sleepCount: suspendCount,
+            resumeCount: resumeCount,
+            lockCount: lockCount,
+            unlockCount: unlockCount
+        });
+    } catch (error) {
+        console.error('Error updating counts in store:', error);
+    }
+}
 
 module.exports = {createMainWindow, mainWindow, menuWithTimerInfo};

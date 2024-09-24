@@ -26,9 +26,9 @@ const createSettingWindow = ((restartApp, mainWindow, breakFrequency) => {
     settingWindow.setResizable(false);
 
     settingWindow.loadFile(join(__dirname,'../../views/settings-tab.html'));
-    if (env.NODE_ENV === 'dev') {
+    // if (env.NODE_ENV === 'dev') {
         settingWindow.webContents.openDevTools();
-    }
+    // }
 
     if (env.NODE_ENV !== 'dev') {
         settingWindow.setMenu(null);

@@ -227,123 +227,7 @@
 
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <style>
-        /* Style the tab */
-        .tab {
-        }
 
-        .tab button:hover {
-            background-color: #ddd;
-        }
-
-        .tab button.active {
-            background-color: #ccc;
-        }
-
-        /* Style the tab content */
-        /*.tabcontent {*/
-        /*    display: none;*/
-        /*    padding: 6px 12px;*/
-        /*    border: 1px solid #ccc;*/
-        /*    border-top: none;*/
-        /*}*/
-        label{
-            display: block;
-            width: 100%;
-        }
-        input[type=text], select, input[type=password] {
-            width: 100%;
-            padding: 5px 20px;
-            margin: 8px 0;
-            display: inline-block;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-        }
-
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 34px;
-        }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            -webkit-transition: .4s;
-            transition: .4s;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 26px;
-            width: 26px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            -webkit-transition: .4s;
-            transition: .4s;
-        }
-
-        input:checked + .slider {
-            background-color: #2196F3;
-        }
-
-        input:focus + .slider {
-            box-shadow: 0 0 1px #2196F3;
-        }
-
-        input:checked + .slider:before {
-            -webkit-transform: translateX(26px);
-            -ms-transform: translateX(26px);
-            transform: translateX(26px);
-        }
-
-
-        input[type=text], select {
-            width: 100%;
-            padding: 12px 20px;
-            margin: 8px 0;
-            display: inline-block;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-
-        input[type=submit] {
-            width: 100%;
-            background-color: #4CAF50;
-            color: white;
-            padding: 14px 20px;
-            margin: 8px 0;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        input[type=submit]:hover {
-            background-color: #45a049;
-        }
-
-        .form-container {
-            border-radius: 5px;
-            padding: 20px;
-        }
-
-        .active{
-            background: #ececf2;
-        }
     </style>
 </head>
 <body>
@@ -383,15 +267,41 @@
             <div class="description">A Break Timer App</div>
             <div class="row">
                 <div class="graph">
-                    <svg viewBox="0 0 250 60" width="250" height="90"><path d="M 209.328 17.34 C 221.956 17.588 235.264 32.599 250 22.328" fill="none" vector-effect="non-scaling-stroke" stroke-width="2" stroke="rgb(243,243,250)" stroke-linejoin="miter" stroke-linecap="round" stroke-miterlimit="3"></path><linearGradient id="_lgradient_1" x1="0%" y1="50%" x2="100%" y2="50%"><stop offset="0%" stop-opacity="1" style="stop-color:rgb(120,113,255)"></stop><stop offset="100%" stop-opacity="1" style="stop-color:rgb(111,234,255)"></stop></linearGradient><path d=" M 0 43.634 C 5.934 43.634 11.318 51.209 17.462 51.342 C 33.219 51.683 30.603 59.567 39.187 59.868 C 46.963 60.141 50.44 44.192 60.537 43.77 C 69.126 43.77 72.129 52.461 79.739 52.433 C 90.904 52.433 94.93 38.455 106.648 39.78 C 129.082 42.317 124.556 27.606 139.157 27.177 C 153.758 26.747 158.235 44.485 171.96 44.725 C 196.438 45.155 189.782 17.1 208.248 17.1" fill="none" vector-effect="non-scaling-stroke" stroke-width="2" stroke="url(#_lgradient_1)" stroke-linejoin="miter" stroke-linecap="round" stroke-miterlimit="3"></path><path d="M 206.649 17.218 C 206.649 15.739 207.85 14.538 209.328 14.538 C 210.807 14.538 212.008 15.739 212.008 17.218 C 212.008 18.696 210.807 19.897 209.328 19.897 C 207.85 19.897 206.649 18.696 206.649 17.218 Z" fill="rgb(111,232,255)"></path><text transform="matrix(1,0,0,1,195,5)" style="font-family:&amp;quot;Open Sans&amp;quot;;font-weight:700;font-size:12px;font-style:normal;fill:#6fe8ff;stroke:none;">+14%</text><div class="stock"><div class="stock-logo paperpillar"><i class="fa fa-inverse fa-angle-double-up"></i></div><div class="stock-info"><div class="stock-name">PPRPLR</div><div class="stock-fullname">Paperpillar Studio</div></div></div></svg>
-                </div>
-                <div class="graph">
-                    <svg viewBox="0 0 250 60" width="250" height="90"><path d="M 209.328 17.34 C 221.956 17.588 235.264 32.599 250 22.328" fill="none" vector-effect="non-scaling-stroke" stroke-width="2" stroke="rgb(243,243,250)" stroke-linejoin="miter" stroke-linecap="round" stroke-miterlimit="3"></path><linearGradient id="_lgradient_2" x1="0%" y1="50%" x2="100%" y2="50%"><stop offset="0%" stop-opacity="1" style="stop-color:rgb(248, 135, 129)"></stop><stop offset="100%" stop-opacity="1" style="stop-color:rgb(247, 198, 130)"></stop></linearGradient><path d=" M 0 43.634 C 5.934 43.634 11.318 51.209 17.462 51.342 C 33.219 51.683 30.603 59.567 39.187 59.868 C 46.963 60.141 50.44 44.192 60.537 43.77 C 69.126 43.77 72.129 52.461 79.739 52.433 C 90.904 52.433 94.93 38.455 106.648 39.78 C 129.082 42.317 124.556 27.606 139.157 27.177 C 153.758 26.747 158.235 44.485 171.96 44.725 C 196.438 45.155 189.782 17.1 208.248 17.1" fill="none" vector-effect="non-scaling-stroke" stroke-width="2" stroke="url(#_lgradient_2)" stroke-linejoin="miter" stroke-linecap="round" stroke-miterlimit="3"></path><path d="M 206.649 17.218 C 206.649 15.739 207.85 14.538 209.328 14.538 C 210.807 14.538 212.008 15.739 212.008 17.218 C 212.008 18.696 210.807 19.897 209.328 19.897 C 207.85 19.897 206.649 18.696 206.649 17.218 Z" fill="rgb(247, 198, 130)"></path><text transform="matrix(1,0,0,1,195,5)" style="font-family:&amp;quot;Open Sans&amp;quot;;font-weight:700;font-size:12px;font-style:normal;fill:rgb(247, 198, 130);stroke:none;">+14%</text></svg>
                     <div class="stock">
                         <div class="stock-logo dandruft"><i class="fa fa-inverse fa-circle-thin"></i></div>
-                        <div class="stock-info">
-                            <div class="stock-name">DDFT</div>
-                            <div class="stock-fullname">Dandruft Craft</div>
+                        <div class="stock-info" style="margin-top: 10px;">
+                            <div class="stock-name" style="margin-bottom: 10px;">Screen Lock</div>
+                            <div class="stock-fullname" id="lock-count" style="font-size: 15px;">10</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="graph">
+                    <div class="stock">
+                        <div class="stock-logo dandruft"><i class="fa fa-inverse fa-circle-thin"></i></div>
+                        <div class="stock-info" style="margin-top: 10px;">
+                            <div class="stock-name" style="margin-bottom: 10px;">Screen Unlock</div>
+                            <div class="stock-fullname" id="unlock-count" style="font-size: 15px;">10</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="graph">
+                    <div class="stock">
+                        <div class="stock-logo dandruft"><i class="fa fa-inverse fa-circle-thin"></i></div>
+                        <div class="stock-info" style="margin-top: 10px;">
+                            <div class="stock-name" style="margin-bottom: 10px;">Screen Sleep</div>
+                            <div class="stock-fullname" id="suspend-count" style="font-size: 15px;">10</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="graph">
+                    <div class="stock">
+                        <div class="stock-logo dandruft"><i class="fa fa-inverse fa-circle-thin"></i></div>
+                        <div class="stock-info" style="margin-top: 10px;">
+                            <div class="stock-name" style="margin-bottom: 10px;">Screen Resume</div>
+                            <div class="stock-fullname" id="resume-count" style="font-size: 15px;">10</div>
                         </div>
                     </div>
                 </div>
@@ -575,14 +485,7 @@
         </div>
         <div id="Customization" class="tabcontent">
             <h3>Customization</h3>
-            <p>Customization is the capital of France.</p>
-
-            <div>
-                <p><strong>Suspend Count:</strong> <span id="suspend-count">0</span></p>
-                <p><strong>Resume Count:</strong> <span id="resume-count">0</span></p>
-                <p><strong>Lock Screen Count:</strong> <span id="lock-count">0</span></p>
-                <p><strong>Unlock Screen Count:</strong> <span id="unlock-count">0</span></p>
-            </div>
+            <p>Customize the UI.</p>
         </div>
 
         <div id="WorkingHours" class="tabcontent">
@@ -595,6 +498,7 @@
 <script src="../renderer/settings.js"></script>
 <script>
     function openTabMenu(event, targetName) {
+        statisticsCount()
         let i, tabcontent, tablinks;
         tabcontent = document.getElementsByClassName("tabcontent");
         for (i = 0; i < tabcontent.length; i++) {
@@ -614,6 +518,13 @@
                 defaultTab.classList.add('active');
             }
         }
+    }
+
+    function statisticsCount(){
+        document.getElementById('suspend-count').innerText = sleepCount;
+        document.getElementById('resume-count').innerText = resumeCount;
+        document.getElementById('lock-count').innerText = lockCount;
+        document.getElementById('unlock-count').innerText = unlockCount;
     }
 
     openTabMenu(event, 'Statistics');
