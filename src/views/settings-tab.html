@@ -339,58 +339,6 @@
 </div>
 
 <script src="../renderer/settings.js"></script>
-<script>
-    function openTabMenu(event, targetName) {
-        statisticsCount()
-        let i, tabcontent, tablinks;
-        tabcontent = document.getElementsByClassName("tabcontent");
-        for (i = 0; i < tabcontent.length; i++) {
-            tabcontent[i].style.display = "none";
-        }
-        tablinks = document.getElementsByClassName("tablinks");
-        for (i = 0; i < tablinks.length; i++) {
-            tablinks[i].className = tablinks[i].className.replace(" active", "");
-        }
-        document.getElementById(targetName).style.display = "block";
-
-        if (event) {
-            event.currentTarget.classList.add('active');
-        }else {
-            const defaultTab = document.querySelector(`li[onclick*="${'Statistics'}"]`);
-            if (defaultTab) {
-                defaultTab.classList.add('active');
-            }
-        }
-    }
-
-    function statisticsCount(){
-        document.getElementById('suspend-count').innerText = sleepCount;
-        document.getElementById('resume-count').innerText = resumeCount;
-        document.getElementById('lock-count').innerText = lockCount;
-        document.getElementById('unlock-count').innerText = unlockCount;
-    }
-
-    openTabMenu(event, 'Statistics');
-
-    function namazTimeInit(){
-        fetch(`http://api.aladhan.com/v1/timingsByCity?city=Dhaka&country=Bangladesh&method=2`)
-            .then(response => response.json())
-            .then(data => {
-                console.log('Fajr:', data.data.timings.Fajr);
-                console.log('Dhuhr:', data.data.timings.Dhuhr);
-                console.log('Asr:', data.data.timings.Asr);
-                console.log('Maghrib:', data.data.timings.Maghrib);
-                console.log('Isha:', data.data.timings.Isha);
-                document.getElementById('fajr-namaz').innerText = data.data.timings.Fajr;
-                document.getElementById('dhuhr-namaz').innerText = data.data.timings.Dhuhr;
-                document.getElementById('asr-namaz').innerText = data.data.timings.Asr;
-                document.getElementById('maghrib-namaz').innerText = data.data.timings.Maghrib;
-                document.getElementById('isha-namaz').innerText = data.data.timings.Isha;
-            })
-            .catch(error => console.error('Error fetching prayer times:', error));
-
-    }
-    namazTimeInit();
-</script>
+<script src="../assets/js/ui-setting.js"></script>
 </body>
 </html>
