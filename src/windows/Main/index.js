@@ -1,18 +1,24 @@
 const {BrowserWindow, ipcMain, Menu, powerMonitor} = require("electron");
-const { join} = require('path');
+const {join} = require('path');
 const dotenv = require('dotenv');
 const moment = require("moment/moment");
-const {createSettingWindow} = require("../Setting");
+const {createSettingWindow, getSettingWindow} = require("../Setting");
 const {createAboutModalWindow} = require("../About");
 const {createPopupWindow} = require("../Popup");
 const Store = require('electron-store');
 
 dotenv.config();
-const env  = process.env
+const env = process.env
 let mainWindow
 let contextMenu = null
 let nextBreak = "";
 let minInterval;
+
+// statistics count
+let lockCount = 0;
+let unlockCount = 0;
+let suspendCount = 0;
+let resumeCount = 0;
 
 const store = new Store();
 
@@ -68,39 +74,85 @@ const createMainWindow = (rendererWindows) => {
 
     // Listen for system sleep event
     powerMonitor.on('suspend', () => {
+        suspendCount++;
         console.log('System is going to sleep');
+        updateStatisticsCounts(suspendCount, resumeCount, lockCount, unlockCount);
         // Pause or stop any intensive work like network requests, timers, etc.
-        if (mainWindow) {
-            mainWindow.webContents.send('app-suspend'); // Notify renderer to pause activity
+        try {
+            if (mainWindow && !mainWindow.isDestroyed()) {
+                mainWindow.webContents.send('app-suspend'); // Notify renderer to pause activity
+                const settingWindow = getSettingWindow();
+                if (settingWindow && !settingWindow.isDestroyed()) {
+
+                }
+            }
+        } catch (error) {
+            console.error('Error sending event:', error)
         }
     });
 
     // Listen for system resume (wake) event
     powerMonitor.on('resume', () => {
+        resumeCount++;
         console.log('System is waking up');
+        updateStatisticsCounts(suspendCount, resumeCount, lockCount, unlockCount);
         // Resume any suspended work, such as timers or network requests
-        if (mainWindow) {
-            mainWindow.webContents.send('app-resume'); // Notify renderer to resume activity
+        try {
+            if (mainWindow && !mainWindow.isDestroyed()) {
+                mainWindow.webContents.send('app-resume'); // Notify renderer to resume activity
+                const settingWindow = getSettingWindow();
+                if (settingWindow && !settingWindow.isDestroyed()) {
+
+                }
+            }
+        } catch (error) {
+            console.error('Error sending event:', error)
         }
     });
 
     // Listen for screen lock event
     powerMonitor.on('lock-screen', () => {
-        console.log('Screen is locked');
+        lockCount++;
+        console.log(lockCount, 'Screen is locked');
+
+        updateStatisticsCounts(suspendCount, resumeCount, lockCount, unlockCount);
+
         // Pause or reduce resource-heavy tasks, save data, etc.
-        if (mainWindow) {
-            mainWindow.webContents.send('app-lock'); // Notify renderer to pause activity
+        try {
+            if (mainWindow && !mainWindow.isDestroyed()) {
+                mainWindow.webContents.send('app-lock'); // Notify renderer to pause activity
+                const settingWindow = getSettingWindow();
+                if (settingWindow && !settingWindow.isDestroyed()) {
+
+                }
+            }
+        } catch (error) {
+            console.error('Error sending event:', error)
         }
     });
 
     // Listen for screen unlock event
     powerMonitor.on('unlock-screen', () => {
-        console.log('Screen is unlocked');
+        unlockCount++;
+        console.log(unlockCount, 'Screen is unlocked');
+        updateStatisticsCounts(suspendCount, resumeCount, lockCount, unlockCount);
         // Resume tasks or reset timers
-        if (mainWindow) {
-            mainWindow.webContents.send('app-unlock'); // Notify renderer to resume activity
+        try {
+            if (mainWindow && !mainWindow.isDestroyed()) {
+                mainWindow.webContents.send('app-unlock'); // Notify renderer to resume activity
+                const settingWindow = getSettingWindow();
+                if (settingWindow && !settingWindow.isDestroyed()) {
+                    // settingWindow.webContents.send('update-event-counts', {
+                    //     suspendCount,
+                    //     resumeCount,
+                    //     lockCount,
+                    //     unlockCount
+                    // });
+                }
+            }
+        } catch (error) {
+            console.error('Error sending event:', error)
         }
-
     });
 
     mainWindow.on('closed', () => {
@@ -182,7 +234,7 @@ const menuWithTimerInfo = (async (setting, tray, restartApp) => {
             {
                 label: 'Settings',
                 click: () => {
-                    createSettingWindow(restartApp, mainWindow); // Open the modal when the menu item is clicked
+                    createSettingWindow(restartApp, mainWindow, inWorkingHours); // Open the modal when the menu item is clicked
                 },
             },
             {
@@ -205,5 +257,18 @@ const menuWithTimerInfo = (async (setting, tray, restartApp) => {
         await tray.setContextMenu(contextMenu);
     }, 1000)
 })
+
+function updateStatisticsCounts(suspendCount, resumeCount, lockCount, unlockCount) {
+    try {
+        store.set({
+            sleepCount: suspendCount,
+            resumeCount: resumeCount,
+            lockCount: lockCount,
+            unlockCount: unlockCount
+        });
+    } catch (error) {
+        console.error('Error updating counts in store:', error);
+    }
+}
 
 module.exports = {createMainWindow, mainWindow, menuWithTimerInfo};
