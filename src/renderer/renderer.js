@@ -198,3 +198,34 @@ ipcRenderer.on('app-resume', () => {
     // Resume any paused activity in the renderer
     startTimer();
 });
+
+ipcRenderer.on('update-checking', () => {
+    console.log('Checking for updates...');
+    document.getElementById('status').innerText = 'Checking for updates...';
+});
+
+ipcRenderer.on('update-available', (event, info) => {
+    console.log('Update available:', info);
+    document.getElementById('status').innerText = 'Update available. Downloading...';
+});
+
+ipcRenderer.on('update-not-available', (event, info) => {
+    console.log('Update not available:', info);
+    document.getElementById('status').innerText = 'No updates available.';
+});
+
+ipcRenderer.on('update-error', (event, error) => {
+    console.error('Update error:', error);
+    document.getElementById('status').innerText = 'Update error: ' + error;
+});
+
+ipcRenderer.on('download-progress', (event, progressObj) => {
+    let log_message = `Downloaded ${progressObj.percent}%`;
+    console.log(log_message);
+    document.getElementById('status').innerText = log_message;
+});
+
+ipcRenderer.on('update-downloaded', (event, info) => {
+    console.log('Update downloaded:', info);
+    document.getElementById('status').innerText = 'Update downloaded. Ready to install.';
+});

@@ -1,4 +1,5 @@
-const {BrowserWindow, ipcMain, Menu, powerMonitor} = require("electron");
+const {BrowserWindow, ipcMain, Menu, powerMonitor, dialog} = require("electron");
+const { autoUpdater } = require('electron-updater');
 const {join} = require('path');
 const dotenv = require('dotenv');
 const moment = require("moment/moment");
@@ -157,7 +158,61 @@ const createMainWindow = (rendererWindows) => {
 
     mainWindow.on('closed', () => {
         mainWindow = null;
-    })
+    });
+
+
+    // Auto-updater events
+    autoUpdater.on('checking-for-update', () => {
+        console.log('Checking for updates...');
+        mainWindow.webContents.send('update-checking');
+    });
+
+    autoUpdater.on('update-available', (info) => {
+        console.log('Update available:', info);
+        mainWindow.webContents.send('update-available', info);
+    });
+
+    autoUpdater.on('update-not-available', (info) => {
+        console.log('No updates available:', info);
+        mainWindow.webContents.send('update-not-available', info);
+    });
+
+    autoUpdater.on('error', (err) => {
+        console.error('Update error:', err);
+        mainWindow.webContents.send('update-error', err.message);
+    });
+
+    autoUpdater.on('download-progress', (progressObj) => {
+        let log_message = `Download speed: ${progressObj.bytesPerSecond}`;
+        log_message += ` - Downloaded ${progressObj.percent}%`;
+        log_message += ` (${progressObj.transferred}/${progressObj.total})`;
+        console.log(log_message);
+        mainWindow.webContents.send('download-progress', progressObj);
+    });
+
+    autoUpdater.on('update-downloaded', (info) => {
+        console.log('Update downloaded:', info);
+        mainWindow.webContents.send('update-downloaded', info);
+
+        // Ask user to install the update
+        dialog
+            .showMessageBox({
+                type: 'info',
+                title: 'Update available',
+                message: 'A new version is available. Do you want to install the update now?',
+                buttons: ['Yes', 'Later'],
+            })
+            .then((result) => {
+                if (result.response === 0) {
+                    autoUpdater.quitAndInstall();
+                }
+            });
+    });
+
+    // Check for updates immediately after creating the window
+    mainWindow.webContents.once('did-finish-load', () => {
+        autoUpdater.checkForUpdatesAndNotify();
+    });
 }
 
 const menuWithTimerInfo = (async (setting, tray, restartApp) => {
