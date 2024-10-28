@@ -49,7 +49,9 @@
     "target": "nsis",
     "nsis": {
       "oneClick": false,
-      "perMachine": true
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true,
+      "runAfterFinish": true
     },
     "mac": {
       "category": "productivity",
