@@ -1,8 +1,12 @@
-const {BrowserWindow, ipcMain, screen} = require("electron");
+const {BrowserWindow, ipcMain, screen, Notification } = require("electron");
 const { join} = require('path');
+const Store = require('electron-store');
 const dotenv = require("dotenv");
 dotenv.config();
 const env  = process.env
+
+// Initialize the store
+const store = new Store();
 
 function createPopupWindow(rendererWindows, mainWindow) {
     const { width, height } = screen.getPrimaryDisplay().bounds;
@@ -27,6 +31,7 @@ function createPopupWindow(rendererWindows, mainWindow) {
             contextIsolation: false,
         },
     });
+
     if (env.NODE_ENV === 'dev') {
         popupWindow.webContents.openDevTools();
     }
@@ -35,7 +40,12 @@ function createPopupWindow(rendererWindows, mainWindow) {
     popupWindow.loadFile(join(__dirname,'../../views/popup.html'));
 
     popupWindow.once('ready-to-show', () => {
-        popupWindow.show(); // Show the popup window once it's ready
+        let setting = store.get('setting');
+        if (setting && setting.notifyMe === 'notify') {
+            showToastNotification('Notification Title', 'This is your toast notification message.');
+        } else {
+            popupWindow.show(); // Show the popup window once it's ready
+        }
     });
 
     ipcMain.on('break-end', (event, message) => {
@@ -52,6 +62,28 @@ function createPopupWindow(rendererWindows, mainWindow) {
     popupWindow.on('closed', () => {
         popupWindow = null;
     });
+
+    function getAllDisplays() {
+        return screen.getAllDisplays();
+    }
+
+    function showToastNotification(title, body) {
+        const notification = new Notification({
+            title: title,
+            body: body,
+            icon: join(__dirname, '../../assets/icon/icon.png'), // Path to an icon
+            silent: false,
+        });
+
+        notification.show();
+
+        notification.on('click', () => {
+            // Example action: focus the main window
+            if (mainWindow) {
+                mainWindow.focus();
+            }
+        });
+    }
 }
 
 module.exports = {createPopupWindow};
