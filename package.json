@@ -31,6 +31,7 @@
     "auto-launch": "^5.0.6",
     "dotenv": "^16.3.1",
     "electron-store": "^8.1.0",
+    "electron-updater": "^6.3.4",
     "moment": "^2.29.4"
   },
   "devDependencies": {
@@ -48,12 +49,16 @@
     "target": "nsis",
     "nsis": {
       "oneClick": false,
-      "perMachine": true
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true,
+      "runAfterFinish": true
     },
     "mac": {
       "category": "productivity",
       "target": "dmg",
-      "icon": "build/icon.icns"
+      "icon": "build/icon.icns",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false
     },
     "win": {
       "target": "nsis",
