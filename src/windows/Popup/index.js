@@ -42,7 +42,7 @@ function createPopupWindow(rendererWindows, mainWindow) {
     popupWindow.once('ready-to-show', () => {
         let setting = store.get('setting');
         if (setting && setting.notifyMe === 'notify') {
-            showToastNotification('Notification Title', 'This is your toast notification message.');
+            showToastNotification('Time for break!', 'Rest your eyes. Stretch your legs. Breathe. Relax.');
         } else {
             popupWindow.show(); // Show the popup window once it's ready
         }
