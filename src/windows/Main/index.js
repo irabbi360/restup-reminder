@@ -170,6 +170,11 @@ const createMainWindow = (rendererWindows) => {
     autoUpdater.on('update-available', (info) => {
         console.log('Update available:', info);
         mainWindow.webContents.send('update-available', info);
+        dialog.showMessageBox({
+            type: 'info',
+            title: 'Update Available',
+            message: 'A new version is available. Downloading now...',
+        });
     });
 
     autoUpdater.on('update-not-available', (info) => {
@@ -194,19 +199,32 @@ const createMainWindow = (rendererWindows) => {
         console.log('Update downloaded:', info);
         mainWindow.webContents.send('update-downloaded', info);
 
+        const response = dialog.showMessageBoxSync({
+            type: 'question',
+            buttons: ['Restart', 'Later'],
+            defaultId: 0,
+            cancelId: 1,
+            title: 'Install Updates',
+            message: 'Updates downloaded. Restart the application to apply the updates?',
+        });
+
+        if (response === 0) {
+            autoUpdater.quitAndInstall();
+        }
+
         // Ask user to install the update
-        dialog
-            .showMessageBox({
-                type: 'info',
-                title: 'Update available',
-                message: 'A new version is available. Do you want to install the update now?',
-                buttons: ['Yes', 'Later'],
-            })
-            .then((result) => {
-                if (result.response === 0) {
-                    autoUpdater.quitAndInstall();
-                }
-            });
+        // dialog
+        //     .showMessageBox({
+        //         type: 'info',
+        //         title: 'Update available',
+        //         message: 'A new version is available. Do you want to install the update now?',
+        //         buttons: ['Yes', 'Later'],
+        //     })
+        //     .then((result) => {
+        //         if (result.response === 0) {
+        //             autoUpdater.quitAndInstall();
+        //         }
+        //     });
     });
 
     // Check for updates immediately after creating the window

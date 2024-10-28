@@ -56,7 +56,9 @@
     "mac": {
       "category": "productivity",
       "target": "dmg",
-      "icon": "build/icon.icns"
+      "icon": "build/icon.icns",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false
     },
     "win": {
       "target": "nsis",
