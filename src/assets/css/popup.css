@@ -18,16 +18,65 @@ body {
 }
 
 .main-content {
-    /*border-radius: 25% 25% 25% 25% / 25% 25% 25% 25%;*/
-    /*border-radius: 31% 69% 23% 77% / 66% 18% 82% 34%;*/
     width : 300px;
     height : 300px;
     margin: auto;
-    background: #FF0099;
-    background-image: linear-gradient(45deg,#3023AE 10%,#FF0099 100%);
+    background: #FF0099 linear-gradient(45deg, #3023AE 10%, #FF0099 100%);
     border-radius: 30% 70% 70% 30%/30% 30% 70% 70%;
     box-shadow: -10vmin 10vmin #ffffff12;
 }
+
+.main-content {
+    width: 300px;
+    height: 300px;
+    margin: auto;
+    background: #00D084 linear-gradient(45deg, #00C9A7 10%, #00D084 100%);
+    border-radius: 30% 70% 70% 30%/30% 30% 70% 70%;
+    box-shadow: -10vmin 10vmin #ffffff12;
+}
+
+.main-content {
+    background: #D4145A; /* Magenta */
+    background-image: linear-gradient(45deg, #662D8C 10%, #D4145A 100%); /* Purple to Magenta */
+}
+
+.main-content {
+    background: #FF4E50; /* Bright Red */
+    background-image: linear-gradient(45deg, #FC913A 10%, #FF4E50 100%); /* Orange to Red */
+}
+.main-content {
+    background: #A8E063; /* Light Green */
+    background-image: linear-gradient(45deg, #00FF87 10%, #A8E063 100%); /* Neon Green to Yellowish Green */
+}
+.main-content {
+    background: #00B4DB; /* Light Blue */
+    background-image: linear-gradient(45deg, #0083B0 10%, #00B4DB 100%); /* Deep Blue to Aqua */
+}
+.main-content {
+    background: #FF6B6B; /* Soft Coral */
+    background-image: linear-gradient(45deg, #F94D6A 10%, #FF6B6B 100%); /* Pink to Coral */
+}
+.main-content {
+    background: #2C3E50; /* Dark Blue */
+    background-image: linear-gradient(45deg, #1A2980 10%, #2C3E50 100%); /* Midnight Blue to Deep Purple */
+}
+.main-content {
+    background: #16222A; /* Deep Teal */
+    background-image: linear-gradient(45deg, #3A6073 10%, #16222A 100%); /* Deep Teal to Dark Cyan */
+}
+.main-content {
+    background: #0F2027; /* Charcoal */
+    background-image: linear-gradient(45deg, #2C5364 10%, #0F2027 100%); /* Charcoal to Electric Violet */
+}
+.main-content {
+    background: #1B1B1B; /* Dark Gray */
+    background-image: linear-gradient(45deg, #6D214F 10%, #1B1B1B 100%); /* Deep Magenta to Black */
+}
+.main-content {
+    background: #2C001E; /* Deep Burgundy */
+    background-image: linear-gradient(45deg, #4B0029 10%, #2C001E 100%); /* Rich Burgundy to Black */
+}
+
 .centered-container {
     position: absolute;
     top: 50%;

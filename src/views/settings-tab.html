@@ -31,15 +31,15 @@
                 <li class="tablinks" onclick="openTabMenu(event, 'Customization')">
                     <i class="material-icons">tune</i><span>Customization</span>
                 </li>
-                <li class="tablinks">
+                <!--<li class="tablinks">
                     <i class="material-icons">library_books</i><span>Contact Us</span>
-                </li>
+                </li>-->
                 <li class="tablinks" onclick="openTabMenu(event, 'WorkingHours')">
                     <i class="material-icons">account_box</i><span>About Us</span>
                 </li>
-                <li class="tablinks">
+                <!--<li class="tablinks">
                     <i class="material-icons">cancel</i><span>Close</span>
-                </li>
+                </li>-->
             </ul>
         </div>
     </div>
@@ -322,7 +322,11 @@
                             <option value="30">30 Minutes</option>
                         </select>
                     </div>
-                    <button style="padding: 5px; " id="settingSave">Update Setting</button>
+                    <div style="margin-top: 20px;">
+                        <button style="padding: 10px; background-color: #2196F3; color: #fff; border: none; cursor: pointer;" id="settingSave">
+                            Update Setting
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -332,8 +336,13 @@
         </div>
 
         <div id="WorkingHours" class="tabcontent">
-            <h3>Working Hours</h3>
-            <p>Working Hours is the capital of Japan.</p>
+            <h3>About US</h3>
+            <div>
+                <p>The app to remind you it's time to take a break from the screen and go out!</p>
+                <p>Version: 1.0.0</p>
+                <p>Develop By: <b><a href="javascript:void(0)" id="aboutUsBtn">Fazle Rabbi</a></b></p>
+                <p style="margin-top: 3rem;">Copyright © 2024 RestUp Reminder</p>
+            </div>
         </div>
     </div>
 </div>

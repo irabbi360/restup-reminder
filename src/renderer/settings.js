@@ -1,4 +1,4 @@
-const { ipcRenderer } = require('electron');
+const { ipcRenderer, contextBridge, shell } = require('electron');
 const Store = require('electron-store');
 
 const store = new Store();
@@ -63,3 +63,15 @@ ipcRenderer.on('update-event-counts', (event, counts) => {
     // document.getElementById('lock-count').innerText = lockCount;
     // document.getElementById('unlock-count').innerText = unlockCount;
 });
+
+
+const aboutUsBtn = document.getElementById('aboutUsBtn');
+
+if (aboutUsBtn) {
+    aboutUsBtn.addEventListener('click', () => {
+        shell.openExternal('https://github.com/irabbi360');
+        setTimeout(() => {
+            ipcRenderer.send('close-modal');
+        }, 500)
+    });
+}

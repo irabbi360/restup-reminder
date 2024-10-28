@@ -11,16 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeBtn = document.getElementById('closeBtn');*/
 
     const websiteBtn = document.getElementById('devWebsite');
-    /*const closeModalButton = document.getElementById('closeModalButton');
-   closeModalButton.addEventListener('click', () => {
-        // Send a message to the main process to close the modal
-        ipcRenderer.send('close-modal');
-    });*/
-    /*
-        closeBtn.addEventListener('click', () => {
-            // Send a message to the main process to close the modal
-            ipcRenderer.send('close-modal');
-        });*/
+
     websiteBtn.addEventListener('click', () => {
         shell.openExternal('https://github.com/irabbi360');
         setTimeout(() => {
