@@ -395,7 +395,9 @@ input[type=submit]:hover {
 .active {
     background: #ececf2;
 }
-
+.popup-bg-default{
+    background-color: rgba(0, 0, 0, 0.8);
+}
 .popup-bg-magenta-pink {
     background: #FF0099 linear-gradient(45deg, #3023AE 10%, #FF0099 100%);
 }

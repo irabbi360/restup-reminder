@@ -84,7 +84,6 @@ namazTimeInit();
 
 const selectElement = document.getElementById('popupColor');
 const colorPreview = document.getElementById('colorPreview');
-console.log(selectElement.value, 'ssssss')
 
 selectElement.addEventListener('change', function() {
     const selectedOptionClass = this.options[this.selectedIndex].value;
@@ -98,7 +97,6 @@ selectElement.addEventListener('change', function() {
 colorPreview.className = selectElement.options[selectElement.selectedIndex].className;
 if (selectElement.value) {
     colorPreview.className = selectElement.value;
+} else {
+    colorPreview.className = 'popup-bg-default'
 }
-
-// let breakNotifyTitle = document.getElementById("breakNotifyTitle");
-// let breakNotifyMessage = document.getElementById("breakNotifyMessage");
