@@ -4,9 +4,10 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 const env  = process.env
+let modalWindow;
 
 const createAboutModalWindow =  (mainWindow) => {
-    let modalWindow = new BrowserWindow({
+    modalWindow = new BrowserWindow({
         // parent: mainWindow, // Make the main window the parent of the modal
         // modal: true,
         width: 350,
@@ -30,7 +31,9 @@ const createAboutModalWindow =  (mainWindow) => {
     }
     // Listen for a close request from the modal
     ipcMain.on('close-modal', () => {
-        modalWindow.close();
+        if (modalWindow) {
+            modalWindow.close();
+        }
     });
 
     modalWindow.on('closed', () => {

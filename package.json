@@ -51,6 +51,8 @@
       "oneClick": false,
       "perMachine": true,
       "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
       "runAfterFinish": true
     },
     "mac": {
