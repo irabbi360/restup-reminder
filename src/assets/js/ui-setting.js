@@ -1,4 +1,3 @@
-
 function openTabMenu(event, targetName) {
     statisticsCount()
     let i, tabcontent, tablinks;

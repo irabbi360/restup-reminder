@@ -20,5 +20,14 @@
 </div>
 
 <script src="../renderer/popup.js"></script>
+<script>
+  window.addEventListener('load', () => {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        document.querySelector('.blur-container').style.opacity = '1';
+      });
+    });
+  });
+</script>
 </body>
 </html>

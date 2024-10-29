@@ -4,6 +4,11 @@ const Store = require('electron-store');
 const store = new Store();
 const setting = store.get('setting');
 
+const toast = new Toast({
+    position: 'top-right', // options: 'top-right', 'top-left', 'bottom-right', 'bottom-left'
+    duration: 3000 // Duration in milliseconds, 0 for permanent
+})
+
 let notifyMe = document.getElementById("notifyMe");
 let breakFrequency = document.getElementById("breakFrequency");
 let breakLength = document.getElementById("breakLength");
@@ -23,14 +28,25 @@ document.getElementById("settingSave").addEventListener("click", () => {
         skipBreak: skipBreak.value,
         snoozeBreak: snoozeBreak.value,
         snoozeLength: snoozeLength.value,
-    })
+    });
+
+    toast.show({
+        type: 'success',
+        message: 'Setting successfully updated.'
+    });
 });
 document.getElementById("uiSettingSave").addEventListener("click", () => {
     store.set('setting', {
         ...setting,
+        popupColor: popupColor.value,
         breakNotifyTitle: breakNotifyTitle.value,
         breakNotifyMessage: breakNotifyMessage.value,
-    })
+    });
+
+    toast.show({
+        type: 'success',
+        message: 'Customization successfully updated.'
+    });
 });
 
 store.onDidChange('setting', (newValue, oldValue) => {

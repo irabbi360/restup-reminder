@@ -23,6 +23,7 @@ function createPopupWindow(rendererWindows, mainWindow) {
         icon: join(__dirname, '../../assets/icon/icon.ico'),
         parent: mainWindow, // Set the main window as the parent
         modal: true, // Make the popup modal (blocks main window interaction)
+        opacity: 0,
         show: false, // Initially, don't show the window
         frame: env.NODE_ENV === 'dev',
         transparent: env.NODE_ENV !== 'dev',
@@ -45,6 +46,7 @@ function createPopupWindow(rendererWindows, mainWindow) {
             showToastNotification(setting.breakNotifyTitle, setting.breakNotifyMessage);
         } else {
             popupWindow.show(); // Show the popup window once it's ready
+            fadeInPopupWindow(popupWindow);
         }
     });
 
@@ -83,6 +85,19 @@ function createPopupWindow(rendererWindows, mainWindow) {
                 mainWindow.focus();
             }
         });
+    }
+
+    // Function to increase the opacity gradually
+    function fadeInPopupWindow(window, step = 0.05, interval = 16) {
+        let opacity = 0;
+        const fadeInterval = setInterval(() => {
+            opacity += step;
+            if (opacity >= 1) {
+                opacity = 1;
+                clearInterval(fadeInterval); // Stop when opacity reaches 1
+            }
+            window.setOpacity(opacity);
+        }, interval);
     }
 }
 
