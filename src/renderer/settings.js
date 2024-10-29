@@ -2,6 +2,7 @@ const { ipcRenderer, contextBridge, shell } = require('electron');
 const Store = require('electron-store');
 
 const store = new Store();
+const setting = store.get('setting');
 
 let notifyMe = document.getElementById("notifyMe");
 let breakFrequency = document.getElementById("breakFrequency");
@@ -10,34 +11,26 @@ let skipBreak = document.getElementById("skipBreak");
 let snoozeBreak = document.getElementById("snoozeBreak");
 let snoozeLength = document.getElementById("snoozeLength");
 let popupColor = document.getElementById("popupColor");
+let breakNotifyTitle = document.getElementById("breakNotifyTitle");
+let breakNotifyMessage = document.getElementById("breakNotifyMessage");
 
 document.getElementById("settingSave").addEventListener("click", () => {
-
-    let setting = {
+    store.set('setting', {
+        ...setting,
         notifyMe: notifyMe.value,
         breakFrequency: breakFrequency.value,
         breakLength: breakLength.value,
         skipBreak: skipBreak.value,
         snoozeBreak: snoozeBreak.value,
         snoozeLength: snoozeLength.value,
-        popupColor: popupColor.value,
-    }
-
-    store.set('setting', setting)
+    })
 });
 document.getElementById("uiSettingSave").addEventListener("click", () => {
-
-    let setting = {
-        notifyMe: notifyMe.value,
-        breakFrequency: breakFrequency.value,
-        breakLength: breakLength.value,
-        skipBreak: skipBreak.value,
-        snoozeBreak: snoozeBreak.value,
-        snoozeLength: snoozeLength.value,
-        popupColor: popupColor.value,
-    }
-
-    store.set('setting', setting)
+    store.set('setting', {
+        ...setting,
+        breakNotifyTitle: breakNotifyTitle.value,
+        breakNotifyMessage: breakNotifyMessage.value,
+    })
 });
 
 store.onDidChange('setting', (newValue, oldValue) => {
@@ -45,7 +38,6 @@ store.onDidChange('setting', (newValue, oldValue) => {
     ipcRenderer.send('update-setting', newValue);
 });
 
-const setting = store.get('setting');
 if (setting && setting.breakFrequency) {
     breakFrequency.value = setting.breakFrequency
 }
@@ -89,3 +81,7 @@ if (aboutUsBtn) {
         shell.openExternal('https://github.com/irabbi360');
     });
 }
+
+// notify title message value assign
+breakNotifyTitle.value = setting.breakNotifyTitle ?? ''
+breakNotifyMessage.value = setting.breakNotifyMessage ?? ''

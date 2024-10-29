@@ -100,3 +100,6 @@ colorPreview.className = selectElement.options[selectElement.selectedIndex].clas
 if (selectElement.value) {
     colorPreview.className = selectElement.value;
 }
+
+// let breakNotifyTitle = document.getElementById("breakNotifyTitle");
+// let breakNotifyMessage = document.getElementById("breakNotifyMessage");

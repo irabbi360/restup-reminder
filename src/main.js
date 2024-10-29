@@ -58,9 +58,12 @@ app.on('ready', () => {
             skipBreak: 'on',
             snoozeBreak: 'on',
             snoozeLength: 5,
+            breakNotifyTitle: 'Time for break!',
+            breakNotifyMessage: 'Rest your eyes. Stretch your legs. Breathe. Relax.'
         }
-        store.set('setting', setting)
+        store.set('setting', setting);
     }
+
     setting = store.get('setting');
 
     createMainWindow(rendererWindows);
