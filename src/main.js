@@ -52,7 +52,7 @@ app.on('ready', () => {
     if (setting) {
     } else {
         let setting = {
-            notifyMe: 'Popup',
+            notifyMe: 'popup',
             breakFrequency: 30,
             breakLength: 2,
             skipBreak: 'on',

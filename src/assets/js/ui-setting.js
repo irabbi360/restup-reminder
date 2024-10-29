@@ -22,10 +22,10 @@ function openTabMenu(event, targetName) {
 }
 
 function statisticsCount(){
-    document.getElementById('suspend-count').innerText = sleepCount;
-    document.getElementById('resume-count').innerText = resumeCount;
-    document.getElementById('lock-count').innerText = lockCount;
-    document.getElementById('unlock-count').innerText = unlockCount;
+    document.getElementById('suspend-count').innerText = sleepCount ?? 0;
+    document.getElementById('resume-count').innerText = resumeCount ?? 0;
+    document.getElementById('lock-count').innerText = lockCount ?? 0;
+    document.getElementById('unlock-count').innerText = unlockCount ?? 0;
 }
 
 openTabMenu(event, 'Statistics');
