@@ -9,6 +9,8 @@ let breakSessions = store.get('break_sessions');
 let popupClass = document.getElementById('popupClass');
 if (popupClass && setting.popupColor) {
     popupClass.classList.add(setting.popupColor);
+} else {
+    popupClass.classList.add('popup-bg-default');
 }
 
 closeButton.addEventListener('click', () => {
