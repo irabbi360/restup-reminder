@@ -70,8 +70,5 @@ const aboutUsBtn = document.getElementById('aboutUsBtn');
 if (aboutUsBtn) {
     aboutUsBtn.addEventListener('click', () => {
         shell.openExternal('https://github.com/irabbi360');
-        setTimeout(() => {
-            ipcRenderer.send('close-modal');
-        }, 500)
     });
 }

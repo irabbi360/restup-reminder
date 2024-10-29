@@ -33,10 +33,6 @@ const createSettingWindow = ((restartApp, mainWindow, breakFrequency) => {
     if (env.NODE_ENV !== 'dev') {
         settingWindow.setMenu(null);
     }
-    // Listen for a close request from the modal
-    ipcMain.on('close-modal', () => {
-        settingWindow.close();
-    });
 
     settingWindow.on('closed', () => {
         let upSetting = store.get('setting');
