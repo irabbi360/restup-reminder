@@ -322,8 +322,8 @@
                             <option value="30">30 Minutes</option>
                         </select>
                     </div>
-                    <div style="margin-top: 20px;">
-                        <button style="padding: 10px; background-color: #2196F3; color: #fff; border: none; cursor: pointer;" id="settingSave">
+                    <div class="mt-20">
+                        <button class="btn-setting" id="settingSave">
                             Update Setting
                         </button>
                     </div>
@@ -333,6 +333,35 @@
         <div id="Customization" class="tabcontent">
             <h3>Customization</h3>
             <p>Customize the UI.</p>
+            <div class="form-container">
+                <div class="form-group">
+                    <label for="popupColor">Popup Notify Color</label>
+                    <select name="popupColor" id="popupColor" style="width: 200px">
+                        <option value="" class="">Default</option>
+                        <option value="popup-bg-green-teal" class="">Green Teal</option>
+                        <option value="popup-bg-magenta-pink" class="">Magenta Pink</option>
+                        <option value="popup-bg-purple-magenta" class="">Purple Magenta</option>
+                        <option value="popup-bg-bright-orange-red" class="">Bright Orange Red</option>
+                        <option value="popup-bg-neon-green" class="">Neon Green</option>
+                        <option value="popup-bg-blue-aqua" class="">Blue Aqua</option>
+                        <option value="popup-bg-soft-coral" class="">Soft Coral</option>
+                        <option value="popup-bg-dark-blue-purple" class="">Dark Blue Purple</option>
+                        <option value="popup-bg-deep-teal-cyan" class="">Deep Teal Cyan</option>
+                        <option value="popup-bg-charcoal-violet" class="">Charcoal Violet</option>
+                        <option value="popup-bg-deep-magenta-black" class="">Magenta Black</option>
+                        <option value="popup-bg-deep-burgundy" class="">Deep Burgundy</option>
+                    </select>
+                </div>
+                <div id="colorPreview" class="color-preview"
+                     style="height: 50px; width: 50px;"
+                >
+                </div>
+                <div class="mt-20">
+                    <button class="btn-setting" id="uiSettingSave">
+                        Update Setting
+                    </button>
+                </div>
+            </div>
         </div>
 
         <div id="WorkingHours" class="tabcontent">
@@ -341,7 +370,7 @@
                 <p>The app to remind you it's time to take a break from the screen and go out!</p>
                 <p>Version: 1.0.0</p>
                 <p>Develop By: <b><a href="javascript:void(0)" id="aboutUsBtn">Fazle Rabbi</a></b></p>
-                <p style="margin-top: 3rem;">Copyright © 2024 RestUp Reminder</p>
+                <p style="margin-top: 3rem;">Copyright © <span id="current-year"></span> RestUp Reminder</p>
             </div>
         </div>
     </div>

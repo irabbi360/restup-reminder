@@ -77,5 +77,26 @@ function setNamazTimesOnUI(namazTime) {
     document.getElementById('isha-namaz').innerText = namazTime.isha;
 }
 
+// current-year
+document.getElementById("current-year").textContent = new Date().getFullYear();
+
 // Call the function
 namazTimeInit();
+
+const selectElement = document.getElementById('popupColor');
+const colorPreview = document.getElementById('colorPreview');
+console.log(selectElement.value, 'ssssss')
+
+selectElement.addEventListener('change', function() {
+    const selectedOptionClass = this.options[this.selectedIndex].value;
+    // this.className = selectedOptionClass;
+
+    // Set the background color of the preview box based on the selected option
+    colorPreview.className = selectedOptionClass; // Update the preview box class
+});
+
+// Initialize preview color on page load
+colorPreview.className = selectElement.options[selectElement.selectedIndex].className;
+if (selectElement.value) {
+    colorPreview.className = selectElement.value;
+}

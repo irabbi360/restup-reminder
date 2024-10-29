@@ -6,6 +6,11 @@ const store = new Store();
 let setting = store.get('setting');
 let breakSessions = store.get('break_sessions');
 
+let popupClass = document.getElementById('popupClass');
+if (popupClass && setting.popupColor) {
+    popupClass.classList.add(setting.popupColor);
+}
+
 closeButton.addEventListener('click', () => {
     stopTimer();
     window.close(); // Close the popup window when the close button is clicked

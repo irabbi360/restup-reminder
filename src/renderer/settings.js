@@ -3,12 +3,13 @@ const Store = require('electron-store');
 
 const store = new Store();
 
-notifyMe = document.getElementById("notifyMe");
-breakFrequency = document.getElementById("breakFrequency");
-breakLength = document.getElementById("breakLength");
-skipBreak = document.getElementById("skipBreak");
-snoozeBreak = document.getElementById("snoozeBreak");
-snoozeLength = document.getElementById("snoozeLength");
+let notifyMe = document.getElementById("notifyMe");
+let breakFrequency = document.getElementById("breakFrequency");
+let breakLength = document.getElementById("breakLength");
+let skipBreak = document.getElementById("skipBreak");
+let snoozeBreak = document.getElementById("snoozeBreak");
+let snoozeLength = document.getElementById("snoozeLength");
+let popupColor = document.getElementById("popupColor");
 
 document.getElementById("settingSave").addEventListener("click", () => {
 
@@ -19,13 +20,27 @@ document.getElementById("settingSave").addEventListener("click", () => {
         skipBreak: skipBreak.value,
         snoozeBreak: snoozeBreak.value,
         snoozeLength: snoozeLength.value,
+        popupColor: popupColor.value,
+    }
+
+    store.set('setting', setting)
+});
+document.getElementById("uiSettingSave").addEventListener("click", () => {
+
+    let setting = {
+        notifyMe: notifyMe.value,
+        breakFrequency: breakFrequency.value,
+        breakLength: breakLength.value,
+        skipBreak: skipBreak.value,
+        snoozeBreak: snoozeBreak.value,
+        snoozeLength: snoozeLength.value,
+        popupColor: popupColor.value,
     }
 
     store.set('setting', setting)
 });
 
 store.onDidChange('setting', (newValue, oldValue) => {
-    console.log(`'setting' changed ${oldValue} to ${newValue}`);
     // Perform actions in response to the change, e.g., update the UI.
     ipcRenderer.send('update-setting', newValue);
 });
@@ -49,6 +64,9 @@ if (setting && setting.snoozeBreak) {
 if (setting && setting.snoozeLength) {
     snoozeLength.value = setting.snoozeLength
 }
+if (setting && setting.popupColor) {
+    popupColor.value = setting.popupColor
+}
 
 // Listen for event counts from the main process
 let sleepCount = store.get('sleepCount');
@@ -63,7 +81,6 @@ ipcRenderer.on('update-event-counts', (event, counts) => {
     // document.getElementById('lock-count').innerText = lockCount;
     // document.getElementById('unlock-count').innerText = unlockCount;
 });
-
 
 const aboutUsBtn = document.getElementById('aboutUsBtn');
 
