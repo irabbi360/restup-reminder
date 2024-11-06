@@ -27,11 +27,15 @@ Please note: RestUp Reminder is provided "as-is" and is intended for personal us
 
 ## Screenshots
 
-## ![break panel](screenshots/break.png)
+## ![break popup](screenshots/break_popup.png)
 
-## ![settings panel](screenshots/settings.png)
+## ![statistics](screenshots/statistics.png)
 
-![notification](screenshots/notification.png)
+## ![break_setting](screenshots/break_setting.png)
+
+## ![customize](screenshots/customize.png)
+
+![notification](screenshots/break_notification.png)
 
 ## FAQ
 
