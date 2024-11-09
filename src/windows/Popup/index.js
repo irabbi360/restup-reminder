@@ -23,7 +23,6 @@ function createPopupWindow(rendererWindows, mainWindow) {
         icon: join(__dirname, '../../assets/icon/icon.ico'),
         // parent: mainWindow, // Set the main window as the parent
         modal: true, // Make the popup modal (blocks main window interaction)
-        // opacity: 0,
         show: false, // Initially, don't show the window
         frame: env.NODE_ENV === 'dev',
         transparent: true,

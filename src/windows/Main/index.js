@@ -13,7 +13,7 @@ const env = process.env
 let mainWindow
 let contextMenu = null
 let nextBreak = "";
-let minInterval;
+let minBreakInterval;
 
 // statistics count
 let lockCount = 0;
@@ -49,7 +49,6 @@ const createMainWindow = (rendererWindows) => {
     if (env.NODE_ENV !== 'dev') {
         mainWindow.setMenu(null);
     }
-    // }
 
     // Listen for a message from the renderer process
     /*ipcMain.on('timer-start', (event, message) => {
@@ -67,10 +66,6 @@ const createMainWindow = (rendererWindows) => {
         if (env.NODE_ENV !== 'dev') {
             mainWindow.setAlwaysOnTop(true, 'floating', 1);
         }
-    });
-
-    ipcMain.on('call-from-main', (event, arg) => {
-        // console.log(arg, 'call-from-main'); // Do something with the data received
     });
 
     // Listen for system sleep event
@@ -141,15 +136,6 @@ const createMainWindow = (rendererWindows) => {
         try {
             if (mainWindow && !mainWindow.isDestroyed()) {
                 mainWindow.webContents.send('app-unlock'); // Notify renderer to resume activity
-                const settingWindow = getSettingWindow();
-                if (settingWindow && !settingWindow.isDestroyed()) {
-                    // settingWindow.webContents.send('update-event-counts', {
-                    //     suspendCount,
-                    //     resumeCount,
-                    //     lockCount,
-                    //     unlockCount
-                    // });
-                }
             }
         } catch (error) {
             console.error('Error sending event:', error)
@@ -240,10 +226,10 @@ const menuWithTimerInfo = (async (setting, tray, restartApp) => {
     const breakTimeMoment = moment(breakTime, 'HH:mm:ss');
     const inWorkingHours = setting.breakFrequency;
 
-    minInterval = setInterval(async function () {
+    minBreakInterval = setInterval(async function () {
         const currentAppStatus = store.get('setting.app_status', 'enable');
         if (currentAppStatus === 'disable') {
-            clearInterval(minInterval);
+            clearInterval(minBreakInterval);
             nextBreak = 'RestUp Reminder is disabled';
         } else {
             let remainingTime = store.get('remainingTime')
@@ -279,7 +265,7 @@ const menuWithTimerInfo = (async (setting, tray, restartApp) => {
                 label: 'Start Break',
                 click: () => {
                     mainWindow.webContents.send('start-break')
-                    clearInterval(minInterval);
+                    clearInterval(minBreakInterval);
                 },
                 visible: currentAppStatus === 'enable',
             },
@@ -292,7 +278,7 @@ const menuWithTimerInfo = (async (setting, tray, restartApp) => {
                 label: 'Reset Timer',
                 click: () => {
                     mainWindow.webContents.send('reset-timer')
-                    clearInterval(minInterval);
+                    clearInterval(minBreakInterval);
                 },
                 visible: currentAppStatus === 'enable',
             },
@@ -324,7 +310,7 @@ const menuWithTimerInfo = (async (setting, tray, restartApp) => {
         ]);
 
         if (minutes === 0 && seconds === 0 || currentAppStatus === 'disable') {
-            clearInterval(minInterval);
+            clearInterval(minBreakInterval);
         }
 
         await tray.setContextMenu(contextMenu);

@@ -1,6 +1,5 @@
 const {app, BrowserWindow, ipcMain, Menu, Tray, screen, ipcRenderer, powerMonitor} = require('electron');
 const {join} = require('path');
-const moment = require('moment');
 const dotenv = require('dotenv');
 const AutoLaunch = require('auto-launch');
 const Store = require('electron-store');
@@ -8,14 +7,14 @@ const {mainWindow, createMainWindow, menuWithTimerInfo} = require("./windows");
 
 dotenv.config();
 
-let tray;
+let mainTray;
 let setting = {};
-let countdownInterval;
-let minInterval;
+let mainCountdownInterval;
+let mainMinInterval;
 
 const store = new Store();
 
-let rendererWindows = [];
+let mainRendererWindows = [];
 
 // Initialize the auto-launch instance
 const autoLaunch = new AutoLaunch({
@@ -77,25 +76,25 @@ app.on('ready', () => {
 
     setting = store.get('setting');
 
-    createMainWindow(rendererWindows);
+    createMainWindow(mainRendererWindows);
 
     ipcMain.on('timer-start', async (event, message) => {
-        await menuWithTimerInfo(setting, tray, restartApp)
+        await menuWithTimerInfo(setting, mainTray, restartApp)
     });
 
     ipcMain.on('interval-clear', (event, remainingTime) => {
         console.log('interval-clear', remainingTime)
-        clearInterval(countdownInterval);
-        clearInterval(minInterval);
+        clearInterval(mainCountdownInterval);
+        clearInterval(mainMinInterval);
     })
     // Create a system tray icon
     const iconPath = join(__dirname, './assets/icon/tryicon.png');
-    tray = new Tray(iconPath);
+    mainTray = new Tray(iconPath);
 
-    tray.setToolTip('RestUp Reminder');
+    mainTray.setToolTip('RestUp Reminder');
 
-    tray.on('click', () => {
-        tray.popUpContextMenu();
+    mainTray.on('click', () => {
+        mainTray.popUpContextMenu();
     });
 });
 
@@ -109,7 +108,7 @@ app.on('window-all-closed', () => {
 
 app.on('activate', () => {
     if (mainWindow === null) {
-        createMainWindow(rendererWindows);
+        createMainWindow(mainRendererWindows);
     }
 });
 

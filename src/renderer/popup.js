@@ -4,7 +4,10 @@ const Store = require('electron-store');
 
 const store = new Store();
 let setting = store.get('setting');
-let breakSessions = store.get('break_sessions');
+let popupBreakSessions = store.get('break_sessions');
+let popupTimerInterval;
+let popupSecondsRemaining = setting.breakLength * 60;
+let isPopupTimerRunning = false;
 
 let popupClass = document.getElementById('popupClass');
 if (popupClass && setting.popupColor) {
@@ -18,40 +21,36 @@ closeButton.addEventListener('click', () => {
     window.close(); // Close the popup window when the close button is clicked
 });
 
-let timerInterval;
-let secondsRemaining = setting.breakLength * 60;
-let isTimerRunning = false;
-
 function updateTimer() {
-    const hours = Math.floor(secondsRemaining / 3600);
-    const minutes = Math.floor((secondsRemaining % 3600) / 60);
-    const seconds = secondsRemaining % 60;
+    const hours = Math.floor(popupSecondsRemaining / 3600);
+    const minutes = Math.floor((popupSecondsRemaining % 3600) / 60);
+    const seconds = popupSecondsRemaining % 60;
     document.getElementById('timer').textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 }
 
 function startTimer() {
-    clearInterval(timerInterval)
-    if (!isTimerRunning) {
-        isTimerRunning = true;
-        timerInterval = setInterval(() => {
-            if (secondsRemaining === 0) {
+    clearInterval(popupTimerInterval)
+    if (!isPopupTimerRunning) {
+        isPopupTimerRunning = true;
+        popupTimerInterval = setInterval(() => {
+            if (popupSecondsRemaining === 0) {
                 stopTimer()
             } else {
-                secondsRemaining--;
+                popupSecondsRemaining--;
             }
             updateTimer();
         }, 1000);
-        handleBreakSessionMessage(breakSessions);
+        handleBreakSessionMessage(popupBreakSessions);
     }
 }
 
 function stopTimer() {
-    if (isTimerRunning) {
-        isTimerRunning = false;
-        clearInterval(timerInterval);
+    if (isPopupTimerRunning) {
+        isPopupTimerRunning = false;
+        clearInterval(popupTimerInterval);
         ipcRenderer.removeAllListeners('break-end');
         ipcRenderer.send('break-end', 'Your Break is End. Popup Closed.')
-        console.log(breakSessions, 'break Sessions')
+        console.log(popupBreakSessions, 'break Sessions')
         // ipcRenderer.send('call-from-main', 'Hello from the renderer process');
 
         ipcRenderer.on('message-from-main', (event, message) => {
@@ -64,7 +63,7 @@ function stopTimer() {
 
 function resetTimer() {
     stopTimer();
-    secondsRemaining = 0;
+    popupSecondsRemaining = 0;
     updateTimer();
 }
 
