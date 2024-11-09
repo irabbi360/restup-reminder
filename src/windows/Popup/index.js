@@ -18,15 +18,15 @@ function createPopupWindow(rendererWindows, mainWindow) {
         height: primaryDisplay.workAreaSize.height,
         x: primaryDisplay.bounds.x,
         y: primaryDisplay.bounds.y + taskbarHeight, // Adjust for the taskbar
-        fullscreen: true,  // Enable full-screen mode
-        fullscreenable: true,  // Allow exiting full-screen with F11 (optional)
+        // fullscreen: true,  // Enable full-screen mode
+        // fullscreenable: true,  // Allow exiting full-screen with F11 (optional)
         icon: join(__dirname, '../../assets/icon/icon.ico'),
-        parent: mainWindow, // Set the main window as the parent
+        // parent: mainWindow, // Set the main window as the parent
         modal: true, // Make the popup modal (blocks main window interaction)
-        opacity: 0,
+        // opacity: 0,
         show: false, // Initially, don't show the window
         frame: env.NODE_ENV === 'dev',
-        transparent: env.NODE_ENV !== 'dev',
+        transparent: true,
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,

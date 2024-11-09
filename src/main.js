@@ -45,28 +45,35 @@ if (process.platform === 'darwin') {
     app.setActivationPolicy('prohibited');
 }
 
+// Default settings object
+const defaultSettings = {
+    notifyMe: 'popup',
+    breakFrequency: 30,
+    breakLength: 2,
+    skipBreak: 'on',
+    snoozeBreak: 'on',
+    snoozeLength: 5,
+    breakNotifyTitle: 'Time for break!',
+    breakNotifyMessage: 'Rest your eyes. Stretch your legs. Breathe. Relax.'
+};
+
 app.on('ready', () => {
 
     if (process.platform === 'darwin') {
         app.dock.hide(); // Hide the dock icon
     }
 
-    setting = store.get('setting');
+    setting = store.get('setting', {});
+
+    // Merge existing settings with defaults (missing keys are filled with defaults)
+    setting = Object.assign({}, defaultSettings, setting);
+
+    // Store the merged settings back into the store
+    store.set('setting', setting);
+
+    console.log(setting, 'updated settings');
+
     console.log(setting, 'on ready')
-    if (setting) {
-    } else {
-        let setting = {
-            notifyMe: 'popup',
-            breakFrequency: 30,
-            breakLength: 2,
-            skipBreak: 'on',
-            snoozeBreak: 'on',
-            snoozeLength: 5,
-            breakNotifyTitle: 'Time for break!',
-            breakNotifyMessage: 'Rest your eyes. Stretch your legs. Breathe. Relax.'
-        }
-        store.set('setting', setting);
-    }
 
     setting = store.get('setting');
 
