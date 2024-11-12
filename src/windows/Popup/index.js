@@ -16,8 +16,10 @@ function createPopupWindow(rendererWindows, mainWindow) {
     let popupWindow = new BrowserWindow({
         width: primaryDisplay.workAreaSize.width,
         height: primaryDisplay.workAreaSize.height,
-        x: primaryDisplay.bounds.x,
-        y: primaryDisplay.bounds.y + taskbarHeight, // Adjust for the taskbar
+        // x: primaryDisplay.bounds.x,
+        // y: primaryDisplay.bounds.y + taskbarHeight, // Adjust for the taskbar
+        alwaysOnTop: true,
+        minimizable: false,
         // fullscreen: true,  // Enable full-screen mode
         // fullscreenable: true,  // Allow exiting full-screen with F11 (optional)
         icon: join(__dirname, '../../assets/icon/icon.ico'),
@@ -26,6 +28,7 @@ function createPopupWindow(rendererWindows, mainWindow) {
         show: false, // Initially, don't show the window
         frame: env.NODE_ENV === 'dev',
         transparent: true,
+        skipTaskbar: true,
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,
