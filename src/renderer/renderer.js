@@ -4,6 +4,7 @@ const Store = require('electron-store');
 const store = new Store();
 
 let setting = store.get('setting');
+let renderInterval;
 
 function initiateTimer() {
     ipcRenderer.send('timer-start', 'Your Timer Started! ' + timer.sessions);
@@ -17,8 +18,6 @@ const timer = {
     longBreakInterval: 4,
     sessions: 0,
 };
-
-let interval;
 
 function getRemainingTime(endTime) {
     const currentTime = Date.parse(new Date());
@@ -43,13 +42,13 @@ function updateClock() {
 }
 
 function startTimer() {
-    clearInterval(interval);
+    clearInterval(renderInterval);
 
     if (store.get('setting.app_status') === 'disable') {
         console.log('Timer is disabled');
         return;
     }
-    clearInterval(interval);
+    clearInterval(renderInterval);
 
     let {total} = timer.remainingTime;
     const endTime = Date.parse(new Date()) + total * 1000;
@@ -58,12 +57,12 @@ function startTimer() {
 
     store.set('break_sessions', timer.sessions)
 
-    interval = setInterval(function () {
+    renderInterval = setInterval(function () {
         timer.remainingTime = getRemainingTime(endTime);
         updateClock();
         total = timer.remainingTime.total;
         if (total <= 0) {
-            clearInterval(interval);
+            clearInterval(renderInterval);
 
             switch (timer.mode) {
                 default:
@@ -81,7 +80,7 @@ function startTimer() {
 }
 
 function stopTimer() {
-    clearInterval(interval);
+    clearInterval(renderInterval);
     ipcIntervalClear();
 }
 
@@ -94,16 +93,6 @@ function switchMode(mode) {
     };
 
     updateClock();
-}
-
-function handleMode(event) {
-    const {mode} = event.target.dataset;
-
-    if (!mode) return;
-
-    timer.sessions = 0;
-    switchMode('pomodoro');
-    stopTimer();
 }
 
 if ('Notification' in window) {
@@ -140,7 +129,7 @@ function ipcStopNotify(mode) {
 
 ipcRenderer.on('broadcast-message', (event, message) => {
     console.log('Broadcast message:', message);
-    clearInterval(interval)
+    clearInterval(renderInterval)
 
     initPomodoroTimer();
 });

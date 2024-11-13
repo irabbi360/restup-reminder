@@ -1,6 +1,5 @@
 const {app, BrowserWindow, ipcMain, Menu, Tray, screen, ipcRenderer, powerMonitor} = require('electron');
 const {join} = require('path');
-const moment = require('moment');
 const dotenv = require('dotenv');
 const AutoLaunch = require('auto-launch');
 const Store = require('electron-store');
@@ -8,14 +7,14 @@ const {mainWindow, createMainWindow, menuWithTimerInfo} = require("./windows");
 
 dotenv.config();
 
-let tray;
+let mainTray;
 let setting = {};
-let countdownInterval;
-let minInterval;
+let mainCountdownInterval;
+let mainMinInterval;
 
 const store = new Store();
 
-let rendererWindows = [];
+let mainRendererWindows = [];
 
 // Initialize the auto-launch instance
 const autoLaunch = new AutoLaunch({
@@ -45,50 +44,57 @@ if (process.platform === 'darwin') {
     app.setActivationPolicy('prohibited');
 }
 
+// Default settings object
+const defaultSettings = {
+    notifyMe: 'popup',
+    breakFrequency: 30,
+    breakLength: 2,
+    skipBreak: 'on',
+    snoozeBreak: 'on',
+    snoozeLength: 5,
+    breakNotifyTitle: 'Time for break!',
+    breakNotifyMessage: 'Rest your eyes. Stretch your legs. Breathe. Relax.'
+};
+
 app.on('ready', () => {
 
     if (process.platform === 'darwin') {
         app.dock.hide(); // Hide the dock icon
     }
 
-    setting = store.get('setting');
+    setting = store.get('setting', {});
+
+    // Merge existing settings with defaults (missing keys are filled with defaults)
+    setting = Object.assign({}, defaultSettings, setting);
+
+    // Store the merged settings back into the store
+    store.set('setting', setting);
+
+    console.log(setting, 'updated settings');
+
     console.log(setting, 'on ready')
-    if (setting) {
-    } else {
-        let setting = {
-            notifyMe: 'popup',
-            breakFrequency: 30,
-            breakLength: 2,
-            skipBreak: 'on',
-            snoozeBreak: 'on',
-            snoozeLength: 5,
-            breakNotifyTitle: 'Time for break!',
-            breakNotifyMessage: 'Rest your eyes. Stretch your legs. Breathe. Relax.'
-        }
-        store.set('setting', setting);
-    }
 
     setting = store.get('setting');
 
-    createMainWindow(rendererWindows);
+    createMainWindow(mainRendererWindows);
 
     ipcMain.on('timer-start', async (event, message) => {
-        await menuWithTimerInfo(setting, tray, restartApp)
+        await menuWithTimerInfo(setting, mainTray, restartApp)
     });
 
     ipcMain.on('interval-clear', (event, remainingTime) => {
         console.log('interval-clear', remainingTime)
-        clearInterval(countdownInterval);
-        clearInterval(minInterval);
+        clearInterval(mainCountdownInterval);
+        clearInterval(mainMinInterval);
     })
     // Create a system tray icon
     const iconPath = join(__dirname, './assets/icon/tryicon.png');
-    tray = new Tray(iconPath);
+    mainTray = new Tray(iconPath);
 
-    tray.setToolTip('RestUp Reminder');
+    mainTray.setToolTip('RestUp Reminder');
 
-    tray.on('click', () => {
-        tray.popUpContextMenu();
+    mainTray.on('click', () => {
+        mainTray.popUpContextMenu();
     });
 });
 
@@ -102,7 +108,7 @@ app.on('window-all-closed', () => {
 
 app.on('activate', () => {
     if (mainWindow === null) {
-        createMainWindow(rendererWindows);
+        createMainWindow(mainRendererWindows);
     }
 });
 
