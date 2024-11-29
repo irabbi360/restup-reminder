@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>RestUp Reminder - Break Timer App</title>
+    
+</head>
+<body class="bg-gray-100 text-gray-900">
+    <header class="bg-blue-700 text-white py-6 shadow-md">
+        <div class="container mx-auto flex flex-col md:flex-row items-center justify-between">
+            <h1 class="text-4xl font-extrabold tracking-wide">RestUp Reminder</h1>
+            <p class="mt-2 md:mt-0 text-lg font-medium">A Break Timer App</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto py-10 px-5">
+        <section class="mb-12">
+            <div class="text-center">
+                <h2 class="text-5xl font-extrabold mb-4 text-blue-900">Manage and Enforce Regular Breaks</h2>
+                <p class="text-xl mb-8 text-gray-700">RestUp Reminder is a desktop application designed to help manage and enforce regular breaks. It's available across Windows, macOS, and Linux platforms.</p>
+                <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                    <button class="bg-blue-600 text-white py-3 px-8 rounded-full shadow-lg hover:bg-blue-700">Download for Windows</button>
+                    <button class="bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 px-8 rounded-full shadow-lg hover:from-purple-500 hover:to-blue-500">Download for macOS</button>
+                    <button class="bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 px-8 rounded-full shadow-lg hover:from-purple-500 hover:to-blue-500">Download for Linux</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white p-6 md:p-10 rounded-2xl shadow-2xl mb-12">
+            <h3 class="text-4xl font-bold mb-8 text-blue-900">Features</h3>
+            <ul class="list-disc pl-6 md:pl-8 space-y-4 text-lg text-gray-700">
+                <li>Set your preferred break duration and frequency.</li>
+                <li>Choose between a simple notification or a fullscreen break reminder.</li>
+                <li>Personalize the messages displayed during breaks, shown randomly.</li>
+                <li>Customize app settings to choose break intervals, notification type (popup or fullscreen), and even popup window color.</li>
+                <li>Enable smart break tracking that resets the countdown if it detects inactivity.</li>
+            </ul>
+        </section>
+
+        <section class="mb-12">
+            <h3 class="text-4xl font-bold mb-8 text-blue-900">Screenshots</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                <img src="/path/to/screenshot1.png" alt="Break Reminder Popup Screenshot" class="rounded-2xl shadow-lg transform hover:scale-105 transition duration-300">
+                <img src="/path/to/screenshot2.png" alt="RestUp Reminder Main Settings" class="rounded-2xl shadow-lg transform hover:scale-105 transition duration-300">
+                <img src="/path/to/screenshot3.png" alt="Break Settings Interface" class="rounded-2xl shadow-lg transform hover:scale-105 transition duration-300">
+                <img src="/path/to/screenshot4.png" alt="Customization Settings" class="rounded-2xl shadow-lg transform hover:scale-105 transition duration-300">
+            </div>
+        </section>
+
+        <section class="bg-white p-6 md:p-10 rounded-2xl shadow-2xl mb-12">
+            <h3 class="text-4xl font-bold mb-8 text-blue-900">Installation</h3>
+            <div class="space-y-6">
+                <div>
+                    <h4 class="text-3xl font-semibold text-purple-700">Windows</h4>
+                    <p class="text-lg text-gray-700">(unsigned - you may receive a warning on install, press more info -> run anyway)</p>
+                </div>
+                <div>
+                    <h4 class="text-3xl font-semibold text-purple-700">macOS</h4>
+                    <p class="text-lg text-gray-700">Instructions coming soon...</p>
+                </div>
+                <div>
+                    <h4 class="text-3xl font-semibold text-purple-700">Linux</h4>
+                    <p class="text-lg text-gray-700">Auto-updating (AppImage), also available in the Ubuntu App Store.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white p-6 md:p-10 rounded-2xl shadow-2xl">
+            <h3 class="text-4xl font-bold mb-8 text-blue-900">Frequently Asked Questions</h3>
+            <div class="mb-8">
+                <h4 class="text-2xl font-semibold text-purple-700 mb-2">Why can't I see the app in the tray?</h4>
+                <p class="text-lg text-gray-700">Some operating systems, such as Linux distributions running plain Gnome (e.g., Fedora) or Pantheon (e.g., Elementary OS), don't support system tray icons. In this case, simply re-run the app to open the settings window.</p>
+            </div>
+            <div>
+                <h4 class="text-2xl font-semibold text-purple-700 mb-2">How can I hard reset the app's data?</h4>
+                <p class="text-lg text-gray-700">In case the app is left in an unrecoverable state, you can reset the app data by exiting the app, deleting the below folder, and starting the app again:</p>
+                <ul class="list-disc pl-6 md:pl-8 mt-4 text-lg text-gray-700">
+                    <li><b>Linux:</b> ~/.config/restup_reminder/</li>
+                    <li><b>macOS:</b> ~/Library/Application Support/restup_reminder/</li>
+                    <li><b>Windows:</b> C:\Users\<username>\AppData\Roaming\restup_reminder</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-blue-700 text-white py-8 mt-12 shadow-md">
+        <div class="container mx-auto text-center">
+            <p class="text-lg font-medium">&copy; 2024 RestUp Reminder. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
